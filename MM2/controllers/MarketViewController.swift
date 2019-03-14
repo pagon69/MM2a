@@ -13,23 +13,71 @@ import SwiftyJSON
 
 class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    //sections and table customization
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var heading: String = ""
+        
+        if(tableView.tag == 1){
+            heading = "USA Markets by Percentage"
+        }
+        if(tableView.tag == 2){
+            heading = "Market Makers"
+            //tableView.sectionIndexBackgroundColor = .black
+            tableView.backgroundColor = .black
+        }
+        return heading
+    }
+    
     //Table view stuff
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return searchResults?.count ?? 1
+        var count = 0
+        //default search view table - i need to redo using search view controller
+        if(tableView.tag == 0){
+            count = searchResults?.count ?? 1
+        }
+        //markets table
+        if(tableView.tag == 1){
+            count = myMarkets.count
+        }
+        //Makers table
+        if(tableView.tag == 2){
+            count = myArray.count
+        }
+        return count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         var cell = UITableViewCell()
-        
+        //search table view cell
+        if(tableView.tag == 0){
         cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
-        
         cell.textLabel?.text = searchResults?[indexPath.row].Description
         cell.detailTextLabel?.text = searchResults?[indexPath.row].Symbol
-        
+        }
+        //Markets tableView cell
+        if(tableView.tag == 1){
+            cell = marketsTableOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
+            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nVol:\(myMarkets[indexPath.row].volume)\nMarket %:\(myMarkets[indexPath.row].marketPercent)"
+        }
+        //Makers tableview cell
+        if(tableView.tag == 2){
+            cell = makersOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
+            cell.textLabel?.text = myArray[indexPath.row]
+            cell.detailTextLabel?.text = "something for me to display"
+        }
         return cell
     }
+    //outlets and IB stuff
+    @IBOutlet weak var marketsTableOutlet: UITableView!
+    @IBOutlet weak var makersOutlet: UITableView!
+    
     
 
     //my global variables
@@ -108,12 +156,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func processData(json: JSON){
     
         for each in json{
+            
             //need to create a market object with all of the data
-            let market = Markets(mic: each.1["mic"].stringValue, venueName: each.1["venueName"].stringValue, volume: each.1["marketPercent"].stringValue, marketPercent: each.1["volume"].stringValue, charts: [1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5])
+            let market = Markets(mic: each.1["mic"].stringValue, tapeId: each.1["tapeId"].stringValue, venueName: each.1["venueName"].stringValue, volume: each.1["marketPercent"].stringValue, marketPercent: each.1["volume"].stringValue, charts: [1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5], tapeA: each.1["tapeA"].stringValue, tapeB: each.1["tabeB"].stringValue, tapeC: each.1["tapeC"].stringValue, lastUpdated: each.1["lastUpdated"].stringValue)
 
             myMarkets.append(market)
         }
-        TableViewOutlet.reloadData()
+        marketsTableOutlet.reloadData()
     }
     
     
@@ -137,8 +186,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 }
         })
         
-        let realm = try! Realm(configuration: config)
+      //  let realm = try! Realm(configuration: config)
         myRealm = try! Realm(configuration: config)
+        
+        collectMarketData()
+        
         
         
         // Do any additional setup after loading the view.
