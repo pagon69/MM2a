@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Market View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MarketViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" translatesAutoresizingMaskIntoConstraints="NO" id="GH7-rJ-J4C" userLabel="Main Scroll View">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fBi-MG-LaY" userLabel="Main View">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
+                                        <subviews>
+                                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="0B7-cg-e0E">
+                                                <rect key="frame" x="0.0" y="40" width="375" height="56"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="56" id="lg1-No-W93"/>
+                                                </constraints>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="j8y-OS-99V"/>
+                                                </connections>
+                                            </searchBar>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1MI-Q1-570">
+                                                <rect key="frame" x="0.0" y="96" width="375" height="100"/>
+                                                <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="100" id="d89-up-v5f"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="1MI-Q1-570" firstAttribute="leading" secondItem="fBi-MG-LaY" secondAttribute="leading" id="EYQ-R9-T3E"/>
+                                            <constraint firstItem="0B7-cg-e0E" firstAttribute="top" secondItem="fBi-MG-LaY" secondAttribute="top" constant="40" id="GvS-k2-3nn"/>
+                                            <constraint firstAttribute="height" constant="1100" id="IZN-RQ-53b"/>
+                                            <constraint firstItem="1MI-Q1-570" firstAttribute="top" secondItem="0B7-cg-e0E" secondAttribute="bottom" id="grk-tv-EKr"/>
+                                            <constraint firstAttribute="trailing" secondItem="0B7-cg-e0E" secondAttribute="trailing" id="hii-pa-qIm"/>
+                                            <constraint firstItem="0B7-cg-e0E" firstAttribute="leading" secondItem="fBi-MG-LaY" secondAttribute="leading" id="jYo-vp-j8s"/>
+                                            <constraint firstAttribute="trailing" secondItem="1MI-Q1-570" secondAttribute="trailing" id="mzM-WK-BMj"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="fBi-MG-LaY" secondAttribute="bottom" id="6Hg-kc-4f2"/>
+                                    <constraint firstAttribute="trailing" secondItem="fBi-MG-LaY" secondAttribute="trailing" id="9jC-XY-j65"/>
+                                    <constraint firstItem="fBi-MG-LaY" firstAttribute="top" secondItem="GH7-rJ-J4C" secondAttribute="top" id="Gfb-bj-WYa"/>
+                                    <constraint firstItem="fBi-MG-LaY" firstAttribute="leading" secondItem="GH7-rJ-J4C" secondAttribute="leading" id="JkM-Bc-8I3"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="GH7-rJ-J4C" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="0VJ-2t-sE2"/>
+                            <constraint firstItem="GH7-rJ-J4C" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Bci-lO-EmD"/>
+                            <constraint firstItem="GH7-rJ-J4C" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Knd-pA-f6c"/>
+                            <constraint firstItem="GH7-rJ-J4C" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Rbc-zO-KXY"/>
+                            <constraint firstItem="fBi-MG-LaY" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="pdB-AK-SJT"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <size key="freeformSize" width="375" height="1100"/>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="dmh-0a-bcC" id="hNn-JC-v2r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="dmh-0a-bcC">
+                    <connections>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="XPf-uJ-NWT"/>
+                        <outlet property="searchBar" destination="0B7-cg-e0E" id="72L-kk-kUi"/>
+                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="du4-2X-rWE"/>
+                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="WId-4g-G0v"/>
+                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="aYb-uK-tH6"/>
+                    </connections>
+                </searchDisplayController>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="116.04197901049476"/>
+        </scene>
+    </scenes>
+</document>
