@@ -17,6 +17,7 @@
 		C14146CA223A896C00AEB632 /* MarketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14146C9223A896C00AEB632 /* MarketViewController.swift */; };
 		C14146CC223A898E00AEB632 /* DetailSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14146CB223A898E00AEB632 /* DetailSearchViewController.swift */; };
 		C14146CE223A899D00AEB632 /* QuickSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14146CD223A899D00AEB632 /* QuickSearchViewController.swift */; };
+		C14146D0223AC73000AEB632 /* Markets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14146CF223AC73000AEB632 /* Markets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		C14146C9223A896C00AEB632 /* MarketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketViewController.swift; sourceTree = "<group>"; };
 		C14146CB223A898E00AEB632 /* DetailSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailSearchViewController.swift; sourceTree = "<group>"; };
 		C14146CD223A899D00AEB632 /* QuickSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSearchViewController.swift; sourceTree = "<group>"; };
+		C14146CF223AC73000AEB632 /* Markets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markets.swift; sourceTree = "<group>"; };
 		E376213F54B6ACC45AAE29BD /* Pods-MM2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.release.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.release.xcconfig"; sourceTree = "<group>"; };
 		F9AE6AB9BCFCD9BFC85809E4 /* Pods-MM2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				C14146C7223A87D100AEB632 /* Symbols.swift */,
+				C14146CF223AC73000AEB632 /* Markets.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C14146CE223A899D00AEB632 /* QuickSearchViewController.swift in Sources */,
+				C14146D0223AC73000AEB632 /* Markets.swift in Sources */,
 				C14146C8223A87D100AEB632 /* Symbols.swift in Sources */,
 				C14146CA223A896C00AEB632 /* MarketViewController.swift in Sources */,
 				C14146CC223A898E00AEB632 /* DetailSearchViewController.swift in Sources */,

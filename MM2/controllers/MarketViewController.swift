@@ -13,12 +13,11 @@ import SwiftyJSON
 
 class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
     
-    
-    
     //Table view stuff
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults?.count ?? 1
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -47,56 +46,37 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var currentIndexPath = 0
     var userInput = ""
     var searchR = [String]()
-    
-    
+    var myMarkets :[Markets] = [Markets]()
     
     
     //my functions
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         userInput = searchBar.text?.lowercased() ?? ""
         doSearch(searchV: userInput)
-        print("user typed \(userInput)")
     }
     
     func doSearch( searchV : String ){
+        /*example of a array search
         searchR = myArray.filter({ (item) -> Bool in
             item.lowercased().contains(searchV)
         })
-
-        //  print("The value sent is: \(searchValue) and the results is : \(searchR)")
-        
-        var ‌‌sortedSearch = searchR.sorted()
-        
-        /*
-         searchR = myArray.filter({ item in
-         return item.lowercased().contains(searchText)
-         })
-         */
-        //let searchValue = searchV
-        
+        */
         let items = myRealm.objects(Symbols.self).filter("Description CONTAINS[cd] %@", searchV).sorted(byKeyPath: "Description", ascending: true)
         
         searchResults = items
-        //print("from my realm: \(items)")
     }
     
-    
+    //opens the default realm then i change the path and replace with my bundle
     func openRealm() {
         let defaultRealmPath = Realm.Configuration.defaultConfiguration.fileURL!
         let bundleRealmPath = Bundle.main.url(forResource: "symbols", withExtension: "realm")
         
         if FileManager.default.fileExists(atPath: defaultRealmPath.absoluteString) {
-            
             do{
                 try FileManager.default.removeItem(at: defaultRealmPath)
-                
                 print("deleted the default realm")
-                
             }catch {
-                
                 print("could not delete the default realm")
-                
             }
             do {
                 try FileManager.default.copyItem(at: bundleRealmPath!, to: defaultRealmPath)
@@ -107,20 +87,51 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
     }
     
+    
+    func collectMarketData(){
+        //network request for data
+        Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
+            if let json = response.result.value {
+                let myJson = JSON(json)
+                self.processData(json: myJson)
+            }else {
+                print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+            }
+            if let data = response.data{
+                print("Got data, this much was sent: \(data)")
+            }
+        }
+        
+    }
+    
+    //processes data for the market page
+    func processData(json: JSON){
+    
+        for each in json{
+            //need to create a market object with all of the data
+            let market = Markets(mic: each.1["mic"].stringValue, venueName: each.1["venueName"].stringValue, volume: each.1["marketPercent"].stringValue, marketPercent: each.1["volume"].stringValue, charts: [1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5])
+
+            myMarkets.append(market)
+        }
+        TableViewOutlet.reloadData()
+    }
+    
+    
+    
+    
     // start of all runtime stuff
     override func viewDidLoad() {
         super.viewDidLoad()
 
         openRealm()
         
-        //realsm configuration stuff
+        //realm configuration stuff
         let bundleRealmPath = Bundle.main.url(forResource: "symbols", withExtension: "realm")
         let config = Realm.Configuration(fileURL: bundleRealmPath,
-                                         readOnly: false,
-                                         schemaVersion: 10,
+                                         readOnly: true,
+                                         schemaVersion: 0,
                                          migrationBlock:
             { migration, oldSchemaVersion in
-                
                 if(oldSchemaVersion < 1){
                     print("do nothing")
                 }
