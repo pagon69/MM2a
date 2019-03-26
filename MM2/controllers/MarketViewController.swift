@@ -11,7 +11,24 @@ import RealmSwift
 import Alamofire
 import SwiftyJSON
 
-class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+    
+
+    
+    //UI search controller information
+        var testing = ["testing","tester","candy","daddy","mama"]
+        let searchController = UISearchController(searchResultsController: nil)
+    
+        func updateSearchResults(for searchController: UISearchController) {
+            //does search then puts it
+            
+            var test = ["a", "b","c","d","e"]
+            
+    }
+    
+    
+    
+    //search controller ending
     
     //sections and table customization
     
@@ -37,10 +54,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //Table view stuff
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
+        
         //default search view table - i need to redo using search view controller
         if(tableView.tag == 0){
             count = searchResults?.count ?? 1
         }
+ 
+        
         //markets table
         if(tableView.tag == 1){
             count = myMarkets.count
@@ -55,31 +75,58 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell = UITableViewCell()
+         
+         // default cell work
         //search table view cell
         if(tableView.tag == 0){
         cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
         cell.textLabel?.text = searchResults?[indexPath.row].Description
         cell.detailTextLabel?.text = searchResults?[indexPath.row].Symbol
+        
+        
         }
+ 
+ 
         //Markets tableView cell
         if(tableView.tag == 1){
-            cell = marketsTableOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
+            cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
             cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nVol:\(myMarkets[indexPath.row].volume)\nMarket %:\(myMarkets[indexPath.row].marketPercent)"
         }
         //Makers tableview cell
         if(tableView.tag == 2){
-            cell = makersOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
+            cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
             cell.textLabel?.text = myArray[indexPath.row]
             cell.detailTextLabel?.text = "something for me to display"
         }
         return cell
     }
     //outlets and IB stuff
-    @IBOutlet weak var marketsTableOutlet: UITableView!
-    @IBOutlet weak var makersOutlet: UITableView!
+   // @IBOutlet weak var marketsTableOutlet: UITableView!
+  //  @IBOutlet weak var makersOutlet: UITableView!
+    
+    @IBOutlet weak var mySearchBar: UISearchBar!
+    
+    //new outlets for coding
+    @IBOutlet weak var marketOutlet: UITableView!
+    @IBOutlet weak var makerOutlet: UITableView!
     
     
+    
+    
+    //search button segue
+    @IBAction func searchButtonOutlet(_ sender: UIBarButtonItem) {
+    
+        performSegue(withIdentifier: "goToSearch", sender: self)
 
+    }
+    
+    //back button
+    @IBAction func backButton(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     //my global variables
     
     let myArray = ["car","boat","house","mace","gun","door","banana"]
@@ -101,6 +148,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         userInput = searchBar.text?.lowercased() ?? ""
         doSearch(searchV: userInput)
+        searchBar.placeholder = "Enter stock"
+        
     }
     
     func doSearch( searchV : String ){
@@ -162,7 +211,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
             myMarkets.append(market)
         }
-        marketsTableOutlet.reloadData()
+//        marketsTableOutlet.reloadData()
     }
     
     
