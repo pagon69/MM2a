@@ -15,20 +15,17 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
 
     
-    //UI search controller information
+    //UI search controller information, not using so remove?
         var testing = ["testing","tester","candy","daddy","mama"]
         let searchController = UISearchController(searchResultsController: nil)
     
+    //not using this so remove?
         func updateSearchResults(for searchController: UISearchController) {
             //does search then puts it
             
-            var test = ["a", "b","c","d","e"]
+            //var test = ["a", "b","c","d","e"]
             
     }
-    
-    
-    
-    //search controller ending
     
     //sections and table customization
     
@@ -41,12 +38,12 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         var heading: String = ""
         
         if(tableView.tag == 1){
-            heading = "USA Markets by Percentage"
+            heading = "Liquid Markets"
         }
         if(tableView.tag == 2){
             heading = "Market Makers"
             //tableView.sectionIndexBackgroundColor = .black
-            tableView.backgroundColor = .black
+            //tableView.backgroundColor = .black
         }
         return heading
     }
@@ -60,7 +57,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             count = searchResults?.count ?? 1
         }
  
-        
         //markets table
         if(tableView.tag == 1){
             count = myMarkets.count
@@ -79,10 +75,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
          // default cell work
         //search table view cell
         if(tableView.tag == 0){
+            
         cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
         cell.textLabel?.text = searchResults?[indexPath.row].Description
         cell.detailTextLabel?.text = searchResults?[indexPath.row].Symbol
-        
         
         }
  
@@ -90,16 +86,63 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         //Markets tableView cell
         if(tableView.tag == 1){
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
+            
+            cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nVol:\(myMarkets[indexPath.row].volume)\nMarket %:\(myMarkets[indexPath.row].marketPercent)"
+            
+            cell.detailTextLabel?.text = "test"
         }
         //Makers tableview cell
         if(tableView.tag == 2){
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
+            print("in \(tableView.tag)")
             cell.textLabel?.text = myArray[indexPath.row]
             cell.detailTextLabel?.text = "something for me to display"
         }
         return cell
     }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //looks at markets tableView
+        if(tableView.tag == 1){
+            currentIndexPath = indexPath.row
+            
+            performSegue(withIdentifier: "goToMakersDetail", sender: self)
+            
+        }
+        
+        //looks at makers table View
+        if(tableView.tag == 2){
+            currentIndexPath = indexPath.row
+            performSegue(withIdentifier: "goToTableViewDetail", sender: self)
+            
+        }
+        
+    }
+    
+    //prepares the environment for the multiple possible segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //this will cover the makers details
+        if(segue.identifier == "goToMakersDetail"){
+            let destVC: MakersTableViewController = segue.destination as! MakersTableViewController
+            destVC.data = myMarkets[currentIndexPath]
+        }
+        
+        
+        //this will cover the markets
+        if(segue.identifier == "goToTableViewDetail"){
+            
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+            destVC.data = myMarkets[currentIndexPath]
+        }
+        
+    }
+    
+    
+    
     //outlets and IB stuff
    // @IBOutlet weak var marketsTableOutlet: UITableView!
   //  @IBOutlet weak var makersOutlet: UITableView!
@@ -110,9 +153,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     @IBOutlet weak var marketOutlet: UITableView!
     @IBOutlet weak var makerOutlet: UITableView!
     
-    
-    
-    
+
     //search button segue
     @IBAction func searchButtonOutlet(_ sender: UIBarButtonItem) {
     
@@ -211,7 +252,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
             myMarkets.append(market)
         }
-//        marketsTableOutlet.reloadData()
+        marketOutlet.reloadData()
     }
     
     

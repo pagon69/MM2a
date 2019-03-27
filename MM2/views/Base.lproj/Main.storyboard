@@ -105,7 +105,7 @@
         <!--Search window-->
         <scene sceneID="eWy-h8-z5U">
             <objects>
-                <viewController id="OBw-Px-o3o" userLabel="Search window" customClass="MarketViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OBw-Px-o3o" userLabel="Search window" customClass="QuickSearchViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5gg-AS-BO0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -162,7 +162,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1489" y="-1845"/>
+            <point key="canvasLocation" x="3756" y="255"/>
         </scene>
         <!--Item 2-->
         <scene sceneID="csJ-Em-c2d">
@@ -364,12 +364,28 @@
                                                     <constraint firstAttribute="height" constant="364" id="S5V-GA-Vat"/>
                                                 </constraints>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="marketsCell" id="BNO-oZ-NiQ">
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="marketsCell" textLabel="xd4-Xp-Q9u" detailTextLabel="TRS-aO-ymN" style="IBUITableViewCellStyleValue1" id="BNO-oZ-NiQ">
                                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BNO-oZ-NiQ" id="WKV-Vi-dnr">
                                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                                             <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xd4-Xp-Q9u">
+                                                                    <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TRS-aO-ymN">
+                                                                    <rect key="frame" x="316" y="12" width="44" height="20.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
@@ -471,11 +487,106 @@
                         <outlet property="makerOutlet" destination="t8v-Uc-d0C" id="8xf-op-lnP"/>
                         <outlet property="marketOutlet" destination="c8M-MH-5FM" id="Fjf-bV-0v6"/>
                         <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch" id="3Nb-Xn-FGo"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="goToTableViewDetail" id="9jB-Dl-jKl"/>
+                        <segue destination="GCO-vW-Myx" kind="showDetail" identifier="goToMakersDetail" id="Jn0-14-pJB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oxf-bx-zuQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2717.5999999999999" y="-888.75562218890559"/>
+        </scene>
+        <!--Makers Table View Controller-->
+        <scene sceneID="Kko-9X-NyZ">
+            <objects>
+                <viewController id="GCO-vW-Myx" customClass="MakersTableViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MN9-vW-yKD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bNm-4I-zdZ">
+                                <rect key="frame" x="0.0" y="40" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="PTq-yj-JRJ"/>
+                                    <constraint firstAttribute="height" constant="44" id="RIh-nh-JB4"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="Market Makers" id="ABB-mo-pa4" userLabel="MarketMakers">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="rewind" id="fwg-jx-Fle">
+                                            <connections>
+                                                <action selector="backButton:" destination="GCO-vW-Myx" id="98R-eG-UpX"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="ua1-k6-sRS">
+                                            <connections>
+                                                <action selector="searchButton:" destination="GCO-vW-Myx" id="vaE-nN-JJw"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="bNm-4I-zdZ" firstAttribute="leading" secondItem="tZX-n7-lHi" secondAttribute="leading" id="Gvf-kY-22Q"/>
+                            <constraint firstItem="bNm-4I-zdZ" firstAttribute="top" secondItem="tZX-n7-lHi" secondAttribute="top" constant="20" id="LAv-ib-dtl"/>
+                            <constraint firstItem="bNm-4I-zdZ" firstAttribute="trailing" secondItem="tZX-n7-lHi" secondAttribute="trailing" id="gZ6-LP-AG8"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="tZX-n7-lHi"/>
+                    </view>
+                    <connections>
+                        <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch3" id="AbS-sp-LmP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GbS-js-Bn1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2718" y="1123"/>
+        </scene>
+        <!--Table View Details View Controller-->
+        <scene sceneID="g30-E2-4U5">
+            <objects>
+                <viewController id="2sC-q4-Vaw" customClass="TableViewDetailsViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BSg-ir-cQo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xJh-wT-zCd">
+                                <rect key="frame" x="0.0" y="40" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="WeU-Bt-2mL"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="r74-jW-7Lc"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem title="US Markets" id="rZv-TL-rIC" userLabel="MarketMakers">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="rewind" id="fsI-BD-eSB">
+                                            <connections>
+                                                <action selector="backButton:" destination="2sC-q4-Vaw" id="WG0-qY-zx5"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="VNd-8n-96x">
+                                            <connections>
+                                                <action selector="searchButton:" destination="2sC-q4-Vaw" id="tOD-BE-NSm"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xJh-wT-zCd" firstAttribute="trailing" secondItem="kGp-3y-D3Q" secondAttribute="trailing" id="SOi-Py-YW5"/>
+                            <constraint firstItem="xJh-wT-zCd" firstAttribute="leading" secondItem="kGp-3y-D3Q" secondAttribute="leading" id="a6R-Xf-D1c"/>
+                            <constraint firstItem="xJh-wT-zCd" firstAttribute="top" secondItem="kGp-3y-D3Q" secondAttribute="top" constant="20" id="x6G-sd-Y7w"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="kGp-3y-D3Q"/>
+                    </view>
+                    <connections>
+                        <outlet property="searchButton" destination="VNd-8n-96x" id="pHo-j8-mDL"/>
+                        <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch2" id="dx5-in-UYa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5zE-JF-MQX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2718" y="255"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="28e-jW-XPW">
@@ -483,6 +594,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="qxV-O0-TFU" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="MKJ-Gi-5SY">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -498,4 +610,7 @@
             <point key="canvasLocation" x="-175.19999999999999" y="-888.30584707646187"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="3Nb-Xn-FGo"/>
+    </inferredMetricsTieBreakers>
 </document>
