@@ -38,10 +38,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         var heading: String = ""
         
         if(tableView.tag == 1){
-            heading = "Liquid Markets"
+            heading = "Major Indexes"
         }
         if(tableView.tag == 2){
-            heading = "Market Makers"
+            heading = "Exchanges"
             //tableView.sectionIndexBackgroundColor = .black
             //tableView.backgroundColor = .black
         }
@@ -51,19 +51,18 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //Table view stuff
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
-        
         //default search view table - i need to redo using search view controller
         if(tableView.tag == 0){
             count = searchResults?.count ?? 1
         }
  
-        //markets table
+        //Index table
         if(tableView.tag == 1){
-            count = myMarkets.count
-        }
-        //Makers table
-        if(tableView.tag == 2){
             count = myArray.count
+        }
+        //Markets
+        if(tableView.tag == 2){
+            count = myMarkets.count
         }
         return count
     }
@@ -71,34 +70,28 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell = UITableViewCell()
-         
-         // default cell work
-        //search table view cell
-        if(tableView.tag == 0){
-            
-        cell = UITableViewCell(style: .value1, reuseIdentifier: "cell")
-        cell.textLabel?.text = searchResults?[indexPath.row].Description
-        cell.detailTextLabel?.text = searchResults?[indexPath.row].Symbol
         
-        }
- 
- 
         //Markets tableView cell
         if(tableView.tag == 1){
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
             
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nVol:\(myMarkets[indexPath.row].volume)\nMarket %:\(myMarkets[indexPath.row].marketPercent)"
+            cell.textLabel?.text = "\(myArray[indexPath.row])\n-34.56"
             
-            cell.detailTextLabel?.text = "test"
+            cell.detailTextLabel?.numberOfLines = 0
+            cell.detailTextLabel?.text = "100.00\n📈-3.7%"
         }
-        //Makers tableview cell
+        
         if(tableView.tag == 2){
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
-            print("in \(tableView.tag)")
-            cell.textLabel?.text = myArray[indexPath.row]
-            cell.detailTextLabel?.text = "something for me to display"
+        
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\n20000.23\n4.5%"
+            
+            cell.detailTextLabel?.text = "\n🔻"
+            //my markets below
         }
+        
         return cell
     }
     
@@ -144,9 +137,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     
     //outlets and IB stuff
-   // @IBOutlet weak var marketsTableOutlet: UITableView!
-  //  @IBOutlet weak var makersOutlet: UITableView!
-    
     @IBOutlet weak var mySearchBar: UISearchBar!
     
     //new outlets for coding
@@ -183,7 +173,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var userInput = ""
     var searchR = [String]()
     var myMarkets :[Markets] = [Markets]()
-    
+    var marketStocks: [Stock] = [Stock]()
     
     //my functions
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -227,7 +217,9 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     
     func collectMarketData(){
-        //network request for data
+        
+        
+        //network request for liquid markets
         Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
@@ -239,6 +231,22 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 print("Got data, this much was sent: \(data)")
             }
         }
+        
+        //network request for Major indexices
+        //need to figure out this part and where to get the indices
+        Alamofire.request("https://api.iextrading.com/1.0/stock/aapl/batch?types=quote,financials,earnings,news,chart&range=1m&last=10").responseJSON { (response) in
+            if let json = response.result.value {
+                let myJson = JSON(json)
+                self.processData2(json: myJson)
+            }else {
+                print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+            }
+            if let data = response.data{
+                print("Got data, this much was sent: \(data)")
+            }
+        }
+        
+        
         
     }
     
@@ -253,10 +261,98 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             myMarkets.append(market)
         }
         marketOutlet.reloadData()
+        makerOutlet.reloadData()
     }
     
+    //processes data for the second table
+    func processData2(json: JSON){
+        
+        let myStocks = Stock()
+        
+      //process the results
+        for each in json{
+                //check the dictionary and process results
+            if(each.0 == "news"){
+                print("in news")
+            }
+            if(each.0 == "chart"){
+                
+                let myChart = Chart()
+                
+                for item in each.1{
+                    myChart.close = item.1["close"].stringValue
+                    print(myChart.close)
+                }
+                
+                
+                myStocks.chartsData.append(myChart)
+                
+            }
+            if(each.0 == "quote"){
+               // print(each.1["symbol"].stringValue)
+                myStocks.symbol = each.1["symbol"].stringValue
+                myStocks.companyName = each.1["companyName"].stringValue
+                myStocks.primaryExchange = each.1["primaryExchange"].stringValue
+                myStocks.sector = each.1["sector"].stringValue
+                myStocks.calculationPrice = each.1["calculationPrice"].stringValue
+                myStocks.open = each.1["open"].stringValue
+                myStocks.openTime = each.1["openTime"].stringValue
+                myStocks.close = each.1["close"].stringValue
+                myStocks.closeTime = each.1["closeTime"].stringValue
+                myStocks.high = each.1["high"].stringValue
+                myStocks.low = each.1["low"].stringValue
+                myStocks.latestPrice = each.1["latestPrice"].stringValue
+                myStocks.latestSource = each.1["latestSource"].stringValue
+                myStocks.latestTime = each.1["latestTime"].stringValue
+                myStocks.latestUpdate = each.1["latestUpdate"].stringValue
+                myStocks.latestVolume = each.1["latestVolume"].stringValue
+                myStocks.iexRealTimePrice = each.1["iexRealTimePrice"].stringValue
+                myStocks.ieRealtimeSize = each.1["ieRealtimeSize"].stringValue
+                myStocks.iexLastUpdated = each.1["iexLastUpdated"].stringValue
+                myStocks.delayedPrice = each.1["delayedPrice"].stringValue
+                myStocks.delayedPriceTime = each.1["delayedPriceTime"].stringValue
+                myStocks.extendedPrice = each.1["extendedPrice"].stringValue
+                myStocks.extendedChange = each.1["extendedChange"].stringValue
+                myStocks.extendedChangePercent = each.1["extendedChangePercent"].stringValue
+                myStocks.extendedPriceTime = each.1["extendedPriceTime"].stringValue
+                myStocks.previousClose = each.1["previousClose"].stringValue
+                myStocks.change = each.1["change"].stringValue
+                myStocks.changePercent = each.1["changePercent"].stringValue
+                myStocks.iexMarketPercent = each.1["iexMarketPercent"].stringValue
+                myStocks.iexVolume = each.1["iexVolume"].stringValue
+                myStocks.avgTotalVolume = each.1["avgTotalVolume"].stringValue
+                myStocks.iexBidPrice = each.1["iexBidPrice"].stringValue
+                myStocks.iexBidSize = each.1["iexBidSize"].stringValue
+                myStocks.iexAskPrice = each.1["iexAskPrice"].stringValue
+                myStocks.iexAskSize = each.1["iexAskSize"].stringValue
+                myStocks.marketCap = each.1["marketCap"].stringValue
+                myStocks.peRation = each.1["peRation"].stringValue
+                myStocks.week52High = each.1["week52High"].stringValue
+                myStocks.week52Low = each.1["week52Low"].stringValue
+                myStocks.ytdChange = each.1["ytdChange"].stringValue
+
+            }
+            if(each.0 == "financials"){
+                print("in financials")
+            }
+            if(each.0 == "earnings"){
+                print("in earnings")
+            }
+            
+            
+            marketStocks.append(myStocks)
+            //print("in market stocs: \(marketStocks.count)")
+           // print(" in the stock: \(myStocks.chartsData.count)")
+        }
+        
+        print(marketStocks[3].chartsData[0].high)
+        
     
-    
+        
+        marketOutlet.reloadData()
+        makerOutlet.reloadData()
+    }
+
     
     // start of all runtime stuff
     override func viewDidLoad() {

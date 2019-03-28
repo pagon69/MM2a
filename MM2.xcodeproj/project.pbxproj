@@ -11,6 +11,8 @@
 		C115E2EE224BDE670081F6F0 /* TableViewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */; };
 		C115E2F0224BDEF30081F6F0 /* CryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */; };
 		C115E2F2224BF7C50081F6F0 /* MakersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */; };
+		C1282F4E224D17AC0025C15C /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1282F4D224D17AC0025C15C /* Stock.swift */; };
+		C1282F50224D34C20025C15C /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1282F4F224D34C20025C15C /* Chart.swift */; };
 		C14146B0223A871900AEB632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14146AF223A871900AEB632 /* AppDelegate.swift */; };
 		C14146B5223A871900AEB632 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C14146B3223A871900AEB632 /* Main.storyboard */; };
 		C14146B7223A871B00AEB632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C14146B6223A871B00AEB632 /* Assets.xcassets */; };
@@ -28,6 +30,8 @@
 		C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDetailsViewController.swift; sourceTree = "<group>"; };
 		C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoViewController.swift; sourceTree = "<group>"; };
 		C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakersTableViewController.swift; sourceTree = "<group>"; };
+		C1282F4D224D17AC0025C15C /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
+		C1282F4F224D34C20025C15C /* Chart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		C14146AC223A871900AEB632 /* MM2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MM2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C14146AF223A871900AEB632 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C14146B4223A871900AEB632 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -129,8 +133,10 @@
 		C14146C6223A879B00AEB632 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				C1282F4D224D17AC0025C15C /* Stock.swift */,
 				C14146C7223A87D100AEB632 /* Symbols.swift */,
 				C14146CF223AC73000AEB632 /* Markets.swift */,
+				C1282F4F224D34C20025C15C /* Chart.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -274,11 +280,13 @@
 				C14146CE223A899D00AEB632 /* QuickSearchViewController.swift in Sources */,
 				C115E2EE224BDE670081F6F0 /* TableViewDetailsViewController.swift in Sources */,
 				C14146D0223AC73000AEB632 /* Markets.swift in Sources */,
+				C1282F50224D34C20025C15C /* Chart.swift in Sources */,
 				C14146C8223A87D100AEB632 /* Symbols.swift in Sources */,
 				C14146CA223A896C00AEB632 /* MarketViewController.swift in Sources */,
 				C115E2F0224BDEF30081F6F0 /* CryptoViewController.swift in Sources */,
 				C14146CC223A898E00AEB632 /* DetailSearchViewController.swift in Sources */,
 				C14146B0223A871900AEB632 /* AppDelegate.swift in Sources */,
+				C1282F4E224D17AC0025C15C /* Stock.swift in Sources */,
 				C115E2F2224BF7C50081F6F0 /* MakersTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
