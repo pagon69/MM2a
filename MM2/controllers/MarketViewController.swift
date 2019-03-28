@@ -281,15 +281,18 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 
                 for item in each.1{
                     myChart.close = item.1["close"].stringValue
-                    print(myChart.close)
+                    
+                   // print(myChart.close)
+                    myStocks.chartsData.append(myChart)
+                   // print("items inmystocks within charts: \(myStocks.chartsData.count)")
                 }
                 
                 
-                myStocks.chartsData.append(myChart)
+              //  myStocks.chartsData.append(myChart)
                 
             }
             if(each.0 == "quote"){
-               // print(each.1["symbol"].stringValue)
+               
                 myStocks.symbol = each.1["symbol"].stringValue
                 myStocks.companyName = each.1["companyName"].stringValue
                 myStocks.primaryExchange = each.1["primaryExchange"].stringValue
