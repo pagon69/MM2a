@@ -11,7 +11,7 @@ import UIKit
 class TableViewDetailsViewController: UIViewController {
 
     //gloabals
-    var data: Markets?
+    var data: Stock?
     
     
     //outlets
@@ -32,6 +32,9 @@ class TableViewDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print(data?.companyName ?? "Nothing sent")
+        print(data?.latestPrice ?? "Nothing sent")
+        
         // Do any additional setup after loading the view.
     }
     

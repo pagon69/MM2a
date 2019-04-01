@@ -51,9 +51,9 @@ class Stock {
     var week52Low: String?
     var ytdChange: String?
     
-    var newsData = [String]()
+    var newsData = [News]()
     var chartsData = [Chart]()
-    var financialData = [String]()
-    var earningsData = [String]()
+    var financialData = [Financials]()
+    var earningsData = [Earnings]()
     
 }

@@ -33,6 +33,9 @@ class MakersTableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print(data!.venueName)
+        print(data!.volume)
+        
         // Do any additional setup after loading the view.
     }
     

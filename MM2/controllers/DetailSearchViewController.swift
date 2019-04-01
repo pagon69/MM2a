@@ -10,9 +10,18 @@ import UIKit
 
 class DetailSearchViewController: UIViewController {
 
+    
+    var data: Markets?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        print(data?.venueName ?? "nothing sent")
+        print(data?.marketPercent ?? "nothing sent")
+        print(data?.volume ?? "nothing sent")
+        
+        
         // Do any additional setup after loading the view.
     }
     

@@ -58,7 +58,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
  
         //Index table
         if(tableView.tag == 1){
-            count = myArray.count
+            count = marketStocks.count
         }
         //Markets
         if(tableView.tag == 2){
@@ -75,11 +75,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         if(tableView.tag == 1){
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
             
+            //how can i remove the force unwraps and the possible crash this could produce
+
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "\(myArray[indexPath.row])\n-34.56"
+            cell.textLabel?.text = "\(String(describing: marketStocks[indexPath.row].companyName ?? "Something went wrong"))\n\(String(describing: marketStocks[indexPath.row].symbol ?? "Something went wrong" ))"
             
             cell.detailTextLabel?.numberOfLines = 0
-            cell.detailTextLabel?.text = "100.00\n📈-3.7%"
+            cell.detailTextLabel?.text = "\(String(describing: marketStocks[indexPath.row].latestPrice ?? "something went wrong"))\n\(String(describing: marketStocks[indexPath.row].change ?? "something went wrong"))"
         }
         
         if(tableView.tag == 2){
@@ -102,14 +104,15 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         if(tableView.tag == 1){
             currentIndexPath = indexPath.row
             
-            performSegue(withIdentifier: "goToMakersDetail", sender: self)
+            performSegue(withIdentifier: "goToTableViewDetail", sender: self)
+            
             
         }
         
         //looks at makers table View
         if(tableView.tag == 2){
             currentIndexPath = indexPath.row
-            performSegue(withIdentifier: "goToTableViewDetail", sender: self)
+            performSegue(withIdentifier: "goToMakersDetail", sender: self)
             
         }
         
@@ -122,14 +125,15 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         if(segue.identifier == "goToMakersDetail"){
             let destVC: MakersTableViewController = segue.destination as! MakersTableViewController
             destVC.data = myMarkets[currentIndexPath]
+            
         }
-        
         
         //this will cover the markets
         if(segue.identifier == "goToTableViewDetail"){
             
             let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
-            destVC.data = myMarkets[currentIndexPath]
+            destVC.data = marketStocks[currentIndexPath]
+            
         }
         
     }
@@ -233,8 +237,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
         
         //network request for Major indexices
-        //need to figure out this part and where to get the indices
-        Alamofire.request("https://api.iextrading.com/1.0/stock/aapl/batch?types=quote,financials,earnings,news,chart&range=1m&last=10").responseJSON { (response) in
+        //need to figure out this part and where to get the indices, update the number of stocks
+        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,fb,goog&types=quote,financials,earnings,news,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 self.processData2(json: myJson)
@@ -267,13 +271,34 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //processes data for the second table
     func processData2(json: JSON){
         
-        let myStocks = Stock()
+       // let myStocks = Stock()
+        
         
       //process the results
-        for each in json{
-                //check the dictionary and process results
+        for stocks in json{
+
+            let myStocks = Stock()
+            
+            for each in stocks.1{
+                //print("should have a devide: \(each)")
+            
             if(each.0 == "news"){
-                print("in news")
+                
+                let myNews = News()
+                
+                for item in each.1{
+                 
+                    myNews.datetime = item.1["datetime"].stringValue
+                    myNews.headline = item.1["headline"].stringValue
+                    myNews.image = item.1["image"].stringValue
+                    myNews.related = item.1["related"].stringValue
+                    myNews.source = item.1["source"].stringValue
+                    myNews.summary = item.1["summary"].stringValue
+                    myNews.url = item.1["url"].stringValue
+    
+                    myStocks.newsData.append(myNews)
+                }
+ 
             }
             if(each.0 == "chart"){
                 
@@ -281,15 +306,20 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 
                 for item in each.1{
                     myChart.close = item.1["close"].stringValue
+                    myChart.volume = item.1["volume"].stringValue
+                    myChart.wvap = item.1["wvap"].stringValue
+                    myChart.high = item.1["high"].stringValue
+                    myChart.low = item.1["low"].stringValue
+                    myChart.open = item.1["open"].stringValue
+                    myChart.date = item.1["date"].stringValue
+                    myChart.changePercent = item.1["changepercent"].stringValue
+                    myChart.unadjustedVolume = item.1["unadjustedVolume"].stringValue
+                    myChart.changeOverTime = item.1["changeOverTime"].stringValue
+                    myChart.label = item.1["label"].stringValue
                     
-                   // print(myChart.close)
                     myStocks.chartsData.append(myChart)
-                   // print("items inmystocks within charts: \(myStocks.chartsData.count)")
                 }
-                
-                
-              //  myStocks.chartsData.append(myChart)
-                
+
             }
             if(each.0 == "quote"){
                
@@ -336,22 +366,93 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
             }
             if(each.0 == "financials"){
-                print("in financials")
+
+                for item in each.1{
+                    
+                    for deeper in item.1{
+                    
+                    let myFinancial = Financials()
+                    
+                        myFinancial.cashChange = deeper.1["cashChange"].stringValue
+                        myFinancial.cashFlow = deeper.1["cashChange"].stringValue
+                        myFinancial.costOfRevenue = deeper.1["cashChange"].stringValue
+                        myFinancial.currentAssets = deeper.1["cashChange"].stringValue
+                        myFinancial.currentCash = deeper.1["cashChange"].stringValue
+                        myFinancial.currentDebt = deeper.1["cashChange"].stringValue
+                        myFinancial.grossProfit = deeper.1["cashChange"].stringValue
+                        myFinancial.netIncome = deeper.1["cashChange"].stringValue
+                        myFinancial.operatingexpense = deeper.1["cashChange"].stringValue
+                        myFinancial.operatingGainsLosses = deeper.1["cashChange"].stringValue
+                        myFinancial.operatingIncome = deeper.1["cashChange"].stringValue
+                        myFinancial.operatingRevenue = deeper.1["cashChange"].stringValue
+                        myFinancial.reportDate = deeper.1["cashChange"].stringValue
+                        myFinancial.researchAndDevlopment = deeper.1["cashChange"].stringValue
+                        myFinancial.shareholderEquity = deeper.1["cashChange"].stringValue
+                        myFinancial.totalAssets = deeper.1["cashChange"].stringValue
+                        myFinancial.totalDebt = deeper.1["cashChange"].stringValue
+                        myFinancial.totalLiabilities = deeper.1["cashChange"].stringValue
+                        myFinancial.totalRevenue = deeper.1["cashChange"].stringValue
+                        myFinancial.cashChange = deeper.1["cashChange"].stringValue
+                   
+                        myStocks.financialData.append(myFinancial)
+                        
+                    }
+                }
+                
             }
             if(each.0 == "earnings"){
-                print("in earnings")
-            }
             
+                for item in each.1{
+                    
+                    for deeper in item.1 {
+                        
+                    let myEarnings = Earnings()
+                    
+                        myEarnings.actualEPS = deeper.1["actualEPS"].stringValue
+                        myEarnings.announceTime = deeper.1["announceTime"].stringValue
+                        myEarnings.consensusEPS = deeper.1["consensusEPS"].stringValue
+                        myEarnings.EPSReportDate = deeper.1["EPSReportDate"].stringValue
+                        myEarnings.EPSSurpriseDollar = deeper.1["EPSSurpriseDollar"].stringValue
+                        myEarnings.estimatedChangePercent = deeper.1["estimatedChangePercent"].stringValue
+                        myEarnings.estimatedEPS = deeper.1["estimatedEPS"].stringValue
+                        myEarnings.FiscalEndDate = deeper.1["FiscalEndDate"].stringValue
+                        myEarnings.fiscalPeriod = deeper.1["fiscalPeriod"].stringValue
+                        myEarnings.numberOfEstimates = deeper.1["numberOfEstimates"].stringValue
+                        myEarnings.symbolId = deeper.1["symbolId"].stringValue
+                        myEarnings.yearAgo = deeper.1["yearAgo"].stringValue
+                        myEarnings.yearAgoChangePercent = deeper.1["yearAgoChangePercent"].stringValue
+                    
+                        myStocks.earningsData.append(myEarnings)
+                    }
+                }
+            }
+                
+           // marketStocks.append(myStocks)
+                
+            }
             
             marketStocks.append(myStocks)
             //print("in market stocs: \(marketStocks.count)")
            // print(" in the stock: \(myStocks.chartsData.count)")
         }
         
-        print(marketStocks[3].chartsData[0].high)
+      //  marketStocks.append(myStocks)
         
-    
+       /* testing the values within my Stock object
+        print("pulling high from charts: \/(marketStocks[3].chartsData[0].high)")
+        print("pulling consensusEPS from earnings: \(marketStocks[1].earningsData[1].consensusEPS)")
+        print("pulling consensusEPS from earnings: \(marketStocks[1].earningsData[2].consensusEPS)")
         
+        print("items in market Stocks: \(marketStocks.count)")
+       
+        for items in marketStocks{
+            
+            print(items.companyName)
+            print(items.latestPrice)
+            
+        }
+        */
+ 
         marketOutlet.reloadData()
         makerOutlet.reloadData()
     }

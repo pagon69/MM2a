@@ -22,4 +22,5 @@ class Chart {
     var unadjustedVolume: String?
     var changeOverTime: String?
     var label: String?
+    
 }
