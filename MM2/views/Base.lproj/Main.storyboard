@@ -644,44 +644,71 @@
                                                     <segment title="Financials"/>
                                                     <segment title="News"/>
                                                 </segments>
+                                                <connections>
+                                                    <action selector="viewControls:" destination="2sC-q4-Vaw" eventType="valueChanged" id="gnp-t2-Gba"/>
+                                                </connections>
                                             </segmentedControl>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1rm-Oi-Ip6" userLabel="details">
-                                                <rect key="frame" x="137" y="532" width="216" height="468"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rm-Oi-Ip6" userLabel="details">
+                                                <rect key="frame" x="0.0" y="532" width="375" height="468"/>
                                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="468" id="1uA-Sb-6Vf"/>
+                                                </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-2t-UGe" userLabel="financials">
-                                                <rect key="frame" x="79" y="266" width="216" height="468"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-2t-UGe" userLabel="financials">
+                                                <rect key="frame" x="0.0" y="532" width="375" height="468"/>
                                                 <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="468" id="7AL-5o-bt9"/>
+                                                </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i6V-Cb-fYU" userLabel="news">
-                                                <rect key="frame" x="79" y="266" width="216" height="468"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i6V-Cb-fYU" userLabel="news">
+                                                <rect key="frame" x="0.0" y="532" width="375" height="468"/>
                                                 <color key="backgroundColor" red="0.54134778689999996" green="0.70725388600000005" blue="0.6824436613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="468" id="jts-Ht-fwL"/>
+                                                </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBc-M9-zXn" userLabel="earnings">
-                                                <rect key="frame" x="0.0" y="532" width="216" height="468"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBc-M9-zXn" userLabel="earnings">
+                                                <rect key="frame" x="0.0" y="532" width="375" height="468"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="468" id="ika-OZ-TWF"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="xAj-en-KVp" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="2PT-cm-8rH"/>
+                                            <constraint firstAttribute="trailing" secondItem="i6V-Cb-fYU" secondAttribute="trailing" id="58E-S4-OJy"/>
+                                            <constraint firstItem="1rm-Oi-Ip6" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="AdF-WG-TOk"/>
+                                            <constraint firstItem="i6V-Cb-fYU" firstAttribute="top" secondItem="xAj-en-KVp" secondAttribute="bottom" id="Byz-Zz-2md"/>
                                             <constraint firstItem="xJh-wT-zCd" firstAttribute="top" secondItem="iHa-st-rm0" secondAttribute="top" constant="40" id="CDq-Oc-ahV"/>
+                                            <constraint firstAttribute="bottom" secondItem="zIy-2t-UGe" secondAttribute="bottom" id="FLP-rS-Zbd"/>
+                                            <constraint firstAttribute="trailing" secondItem="zIy-2t-UGe" secondAttribute="trailing" id="FhJ-nN-i7l"/>
+                                            <constraint firstItem="hBc-M9-zXn" firstAttribute="top" secondItem="xAj-en-KVp" secondAttribute="bottom" id="Int-Yw-tSD"/>
+                                            <constraint firstAttribute="bottom" secondItem="hBc-M9-zXn" secondAttribute="bottom" id="PHq-gI-KPw"/>
+                                            <constraint firstItem="i6V-Cb-fYU" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="T4c-5k-lZw"/>
                                             <constraint firstAttribute="trailing" secondItem="uds-Ak-DJW" secondAttribute="trailing" id="Uyf-ns-6zV"/>
                                             <constraint firstAttribute="trailing" secondItem="xJh-wT-zCd" secondAttribute="trailing" id="VeT-yN-phj"/>
+                                            <constraint firstAttribute="trailing" secondItem="hBc-M9-zXn" secondAttribute="trailing" id="WZM-6N-WQd"/>
                                             <constraint firstAttribute="trailing" secondItem="Okn-sE-6zw" secondAttribute="trailing" id="XDv-Jj-DSS"/>
+                                            <constraint firstItem="1rm-Oi-Ip6" firstAttribute="top" secondItem="xAj-en-KVp" secondAttribute="bottom" id="YXS-jM-drd"/>
                                             <constraint firstAttribute="trailing" secondItem="xAj-en-KVp" secondAttribute="trailing" id="Yse-cC-O2k"/>
                                             <constraint firstItem="xAj-en-KVp" firstAttribute="top" secondItem="uds-Ak-DJW" secondAttribute="bottom" id="a6B-OR-k7J"/>
+                                            <constraint firstItem="hBc-M9-zXn" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="dKQ-z1-uHh"/>
                                             <constraint firstItem="Okn-sE-6zw" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="eca-hL-g9p"/>
+                                            <constraint firstItem="zIy-2t-UGe" firstAttribute="top" secondItem="xAj-en-KVp" secondAttribute="bottom" id="g9n-wu-tkp"/>
                                             <constraint firstAttribute="bottom" secondItem="xAj-en-KVp" secondAttribute="bottom" constant="468" id="gE0-Y3-Mgt"/>
                                             <constraint firstItem="uds-Ak-DJW" firstAttribute="top" secondItem="Okn-sE-6zw" secondAttribute="bottom" id="mE8-b3-20N"/>
                                             <constraint firstItem="xJh-wT-zCd" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="tnF-Ry-gIQ"/>
+                                            <constraint firstItem="zIy-2t-UGe" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="uFF-34-ft6"/>
+                                            <constraint firstAttribute="bottom" secondItem="1rm-Oi-Ip6" secondAttribute="bottom" id="uP8-pD-7ic"/>
                                             <constraint firstItem="uds-Ak-DJW" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="xdj-aa-qf1"/>
                                             <constraint firstItem="Okn-sE-6zw" firstAttribute="top" secondItem="xJh-wT-zCd" secondAttribute="bottom" id="yRz-Cq-uY9"/>
+                                            <constraint firstAttribute="bottom" secondItem="i6V-Cb-fYU" secondAttribute="bottom" id="yhi-6V-j2f"/>
                                             <constraint firstItem="xAj-en-KVp" firstAttribute="top" secondItem="uds-Ak-DJW" secondAttribute="bottom" id="yu7-UR-DSx"/>
+                                            <constraint firstAttribute="trailing" secondItem="1rm-Oi-Ip6" secondAttribute="trailing" id="zpt-Hg-arF"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -706,7 +733,12 @@
                     </view>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
+                        <outlet property="detailsOutlet" destination="1rm-Oi-Ip6" id="Ese-vt-q0n"/>
+                        <outlet property="earningOutlet" destination="hBc-M9-zXn" id="kw9-g2-F2Q"/>
+                        <outlet property="financialOutlet" destination="zIy-2t-UGe" id="NPo-K7-LVp"/>
+                        <outlet property="newsOutlet" destination="i6V-Cb-fYU" id="adW-mA-hcx"/>
                         <outlet property="searchButton" destination="VNd-8n-96x" id="pHo-j8-mDL"/>
+                        <outlet property="viewControlsOutlet" destination="xAj-en-KVp" id="Zbk-Hd-l3o"/>
                         <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch2" id="dx5-in-UYa"/>
                     </connections>
                 </viewController>

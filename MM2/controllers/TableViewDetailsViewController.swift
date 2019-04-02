@@ -14,9 +14,61 @@ class TableViewDetailsViewController: UIViewController {
     var data: Stock?
     
     
+    
+    
+    
+    
+    
     //outlets
     @IBOutlet weak var searchButton: UIBarButtonItem!
     
+    @IBOutlet weak var earningOutlet: UIView!
+    @IBOutlet weak var detailsOutlet: UIView!
+    @IBOutlet weak var financialOutlet: UIView!
+    @IBOutlet weak var newsOutlet: UIView!
+    @IBOutlet weak var viewControlsOutlet: UISegmentedControl!
+    
+    @IBAction func viewControls(_ sender: UISegmentedControl) {
+        
+        if(sender.selectedSegmentIndex == 0){
+            print("in segment:\(sender.selectedSegmentIndex)")
+            
+            newsOutlet.isHidden = true
+            financialOutlet.isHidden = true
+            detailsOutlet.isHidden = false
+            earningOutlet.isHidden = true
+        }
+        
+        if(sender.selectedSegmentIndex == 1){
+            print("in segment:\(sender.selectedSegmentIndex)")
+            
+            newsOutlet.isHidden = true
+            financialOutlet.isHidden = true
+            detailsOutlet.isHidden = true
+            earningOutlet.isHidden = false
+            
+        }
+        
+        if(sender.selectedSegmentIndex == 2){
+            print("in segment:\(sender.selectedSegmentIndex)")
+            
+            newsOutlet.isHidden = true
+            financialOutlet.isHidden = false
+            detailsOutlet.isHidden = true
+            earningOutlet.isHidden = true
+        }
+        
+        if(sender.selectedSegmentIndex == 3){
+            print("in segment:\(sender.selectedSegmentIndex)")
+            
+            newsOutlet.isHidden = false
+            financialOutlet.isHidden = true
+            detailsOutlet.isHidden = true
+            earningOutlet.isHidden = true
+        }
+    }
+    
+    //navigation options
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
         
         performSegue(withIdentifier: "goToSearch2", sender: self)
@@ -28,10 +80,21 @@ class TableViewDetailsViewController: UIViewController {
         
     }
     
+    //future functions
+    func viewSetup(){
+        self.newsOutlet.isHidden = true
+        self.financialOutlet.isHidden = true
+        self.detailsOutlet.isHidden = false
+        self.earningOutlet.isHidden = true
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewSetup()
+        
+        
         print(data?.companyName ?? "Nothing sent")
         print(data?.latestPrice ?? "Nothing sent")
         
