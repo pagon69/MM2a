@@ -8,12 +8,31 @@
 
 import UIKit
 
-class TableViewDetailsViewController: UIViewController {
+class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+    
+    //table view cells
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return myNamesArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = detailsTableViewOutlet.dequeueReusableCell(withIdentifier: "detailsTableViewCell", for: indexPath)
+        
+        cell.textLabel?.text = myNamesArray[indexPath.row]
+        cell.detailTextLabel?.text = myArray[indexPath.row]
+        
+        return cell
+    }
+    
 
+    
+    
     //gloabals
     var data: Stock?
     
-    
+    //use a dictionary for this part versus two arrays
+    var myArray = [String]()
+    var myNamesArray = ["High","52 Week High","Low","52 Week Low","Change"]
     
     
     
@@ -21,6 +40,7 @@ class TableViewDetailsViewController: UIViewController {
     
     //outlets
     @IBOutlet weak var searchButton: UIBarButtonItem!
+    @IBOutlet weak var detailsTableViewOutlet: UITableView!
     
     @IBOutlet weak var earningOutlet: UIView!
     @IBOutlet weak var detailsOutlet: UIView!
@@ -87,6 +107,13 @@ class TableViewDetailsViewController: UIViewController {
         self.detailsOutlet.isHidden = false
         self.earningOutlet.isHidden = true
         
+        myArray.append(data?.high ?? "No Current Value")
+        myArray.append(data?.week52High ?? "No Current Value")
+        myArray.append(data?.low ?? "No Current Value")
+        myArray.append(data?.week52Low ?? "No Current Value")
+        myArray.append(data?.change ?? "No Current Value")
+        
+        detailsTableViewOutlet.reloadData()
     }
     
     override func viewDidLoad() {
