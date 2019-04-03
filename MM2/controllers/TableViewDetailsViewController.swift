@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Alamofire
+import AlamofireImage
 
 class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     
@@ -33,8 +35,8 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     //use a dictionary for this part versus two arrays
     var myArray = [String]()
     var myNamesArray = ["High","52 Week High","Low","52 Week Low","Change"]
-    
-    
+    var changeIconUp = "🔺"
+    var changeIconDown = "🔻"
     
     
     
@@ -47,6 +49,15 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     @IBOutlet weak var financialOutlet: UIView!
     @IBOutlet weak var newsOutlet: UIView!
     @IBOutlet weak var viewControlsOutlet: UISegmentedControl!
+    
+    
+    //title outlets
+    @IBOutlet weak var titleImageViewoutlet: UIImageView!
+    @IBOutlet weak var titleCompanyNameOutlet: UILabel!
+    @IBOutlet weak var titlePriceAndChangeOutlet: UILabel!
+    
+    
+    
     
     @IBAction func viewControls(_ sender: UISegmentedControl) {
         
@@ -102,25 +113,66 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     //future functions
     func viewSetup(){
+        
+        var change = ""
+        
+        //sets up the various views along with the segment controls
         self.newsOutlet.isHidden = true
         self.financialOutlet.isHidden = true
         self.detailsOutlet.isHidden = false
         self.earningOutlet.isHidden = true
         
+        //setup the tableview
         myArray.append(data?.high ?? "No Current Value")
         myArray.append(data?.week52High ?? "No Current Value")
         myArray.append(data?.low ?? "No Current Value")
         myArray.append(data?.week52Low ?? "No Current Value")
         myArray.append(data?.change ?? "No Current Value")
         
+        /*updating the TitleView and data
+        if(Int(data?.change ?? "1")! > 0){
+            change = changeIconUp
+        }else{
+            change = changeIconDown
+        }
+        */
+        
+        titleCompanyNameOutlet.text = data?.companyName
+        titlePriceAndChangeOutlet.text = "\(String(describing: data?.latestPrice ?? "No data Available"))  \(change)  \(String(describing: data?.change ?? "No data Available"))"
+        
+        
+        downloadPictures(locationString: data?.logo ?? "No Logo Available")
         detailsTableViewOutlet.reloadData()
     }
+    
+    func downloadPictures(locationString: String){
+        
+        if locationString == "No Logo Available" {
+            //put in a placeholder picture here
+        }else{
+            
+            Alamofire.request(locationString).responseImage {response in
+                
+                if let image = response.result.value{
+                    print("image downloaded: \(image)")
+                    self.titleImageViewoutlet.image = image
+                }
+            }
+        }
+    }
+    
+    
+    func buildGraphs() {
+        
+        print("creating graphs")
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewSetup()
-        
+        buildGraphs()
         
         print(data?.companyName ?? "Nothing sent")
         print(data?.latestPrice ?? "Nothing sent")

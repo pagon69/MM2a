@@ -50,6 +50,8 @@ class Stock {
     var week52High: String?
     var week52Low: String?
     var ytdChange: String?
+    var logo: String?
+    var image: URL?
     
     var newsData = [News]()
     var chartsData = [Chart]()

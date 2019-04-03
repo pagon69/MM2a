@@ -651,10 +651,16 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rm-Oi-Ip6" userLabel="details">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="468"/>
                                                 <subviews>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZYj-Xr-4aw" userLabel="Details Table View">
-                                                        <rect key="frame" x="0.0" y="5" width="375" height="418"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rjo-Fx-l58" userLabel="google ads">
+                                                        <rect key="frame" x="0.0" y="418" width="375" height="50"/>
+                                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZYj-Xr-4aw" userLabel="Details Table View">
+                                                        <rect key="frame" x="0.0" y="5" width="375" height="413"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="413" id="0Fg-Yj-uO7"/>
+                                                        </constraints>
                                                         <prototypes>
                                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="detailsTableViewCell" textLabel="3gt-wj-fc4" detailTextLabel="adT-V9-YyY" style="IBUITableViewCellStyleValue1" id="hSE-IG-5Fd">
                                                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -689,6 +695,14 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="468" id="1uA-Sb-6Vf"/>
+                                                    <constraint firstItem="Rjo-Fx-l58" firstAttribute="leading" secondItem="1rm-Oi-Ip6" secondAttribute="leading" id="7Eq-d5-69K"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Rjo-Fx-l58" secondAttribute="bottom" id="KXB-gN-cgQ"/>
+                                                    <constraint firstItem="Rjo-Fx-l58" firstAttribute="top" secondItem="ZYj-Xr-4aw" secondAttribute="bottom" id="Neo-Qq-dFI"/>
+                                                    <constraint firstItem="Rjo-Fx-l58" firstAttribute="top" secondItem="ZYj-Xr-4aw" secondAttribute="bottom" id="cjj-Ev-ly7"/>
+                                                    <constraint firstAttribute="trailing" secondItem="ZYj-Xr-4aw" secondAttribute="trailing" id="cw3-oZ-KaX"/>
+                                                    <constraint firstItem="ZYj-Xr-4aw" firstAttribute="leading" secondItem="1rm-Oi-Ip6" secondAttribute="leading" id="goY-6a-94u"/>
+                                                    <constraint firstItem="ZYj-Xr-4aw" firstAttribute="top" secondItem="1rm-Oi-Ip6" secondAttribute="top" constant="5" id="sCR-xZ-E1Z"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Rjo-Fx-l58" secondAttribute="trailing" id="z65-j3-Nxl"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-2t-UGe" userLabel="financials">
@@ -713,6 +727,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="xAj-en-KVp" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="2PT-cm-8rH"/>
+                                            <constraint firstItem="xAj-en-KVp" firstAttribute="top" secondItem="uds-Ak-DJW" secondAttribute="bottom" id="3pq-gv-mSA"/>
                                             <constraint firstAttribute="trailing" secondItem="i6V-Cb-fYU" secondAttribute="trailing" id="58E-S4-OJy"/>
                                             <constraint firstItem="1rm-Oi-Ip6" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="AdF-WG-TOk"/>
                                             <constraint firstItem="i6V-Cb-fYU" firstAttribute="top" secondItem="xAj-en-KVp" secondAttribute="bottom" id="Byz-Zz-2md"/>
@@ -734,9 +749,12 @@
                                             <constraint firstItem="zIy-2t-UGe" firstAttribute="top" secondItem="xAj-en-KVp" secondAttribute="bottom" id="g9n-wu-tkp"/>
                                             <constraint firstAttribute="bottom" secondItem="xAj-en-KVp" secondAttribute="bottom" constant="468" id="gE0-Y3-Mgt"/>
                                             <constraint firstItem="uds-Ak-DJW" firstAttribute="top" secondItem="Okn-sE-6zw" secondAttribute="bottom" id="mE8-b3-20N"/>
+                                            <constraint firstItem="uds-Ak-DJW" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="pnL-2y-lyR"/>
+                                            <constraint firstAttribute="trailing" secondItem="uds-Ak-DJW" secondAttribute="trailing" id="rQd-fN-1dj"/>
                                             <constraint firstItem="xJh-wT-zCd" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="tnF-Ry-gIQ"/>
                                             <constraint firstItem="zIy-2t-UGe" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="uFF-34-ft6"/>
                                             <constraint firstAttribute="bottom" secondItem="1rm-Oi-Ip6" secondAttribute="bottom" id="uP8-pD-7ic"/>
+                                            <constraint firstItem="uds-Ak-DJW" firstAttribute="top" secondItem="Okn-sE-6zw" secondAttribute="bottom" id="vmJ-GM-yoS"/>
                                             <constraint firstItem="uds-Ak-DJW" firstAttribute="leading" secondItem="iHa-st-rm0" secondAttribute="leading" id="xdj-aa-qf1"/>
                                             <constraint firstItem="Okn-sE-6zw" firstAttribute="top" secondItem="xJh-wT-zCd" secondAttribute="bottom" id="yRz-Cq-uY9"/>
                                             <constraint firstAttribute="bottom" secondItem="i6V-Cb-fYU" secondAttribute="bottom" id="yhi-6V-j2f"/>
@@ -772,6 +790,9 @@
                         <outlet property="financialOutlet" destination="zIy-2t-UGe" id="NPo-K7-LVp"/>
                         <outlet property="newsOutlet" destination="i6V-Cb-fYU" id="adW-mA-hcx"/>
                         <outlet property="searchButton" destination="VNd-8n-96x" id="pHo-j8-mDL"/>
+                        <outlet property="titleCompanyNameOutlet" destination="sha-8t-hqK" id="mdc-ne-WSH"/>
+                        <outlet property="titleImageViewoutlet" destination="7FI-aQ-WyK" id="T8D-QV-SAI"/>
+                        <outlet property="titlePriceAndChangeOutlet" destination="DU6-w7-1Zt" id="PWo-UQ-Uye"/>
                         <outlet property="viewControlsOutlet" destination="xAj-en-KVp" id="Zbk-Hd-l3o"/>
                         <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch2" id="dx5-in-UYa"/>
                     </connections>
