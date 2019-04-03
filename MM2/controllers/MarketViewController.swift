@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 import SwiftyJSON
+import GoogleMobileAds
 
 class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
@@ -160,6 +161,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         self.dismiss(animated: true, completion: nil)
     }
     
+    //google banners
+    @IBOutlet weak var GoogleAdOutlet: GADBannerView!
     
     
     //my global variables
@@ -464,11 +467,20 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         makerOutlet.reloadData()
     }
 
+    func adsSetup() {
+        GoogleAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        GoogleAdOutlet.rootViewController = self
+        GoogleAdOutlet.load(GADRequest())
+    }
+    
     
     // start of all runtime stuff
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //calling for google ads
+        
+        adsSetup()
         openRealm()
         
         //realm configuration stuff

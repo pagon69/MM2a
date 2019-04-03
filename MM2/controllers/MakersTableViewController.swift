@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 class MakersTableViewController: UIViewController {
 
@@ -16,6 +17,7 @@ class MakersTableViewController: UIViewController {
     var data: Markets?
     
     //outlets
+    @IBOutlet weak var googleAdOutlet: GADBannerView!
     
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "goToSearch3", sender: self)
@@ -26,15 +28,20 @@ class MakersTableViewController: UIViewController {
     }
     
     
-    
-    
+    func adsSetup() {
+        googleAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        googleAdOutlet.rootViewController = self
+        googleAdOutlet.load(GADRequest())
+    }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(data!.venueName)
-        print(data!.volume)
+        adsSetup()
+       // print(data!.venueName)
+       // print(data!.volume)
+        
         
         // Do any additional setup after loading the view.
     }

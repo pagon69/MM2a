@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import Alamofire
 import SwiftyJSON
+import GoogleMobileAds
 
 class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource{
 
@@ -105,6 +106,9 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             
         }
     
+    
+    
+    
         
         //search button segue
         @IBAction func searchButtonOutlet(_ sender: UIBarButtonItem) {
@@ -118,7 +122,10 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             self.dismiss(animated: true, completion: nil)
         }
         
-        
+        //outlets
+        @IBOutlet weak var googleAdsOutlet: GADBannerView!
+    
+    
         
         //my global variables
         
@@ -207,8 +214,11 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
            // marketOutlet.reloadData()
         }
         
-        
-        
+        func adsSetup() {
+            googleAdsOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+            googleAdsOutlet.rootViewController = self
+            googleAdsOutlet.load(GADRequest())
+        }
         
         // start of all runtime stuff
         override func viewDidLoad() {

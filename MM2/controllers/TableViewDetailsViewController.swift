@@ -9,6 +9,8 @@
 import UIKit
 import Alamofire
 import AlamofireImage
+import GoogleMobileAds
+import Charts
 
 class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     
@@ -56,7 +58,8 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     @IBOutlet weak var titleCompanyNameOutlet: UILabel!
     @IBOutlet weak var titlePriceAndChangeOutlet: UILabel!
     
-    
+    //google ads
+    @IBOutlet weak var googleAdoutlet: GADBannerView!
     
     
     @IBAction func viewControls(_ sender: UISegmentedControl) {
@@ -165,14 +168,69 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     func buildGraphs() {
         
         print("creating graphs")
+        
     }
     
+    /*Charts and more
+    func setCharts(dataPoints: [Double]){
+        myChart.noDataText = "No data available"
+        
+        let months = ["j","f","m","a","m","j","j","a","s"]
+        
+        var dataEntries: [BarChartDataEntry] = []
+        
+        let count = data?.charts.count
+        
+        print(count)
+        
+        for i in 0..<count! {
+            let dataEntry = BarChartDataEntry(x: dataPoints[i], y: Double(i))
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "testing")
+        let chartData = BarChartData(dataSet: chartDataSet)
+        myChart.data = chartData
+        
+    }
+     
+     
+     func setupPieChart(){
+     var myDataEntryArray = [PieChartDataEntry]()
+     
+     let entry1 = PieChartDataEntry(value: Double(34), label: "#1")
+     let entry2 = PieChartDataEntry(value: Double(64), label: "#2")
+     let entry3 = PieChartDataEntry(value: Double(94), label: "#3")
+     
+     let dataSet = PieChartDataSet(values: [entry1,entry2,entry3], label: "Widgets and more")
+     let data = PieChartData(dataSet: dataSet)
+     
+     for each in myPieData{
+     var entry = PieChartDataEntry(value: each, label: "\(each)")
+     myDataEntryArray.append(entry)
+     }
+     
+     let myDataSet = PieChartDataSet(values: myDataEntryArray, label: "using Loop")
+     let newData = PieChartData(dataSet: myDataSet)
+     // myPieChart.data = data
+     myPieChart.data = newData
+     // used to kick things into gear like table.reload()
+     myPieChart.notifyDataSetChanged()
+     }
+     
+    */
     
+    func adsSetup() {
+        googleAdoutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        googleAdoutlet.rootViewController = self
+        googleAdoutlet.load(GADRequest())
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewSetup()
         buildGraphs()
+        adsSetup()
         
         print(data?.companyName ?? "Nothing sent")
         print(data?.latestPrice ?? "Nothing sent")
