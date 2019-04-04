@@ -655,7 +655,7 @@
                                                     <constraint firstItem="sha-8t-hqK" firstAttribute="leading" secondItem="7FI-aQ-WyK" secondAttribute="trailing" constant="8" id="vCn-LG-Qt4"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uds-Ak-DJW" userLabel="graphView">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uds-Ak-DJW" userLabel="graphView" customClass="BarChartView" customModule="Charts">
                                                 <rect key="frame" x="0.0" y="214" width="375" height="290"/>
                                                 <color key="backgroundColor" red="0.54134778689999996" green="0.70725388600000005" blue="0.6824436613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
@@ -733,8 +733,58 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-2t-UGe" userLabel="financials">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="468"/>
+                                                <subviews>
+                                                    <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fuD-KE-3bd">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="418"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <prototypes>
+                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="financialCell" textLabel="HMF-eh-VKQ" detailTextLabel="0RX-Oz-1wk" style="IBUITableViewCellStyleValue1" id="NsE-K1-M3K">
+                                                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NsE-K1-M3K" id="I4M-2i-6ca">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HMF-eh-VKQ">
+                                                                            <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0RX-Oz-1wk">
+                                                                            <rect key="frame" x="316" y="12" width="44" height="20.5"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </tableViewCellContentView>
+                                                            </tableViewCell>
+                                                        </prototypes>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="2sC-q4-Vaw" id="6HH-hR-47P"/>
+                                                            <outlet property="delegate" destination="2sC-q4-Vaw" id="rsn-VQ-Yrn"/>
+                                                        </connections>
+                                                    </tableView>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l9i-q6-oAF" userLabel="googleAd">
+                                                        <rect key="frame" x="0.0" y="418" width="375" height="50"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="eiq-oH-fbz"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="468" id="7AL-5o-bt9"/>
+                                                    <constraint firstItem="fuD-KE-3bd" firstAttribute="top" secondItem="zIy-2t-UGe" secondAttribute="top" id="IIO-Bq-4KK"/>
+                                                    <constraint firstAttribute="trailing" secondItem="fuD-KE-3bd" secondAttribute="trailing" id="JQM-UH-Znh"/>
+                                                    <constraint firstItem="l9i-q6-oAF" firstAttribute="leading" secondItem="zIy-2t-UGe" secondAttribute="leading" id="KC0-se-Gqr"/>
+                                                    <constraint firstAttribute="bottom" secondItem="l9i-q6-oAF" secondAttribute="bottom" id="NG9-Lw-MEB"/>
+                                                    <constraint firstItem="l9i-q6-oAF" firstAttribute="top" secondItem="fuD-KE-3bd" secondAttribute="bottom" id="QVG-dG-a5y"/>
+                                                    <constraint firstItem="fuD-KE-3bd" firstAttribute="leading" secondItem="zIy-2t-UGe" secondAttribute="leading" id="S6v-r5-ezj"/>
+                                                    <constraint firstAttribute="trailing" secondItem="l9i-q6-oAF" secondAttribute="trailing" id="joo-p0-uT9"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i6V-Cb-fYU" userLabel="news">
@@ -745,8 +795,66 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBc-M9-zXn" userLabel="earnings">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="468"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tOQ-Rj-uSB" userLabel="GoogleAds" customClass="GADBannerView">
+                                                        <rect key="frame" x="0.0" y="418" width="375" height="50"/>
+                                                        <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="82r-OO-OeQ"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c8U-0X-MKq" userLabel="pieChart" customClass="PieChartView" customModule="Charts">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4nr-hQ-gTK">
+                                                        <rect key="frame" x="0.0" y="201" width="375" height="217"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <prototypes>
+                                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="earningsCell" textLabel="Yba-Pm-547" detailTextLabel="KZk-z4-5Yc" style="IBUITableViewCellStyleValue1" id="wBV-1p-fez">
+                                                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                                <autoresizingMask key="autoresizingMask"/>
+                                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wBV-1p-fez" id="gJH-Tc-kyQ">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Yba-Pm-547">
+                                                                            <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KZk-z4-5Yc">
+                                                                            <rect key="frame" x="316" y="12" width="44" height="20.5"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </tableViewCellContentView>
+                                                            </tableViewCell>
+                                                        </prototypes>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="2sC-q4-Vaw" id="Znk-3k-q9E"/>
+                                                            <outlet property="delegate" destination="2sC-q4-Vaw" id="789-kp-Cgd"/>
+                                                        </connections>
+                                                    </tableView>
+                                                </subviews>
                                                 <constraints>
+                                                    <constraint firstItem="c8U-0X-MKq" firstAttribute="top" secondItem="hBc-M9-zXn" secondAttribute="top" id="2qc-WO-6kd"/>
+                                                    <constraint firstAttribute="trailing" secondItem="c8U-0X-MKq" secondAttribute="trailing" id="52A-i1-Z3t"/>
+                                                    <constraint firstItem="tOQ-Rj-uSB" firstAttribute="leading" secondItem="hBc-M9-zXn" secondAttribute="leading" id="Ay3-EX-uLH"/>
+                                                    <constraint firstAttribute="trailing" secondItem="4nr-hQ-gTK" secondAttribute="trailing" id="Lgp-es-Lq7"/>
+                                                    <constraint firstItem="c8U-0X-MKq" firstAttribute="leading" secondItem="hBc-M9-zXn" secondAttribute="leading" id="MG4-oQ-q3R"/>
+                                                    <constraint firstItem="tOQ-Rj-uSB" firstAttribute="top" secondItem="4nr-hQ-gTK" secondAttribute="bottom" id="O1g-IM-3nW"/>
+                                                    <constraint firstAttribute="bottom" secondItem="c8U-0X-MKq" secondAttribute="bottom" constant="268" id="SKv-Fr-bPe"/>
+                                                    <constraint firstAttribute="trailing" secondItem="tOQ-Rj-uSB" secondAttribute="trailing" id="T3b-Eo-kRU"/>
+                                                    <constraint firstAttribute="bottom" secondItem="tOQ-Rj-uSB" secondAttribute="bottom" id="YjQ-UA-Xar"/>
+                                                    <constraint firstItem="4nr-hQ-gTK" firstAttribute="top" secondItem="c8U-0X-MKq" secondAttribute="bottom" constant="1" id="hmG-hn-BXv"/>
                                                     <constraint firstAttribute="height" constant="468" id="ika-OZ-TWF"/>
+                                                    <constraint firstItem="4nr-hQ-gTK" firstAttribute="leading" secondItem="hBc-M9-zXn" secondAttribute="leading" id="leZ-A4-Uto"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -810,12 +918,18 @@
                     </view>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
+                        <outlet property="combinedChartsOutlet" destination="uds-Ak-DJW" id="Z50-jB-vqd"/>
                         <outlet property="detailsOutlet" destination="1rm-Oi-Ip6" id="Ese-vt-q0n"/>
                         <outlet property="detailsTableViewOutlet" destination="ZYj-Xr-4aw" id="0cj-xy-KSg"/>
                         <outlet property="earningOutlet" destination="hBc-M9-zXn" id="kw9-g2-F2Q"/>
+                        <outlet property="earningsAdOutlet" destination="tOQ-Rj-uSB" id="G71-gL-5q1"/>
+                        <outlet property="earningsTableviewOutlet" destination="4nr-hQ-gTK" id="KOa-UD-5lO"/>
+                        <outlet property="financailADOutlet" destination="l9i-q6-oAF" id="qpz-2e-696"/>
                         <outlet property="financialOutlet" destination="zIy-2t-UGe" id="NPo-K7-LVp"/>
+                        <outlet property="financialTableviewOutlet" destination="fuD-KE-3bd" id="SUu-34-v7b"/>
                         <outlet property="googleAdoutlet" destination="Rjo-Fx-l58" id="fT9-HM-Whn"/>
                         <outlet property="newsOutlet" destination="i6V-Cb-fYU" id="adW-mA-hcx"/>
+                        <outlet property="pieChartOutlet" destination="c8U-0X-MKq" id="J8Y-p4-H3R"/>
                         <outlet property="searchButton" destination="VNd-8n-96x" id="pHo-j8-mDL"/>
                         <outlet property="titleCompanyNameOutlet" destination="sha-8t-hqK" id="mdc-ne-WSH"/>
                         <outlet property="titleImageViewoutlet" destination="7FI-aQ-WyK" id="T8D-QV-SAI"/>

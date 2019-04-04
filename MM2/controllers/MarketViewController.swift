@@ -308,11 +308,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 let myChart = Chart()
                 
                 for item in each.1{
-                    myChart.close = item.1["close"].stringValue
+                    myChart.close = item.1["close"].doubleValue
                     myChart.volume = item.1["volume"].stringValue
                     myChart.wvap = item.1["wvap"].stringValue
                     myChart.high = item.1["high"].stringValue
-                    myChart.low = item.1["low"].stringValue
+                    myChart.low = item.1["low"].doubleValue
                     myChart.open = item.1["open"].stringValue
                     myChart.date = item.1["date"].stringValue
                     myChart.changePercent = item.1["changepercent"].stringValue
@@ -418,7 +418,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                         
                     let myEarnings = Earnings()
                     
-                        myEarnings.actualEPS = deeper.1["actualEPS"].stringValue
+                        myEarnings.actualEPS = deeper.1["actualEPS"].doubleValue
                         myEarnings.announceTime = deeper.1["announceTime"].stringValue
                         myEarnings.consensusEPS = deeper.1["consensusEPS"].stringValue
                         myEarnings.EPSReportDate = deeper.1["EPSReportDate"].stringValue

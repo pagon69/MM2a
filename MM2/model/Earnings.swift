@@ -10,7 +10,7 @@ import Foundation
 
 class Earnings {
     
-    var actualEPS: String?
+    var actualEPS: Double?
     var consensusEPS: String?
     var estimatedEPS: String?
     var announceTime: String?

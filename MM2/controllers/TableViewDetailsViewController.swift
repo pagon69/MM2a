@@ -16,15 +16,59 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     //table view cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myNamesArray.count
+        var count = 0
+        
+        if(tableView.tag == 0){
+           count = myNamesArray.count        }
+        
+        if(tableView.tag == 1){
+            
+            count = myNamesArray.count        }
+        
+        if(tableView.tag == 2){
+            count = myNamesArray.count
+            
+        }
+        
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = detailsTableViewOutlet.dequeueReusableCell(withIdentifier: "detailsTableViewCell", for: indexPath)
+        
+        var myFinancialData: [String] = []
+        
+        /*
+        for 0..<(data?.financialData.count ?? 1){
+                myFinancialData.append(data?.financialData)
+        }
+        */
+        
+        var cell = UITableViewCell()
+        
+        //details tableview
+        if(tableView.tag == 0){
+        cell = detailsTableViewOutlet.dequeueReusableCell(withIdentifier: "detailsTableViewCell", for: indexPath)
         
         cell.textLabel?.text = myNamesArray[indexPath.row]
         cell.detailTextLabel?.text = myArray[indexPath.row]
+        }
+        //earnings tableview
+        if(tableView.tag == 1){
+            cell = earningsTableviewOutlet.dequeueReusableCell(withIdentifier: "earningsCell", for: indexPath)
+            
+            cell.textLabel?.text = myNamesArray[indexPath.row]
+            cell.detailTextLabel?.text = myArray[indexPath.row]
+        }
+        //financial tableview
+        if(tableView.tag == 2){
+            cell = financialTableviewOutlet.dequeueReusableCell(withIdentifier: "financialCell", for: indexPath)
+            
+            cell.textLabel?.text = myNamesArray[indexPath.row]
+            cell.detailTextLabel?.text = myArray[indexPath.row]
+            
+        }
         
+            
         return cell
     }
     
@@ -36,15 +80,25 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     //use a dictionary for this part versus two arrays
     var myArray = [String]()
-    var myNamesArray = ["High","52 Week High","Low","52 Week Low","Change"]
+    let myNamesArray = ["High","52 Week High","Low","52 Week Low","Change"]
     var changeIconUp = "🔺"
     var changeIconDown = "🔻"
+    let financialNames = ["report Date","Gross Profit","Cost of revenue","Operating Revenue","Total Revenue","Operating Income","Net Income","Research and Development","Operating Expense","Current Assets","Total Assets","Total Liabilities","Current Cash","Current Debt","Total Cash","Total debt","ShareHolder Equity","Cash Change", "Cash Flow","Operating Gains and Losses"]
     
+    
+    //charts outlet
+    @IBOutlet weak var combinedChartsOutlet: BarChartView!
+    @IBOutlet weak var pieChartOutlet: PieChartView!
     
     
     //outlets
     @IBOutlet weak var searchButton: UIBarButtonItem!
+    
+    //tableoutlets
     @IBOutlet weak var detailsTableViewOutlet: UITableView!
+    @IBOutlet weak var earningsTableviewOutlet: UITableView!
+    
+    @IBOutlet weak var financialTableviewOutlet: UITableView!
     
     @IBOutlet weak var earningOutlet: UIView!
     @IBOutlet weak var detailsOutlet: UIView!
@@ -60,6 +114,10 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     //google ads
     @IBOutlet weak var googleAdoutlet: GADBannerView!
+    @IBOutlet weak var earningsAdOutlet: GADBannerView!
+    @IBOutlet weak var financailADOutlet: GADBannerView!
+    
+    
     
     
     @IBAction func viewControls(_ sender: UISegmentedControl) {
@@ -119,6 +177,10 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
         var change = ""
         
+        //graph setup
+        setupPieChart()
+        
+        
         //sets up the various views along with the segment controls
         self.newsOutlet.isHidden = true
         self.financialOutlet.isHidden = true
@@ -165,35 +227,67 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     }
     
     
-    func buildGraphs() {
+    func buildCharts() {
+        combinedChartsOutlet.noDataText = "No Data Available"
+        var barDataEntries: [BarChartDataEntry] = []
+       // let lineDataEntries: [LineChartData] = []
+        let count = data?.chartsData.count ?? 1
+        var myDataArray: [Double] = []
+        // removes optionals from my data
+        for i in 0..<count{
+            if let myData = data?.chartsData[i].low{
+                myDataArray.append(myData)
+            }
+        }
+        for i in 0..<count{
+            let barDataEntry = BarChartDataEntry(x: Double(i), y: myDataArray[i])
+            barDataEntries.append(barDataEntry)
+        }
+        let chartDataSet = BarChartDataSet(values: barDataEntries, label: "Close over time")
+        let chartData = BarChartData(dataSet: chartDataSet)
+        combinedChartsOutlet.data = chartData
+        combinedChartsOutlet.notifyDataSetChanged()
+    }
+    
+    func setupPieChart(){
+        pieChartOutlet.noDataText = "No Data Available"
+        var pieDataEntries: [PieChartDataEntry] = []
         
-        print("creating graphs")
+        // let lineDataEntries: [LineChartData] = []
+        let count = data?.earningsData.count ?? 1
+        var myDataArray: [Double] = []
         
+        // removes optionals from my data
+        for i in 0..<count{
+            if let myData = data?.earningsData[i].actualEPS{
+                myDataArray.append(myData)
+            }
+        }
+        for i in 0..<count{
+            let pieDataEntry = PieChartDataEntry(value: myDataArray[i], label: data?.earningsData[i].fiscalPeriod)
+            pieDataEntries.append(pieDataEntry)
+        }
+        let chartDataSet = PieChartDataSet(values: pieDataEntries, label: "ActualEPS by Quarter")
+        let chartData = PieChartData(dataSet: chartDataSet)
+        pieChartOutlet.data = chartData
+        pieChartOutlet.notifyDataSetChanged()
     }
     
     /*Charts and more
-    func setCharts(dataPoints: [Double]){
-        myChart.noDataText = "No data available"
-        
-        let months = ["j","f","m","a","m","j","j","a","s"]
-        
-        var dataEntries: [BarChartDataEntry] = []
-        
-        let count = data?.charts.count
-        
-        print(count)
-        
-        for i in 0..<count! {
-            let dataEntry = BarChartDataEntry(x: dataPoints[i], y: Double(i))
-            dataEntries.append(dataEntry)
-        }
-        
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "testing")
-        let chartData = BarChartData(dataSet: chartDataSet)
-        myChart.data = chartData
-        
-    }
+
+     var dataEntries: [BarChartDataEntry] = []
+     let count = data?.charts.count
+
+     for i in 0..<count! {
+     let dataEntry = BarChartDataEntry(x: dataPoints[i], y: Double(i))
+     dataEntries.append(dataEntry)
+     }
      
+     let chartDataSet = BarChartDataSet(values: dataEntries, label: "testing")
+     let chartData = BarChartData(dataSet: chartDataSet)
+     myChart.data = chartData
+     
+     }
      
      func setupPieChart(){
      var myDataEntryArray = [PieChartDataEntry]()
@@ -224,16 +318,22 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         googleAdoutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
         googleAdoutlet.rootViewController = self
         googleAdoutlet.load(GADRequest())
+        
+        earningsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        earningsAdOutlet.rootViewController = self
+        earningsAdOutlet.load(GADRequest())
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        viewSetup()
-        buildGraphs()
         adsSetup()
+        viewSetup()
+        buildCharts()
         
-        print(data?.companyName ?? "Nothing sent")
-        print(data?.latestPrice ?? "Nothing sent")
+        
+       // print(data?.companyName ?? "Nothing sent")
+       // print(data?.latestPrice ?? "Nothing sent")
         
         // Do any additional setup after loading the view.
     }

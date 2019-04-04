@@ -10,12 +10,12 @@ import Foundation
 
 class Chart {
     
-    var close: String?
+    var close: Double?
     var volume: String?
-    var change: String?
+    var change: Double?
     var wvap: String?
     var high: String?
-    var low: String?
+    var low: Double?
     var open: String?
     var date: String?
     var changePercent: String?
