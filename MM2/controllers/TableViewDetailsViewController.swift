@@ -12,7 +12,42 @@ import AlamofireImage
 import GoogleMobileAds
 import Charts
 
-class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate {
+    
+    //collectionView setup
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return data?.newsData.count ?? 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionViewOutlet.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! NewsCollectionViewCell
+
+        cell.backgroundColor = .blue
+       // cell.cellHeadline.text = "testing headline"
+       // cell.cellDateSourceRelated.text = "test date, sources and related"
+       // cell.cellSummary.text = "this is my summary"
+
+
+        /*
+        cell.cellHeadline.text = data?.newsData[indexPath.row].headline
+        cell.cellDateSourceRelated.text = "Date:\(String(describing: data?.newsData[indexPath.row].datetime))     Source:\(String(describing: data?.newsData[indexPath.row].source))    Related:\(String(describing: data?.newsData[indexPath.row].related))"
+        
+        cell.cellSummary.text = data?.newsData[indexPath.row].summary
+        cell.cellURL.text = data?.newsData[indexPath.row].url
+        
+        
+        //need to call a image download when this happens
+         
+        cell.cellImage.image = UIImage(cgImage: <#T##CGImage#>)
+ 
+         */
+        
+        return cell
+    }
+    
+    
+    
     
     //table view cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -89,6 +124,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     //charts outlet
     @IBOutlet weak var combinedChartsOutlet: BarChartView!
     @IBOutlet weak var pieChartOutlet: PieChartView!
+    @IBOutlet weak var collectionViewOutlet: UICollectionView!
     
     
     //outlets

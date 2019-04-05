@@ -9,8 +9,26 @@
 import UIKit
 import GoogleMobileAds
 
-class MakersTableViewController: UIViewController {
 
+class MakersTableViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource{
+   
+    //collection vew setup
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionViewOutlet.dequeueReusableCell(withReuseIdentifier: "customCollectionCell", for: indexPath) as! NewsCollectionViewCell
+        
+        cell.backgroundColor = .blue
+        
+        
+        return cell
+    }
+    
+
+    
     
     
     //globals
@@ -18,6 +36,9 @@ class MakersTableViewController: UIViewController {
     
     //outlets
     @IBOutlet weak var googleAdOutlet: GADBannerView!
+    @IBOutlet weak var collectionViewOutlet: UICollectionView!
+    
+    
     
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
         performSegue(withIdentifier: "goToSearch3", sender: self)

@@ -562,6 +562,32 @@
                                     <constraint firstAttribute="height" constant="50" id="OQV-oc-j5O"/>
                                 </constraints>
                             </view>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rEK-zL-5g1">
+                                <rect key="frame" x="16" y="103" width="343" height="428"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Itp-FT-g19">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="customCollectionCell" id="ihD-TS-edA" customClass="NewsCollectionViewCell" customModule="MM2" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="370" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="370" height="120"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                        <size key="customSize" width="370" height="120"/>
+                                    </collectionViewCell>
+                                </cells>
+                                <connections>
+                                    <outlet property="dataSource" destination="GCO-vW-Myx" id="LkA-9u-8Bm"/>
+                                    <outlet property="delegate" destination="GCO-vW-Myx" id="2WP-VZ-nFs"/>
+                                </connections>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -575,6 +601,7 @@
                         <viewLayoutGuide key="safeArea" id="tZX-n7-lHi"/>
                     </view>
                     <connections>
+                        <outlet property="collectionViewOutlet" destination="rEK-zL-5g1" id="sgV-L1-9SD"/>
                         <outlet property="googleAdOutlet" destination="YNq-fR-Oxy" id="pmQ-xZ-1i3"/>
                         <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch3" id="AbS-sp-LmP"/>
                     </connections>
@@ -789,8 +816,49 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i6V-Cb-fYU" userLabel="news">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="468"/>
+                                                <subviews>
+                                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Akh-sG-fhi">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="418"/>
+                                                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="PEB-2C-hxb">
+                                                            <size key="itemSize" width="50" height="50"/>
+                                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                        </collectionViewFlowLayout>
+                                                        <cells>
+                                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="customCell" id="zuz-Cq-l5c" customClass="NewsCollectionViewCell" customModule="MM2" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="84" width="370" height="250"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="370" height="250"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                </view>
+                                                                <size key="customSize" width="370" height="250"/>
+                                                            </collectionViewCell>
+                                                        </cells>
+                                                        <connections>
+                                                            <outlet property="dataSource" destination="2sC-q4-Vaw" id="pPE-Ra-qJA"/>
+                                                            <outlet property="delegate" destination="2sC-q4-Vaw" id="4Wd-Ed-Vc2"/>
+                                                        </connections>
+                                                    </collectionView>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IO-Rm-Fi6" userLabel="google AD">
+                                                        <rect key="frame" x="0.0" y="418" width="375" height="50"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="50" id="uSe-aA-JIO"/>
+                                                        </constraints>
+                                                    </view>
+                                                </subviews>
                                                 <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="3IO-Rm-Fi6" secondAttribute="bottom" id="1MS-Qr-eYe"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Akh-sG-fhi" secondAttribute="trailing" id="77m-aW-vCo"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Akh-sG-fhi" secondAttribute="bottom" constant="50" id="AYH-2n-Dp6"/>
+                                                    <constraint firstItem="Akh-sG-fhi" firstAttribute="leading" secondItem="i6V-Cb-fYU" secondAttribute="leading" id="AYw-jl-faa"/>
+                                                    <constraint firstItem="Akh-sG-fhi" firstAttribute="top" secondItem="i6V-Cb-fYU" secondAttribute="top" id="UAn-3S-s7d"/>
+                                                    <constraint firstAttribute="trailing" secondItem="3IO-Rm-Fi6" secondAttribute="trailing" id="YMb-6d-uoe"/>
+                                                    <constraint firstItem="3IO-Rm-Fi6" firstAttribute="top" secondItem="Akh-sG-fhi" secondAttribute="bottom" id="ccF-0f-e93"/>
                                                     <constraint firstAttribute="height" constant="468" id="jts-Ht-fwL"/>
+                                                    <constraint firstItem="3IO-Rm-Fi6" firstAttribute="leading" secondItem="i6V-Cb-fYU" secondAttribute="leading" id="xfx-da-Crd"/>
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBc-M9-zXn" userLabel="earnings">
@@ -918,6 +986,7 @@
                     </view>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
+                        <outlet property="collectionViewOutlet" destination="Akh-sG-fhi" id="vzd-kg-Kor"/>
                         <outlet property="combinedChartsOutlet" destination="uds-Ak-DJW" id="Z50-jB-vqd"/>
                         <outlet property="detailsOutlet" destination="1rm-Oi-Ip6" id="Ese-vt-q0n"/>
                         <outlet property="detailsTableViewOutlet" destination="ZYj-Xr-4aw" id="0cj-xy-KSg"/>

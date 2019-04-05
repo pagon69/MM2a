@@ -26,6 +26,8 @@
 		C16240B5225239FC008F9532 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16240B4225239FC008F9532 /* News.swift */; };
 		C16240B722523AA9008F9532 /* Earnings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16240B622523AA9008F9532 /* Earnings.swift */; };
 		C16240B922523AC0008F9532 /* Financials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16240B822523AC0008F9532 /* Financials.swift */; };
+		C1D03CD22257C8F5005A0501 /* NewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */; };
+		C1D03CD32257C8F5005A0501 /* NewsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		C16240B4225239FC008F9532 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		C16240B622523AA9008F9532 /* Earnings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Earnings.swift; sourceTree = "<group>"; };
 		C16240B822523AC0008F9532 /* Financials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Financials.swift; sourceTree = "<group>"; };
+		C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCollectionViewCell.swift; sourceTree = "<group>"; };
+		C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCollectionViewCell.xib; sourceTree = "<group>"; };
 		E376213F54B6ACC45AAE29BD /* Pods-MM2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.release.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.release.xcconfig"; sourceTree = "<group>"; };
 		F9AE6AB9BCFCD9BFC85809E4 /* Pods-MM2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,6 +112,7 @@
 		C14146C1223A872B00AEB632 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */,
 				C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */,
 				C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */,
 				C14146C9223A896C00AEB632 /* MarketViewController.swift */,
@@ -123,6 +128,7 @@
 			children = (
 				C14146B3223A871900AEB632 /* Main.storyboard */,
 				C14146B8223A871B00AEB632 /* LaunchScreen.storyboard */,
+				C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -222,6 +228,7 @@
 				C14146BA223A871B00AEB632 /* LaunchScreen.storyboard in Resources */,
 				C14146C5223A877A00AEB632 /* symbols.realm in Resources */,
 				C14146B7223A871B00AEB632 /* Assets.xcassets in Resources */,
+				C1D03CD32257C8F5005A0501 /* NewsCollectionViewCell.xib in Resources */,
 				C14146B5223A871900AEB632 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,6 +305,7 @@
 				C115E2EE224BDE670081F6F0 /* TableViewDetailsViewController.swift in Sources */,
 				C14146D0223AC73000AEB632 /* Markets.swift in Sources */,
 				C1282F50224D34C20025C15C /* Chart.swift in Sources */,
+				C1D03CD22257C8F5005A0501 /* NewsCollectionViewCell.swift in Sources */,
 				C14146C8223A87D100AEB632 /* Symbols.swift in Sources */,
 				C16240B922523AC0008F9532 /* Financials.swift in Sources */,
 				C14146CA223A896C00AEB632 /* MarketViewController.swift in Sources */,
