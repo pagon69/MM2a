@@ -16,6 +16,12 @@ class NewsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var cellSummary: UITextView!
     
+    
+    @IBOutlet weak var newsImageOutlet: UIImageView!
+    @IBOutlet weak var textFieldOutlet: UITextView!
+    
+    
+    
     var data = ""
     
     override func awakeFromNib() {

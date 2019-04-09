@@ -111,7 +111,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
     
         
         //search button segue
-        @IBAction func searchButtonOutlet(_ sender: UIBarButtonItem) {
+        @IBAction func searchButtonOutlet(_ sender: UIBarButtonItem){
             
             performSegue(withIdentifier: "goToSearch", sender: self)
             

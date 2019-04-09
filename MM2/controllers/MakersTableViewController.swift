@@ -10,34 +10,14 @@ import UIKit
 import GoogleMobileAds
 
 
-class MakersTableViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource{
+class MakersTableViewController: UIViewController{
    
-    //collection vew setup
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionViewOutlet.dequeueReusableCell(withReuseIdentifier: "customCollectionCell", for: indexPath) as! NewsCollectionViewCell
-        
-        cell.backgroundColor = .blue
-        
-        
-        return cell
-    }
-    
-
-    
-    
-    
     //globals
     var data: Markets?
     
     //outlets
     @IBOutlet weak var googleAdOutlet: GADBannerView!
-    @IBOutlet weak var collectionViewOutlet: UICollectionView!
-    
+    @IBOutlet weak var makerTextFieldOutlet: UITextView!
     
     
     @IBAction func searchButton(_ sender: UIBarButtonItem) {
@@ -56,13 +36,17 @@ class MakersTableViewController: UIViewController, UICollectionViewDelegate,UICo
     }
     
     
+    func setupSummary(){
+        
+        makerTextFieldOutlet.text = "Liquid Markets containing the stocks we love to gamble with:\n\(data?.venueName ?? "No provided value")\nThe Mic: of symbol name is:\(String(describing: data?.mic ?? "null"))\nThe Volume is:\(String(describing: data?.volume ?? "null"))\nMarket share or percentage:\(String(describing: data?.marketPercent ?? "null"))"
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         adsSetup()
-       // print(data!.venueName)
-       // print(data!.volume)
-        
+        setupSummary()
         
         // Do any additional setup after loading the view.
     }

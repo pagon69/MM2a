@@ -14,6 +14,7 @@ import Charts
 
 class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate {
     
+    
     //collectionView setup
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data?.newsData.count ?? 1
@@ -24,11 +25,17 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         let cell = collectionViewOutlet.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! NewsCollectionViewCell
 
         cell.backgroundColor = .blue
+        
        // cell.cellHeadline.text = "testing headline"
        // cell.cellDateSourceRelated.text = "test date, sources and related"
        // cell.cellSummary.text = "this is my summary"
 
-
+        //put a default image here
+        //cell.newsImageOutlet.image = UIImage(contentsOfFile: <#T##String#>)
+        
+        //put text view content below
+        cell.textFieldOutlet.text = " The summary comes here"
+        
         /*
         cell.cellHeadline.text = data?.newsData[indexPath.row].headline
         cell.cellDateSourceRelated.text = "Date:\(String(describing: data?.newsData[indexPath.row].datetime))     Source:\(String(describing: data?.newsData[indexPath.row].source))    Related:\(String(describing: data?.newsData[indexPath.row].related))"
@@ -70,7 +77,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var myFinancialData: [String] = []
+        let myFinancialData: [String] = []
         
         /*
         for 0..<(data?.financialData.count ?? 1){
@@ -152,6 +159,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     @IBOutlet weak var googleAdoutlet: GADBannerView!
     @IBOutlet weak var earningsAdOutlet: GADBannerView!
     @IBOutlet weak var financailADOutlet: GADBannerView!
+    @IBOutlet weak var newsAdOutlet: GADBannerView!
     
     
     
@@ -359,6 +367,15 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         earningsAdOutlet.rootViewController = self
         earningsAdOutlet.load(GADRequest())
         
+       // financailADOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+       // financailADOutlet.rootViewController = self
+       // financailADOutlet.load(GADRequest())
+        
+        
+        newsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        newsAdOutlet.rootViewController = self
+        newsAdOutlet.load(GADRequest())
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -366,7 +383,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         adsSetup()
         viewSetup()
         buildCharts()
-        
+        collectionViewOutlet.reloadData()
         
        // print(data?.companyName ?? "Nothing sent")
        // print(data?.latestPrice ?? "Nothing sent")
@@ -386,3 +403,5 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     */
 
 }
+
+
