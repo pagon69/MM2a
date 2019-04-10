@@ -11,6 +11,7 @@
 		C115E2EE224BDE670081F6F0 /* TableViewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */; };
 		C115E2F0224BDEF30081F6F0 /* CryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */; };
 		C115E2F2224BF7C50081F6F0 /* MakersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */; };
+		C12437FA225E213200E38409 /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12437F9225E213200E38409 /* WatchListViewController.swift */; };
 		C1282F4E224D17AC0025C15C /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1282F4D224D17AC0025C15C /* Stock.swift */; };
 		C1282F50224D34C20025C15C /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1282F4F224D34C20025C15C /* Chart.swift */; };
 		C14146B0223A871900AEB632 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14146AF223A871900AEB632 /* AppDelegate.swift */; };
@@ -35,6 +36,7 @@
 		C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDetailsViewController.swift; sourceTree = "<group>"; };
 		C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoViewController.swift; sourceTree = "<group>"; };
 		C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakersTableViewController.swift; sourceTree = "<group>"; };
+		C12437F9225E213200E38409 /* WatchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListViewController.swift; sourceTree = "<group>"; };
 		C1282F4D224D17AC0025C15C /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 		C1282F4F224D34C20025C15C /* Chart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		C14146AC223A871900AEB632 /* MM2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MM2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 		C14146C1223A872B00AEB632 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C12437F9225E213200E38409 /* WatchListViewController.swift */,
 				C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */,
 				C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */,
 				C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */,
@@ -311,6 +314,7 @@
 				C14146CA223A896C00AEB632 /* MarketViewController.swift in Sources */,
 				C16240B722523AA9008F9532 /* Earnings.swift in Sources */,
 				C16240B5225239FC008F9532 /* News.swift in Sources */,
+				C12437FA225E213200E38409 /* WatchListViewController.swift in Sources */,
 				C115E2F0224BDEF30081F6F0 /* CryptoViewController.swift in Sources */,
 				C14146CC223A898E00AEB632 /* DetailSearchViewController.swift in Sources */,
 				C14146B0223A871900AEB632 /* AppDelegate.swift in Sources */,

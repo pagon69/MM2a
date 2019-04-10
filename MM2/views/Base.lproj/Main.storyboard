@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Item 1-->
+        <!--Deep Dive-->
         <scene sceneID="dC5-2y-RIm">
             <objects>
                 <viewController id="YOR-Km-gWC" customClass="MarketViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
@@ -95,7 +95,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Wid-QL-0Ib"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 1" id="Q5G-Yg-ZhP"/>
+                    <tabBarItem key="tabBarItem" title="Deep Dive" id="Q5G-Yg-ZhP"/>
                     <size key="freeformSize" width="375" height="1100"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Z1-bW-1Ah" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -175,7 +175,7 @@
             </objects>
             <point key="canvasLocation" x="3538" y="246"/>
         </scene>
-        <!--Item 2-->
+        <!--WatchList-->
         <scene sceneID="csJ-Em-c2d">
             <objects>
                 <viewController id="6Dq-qf-wFM" customClass="MarketViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
@@ -196,7 +196,7 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="yLL-gf-Qgk"/>
                                                 </constraints>
                                                 <items>
-                                                    <navigationItem title="Market Makers" id="Sx9-a9-nh9" userLabel="MarketMakers">
+                                                    <navigationItem title="My WatchList" id="Sx9-a9-nh9" userLabel="MarketMakers">
                                                         <barButtonItem key="leftBarButtonItem" title="Item" id="OHp-cW-8ye"/>
                                                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="0tI-M4-FVY">
                                                             <connections>
@@ -257,7 +257,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="LUa-9S-B5B"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item 2" id="9nk-hS-Fvb"/>
+                    <tabBarItem key="tabBarItem" title="WatchList" id="9nk-hS-Fvb"/>
                     <size key="freeformSize" width="375" height="1100"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Uc-lv-xPy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -415,7 +415,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Kn-fs-uvz" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1051"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCj-Xu-mGd">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OCj-Xu-mGd" userLabel="ticker">
                                                 <rect key="frame" x="0.0" y="84" width="375" height="100"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -466,7 +466,7 @@
                                                 </constraints>
                                                 <items>
                                                     <navigationItem title="Market Makers" id="u2U-EI-sHQ" userLabel="MarketMakers">
-                                                        <barButtonItem key="leftBarButtonItem" title="Item" id="BD1-zZ-JIr"/>
+                                                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="BD1-zZ-JIr"/>
                                                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="YBe-vg-ATL">
                                                             <connections>
                                                                 <action selector="searchButtonOutlet:" destination="x1y-bG-d1Z" id="lU3-ml-w46"/>
@@ -601,11 +601,18 @@
                                                 <action selector="backButton:" destination="GCO-vW-Myx" id="98R-eG-UpX"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="ua1-k6-sRS">
-                                            <connections>
-                                                <action selector="searchButton:" destination="GCO-vW-Myx" id="vaE-nN-JJw"/>
-                                            </connections>
-                                        </barButtonItem>
+                                        <rightBarButtonItems>
+                                            <barButtonItem systemItem="search" id="ua1-k6-sRS">
+                                                <connections>
+                                                    <action selector="searchButton:" destination="GCO-vW-Myx" id="vaE-nN-JJw"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem systemItem="add" id="yJY-ft-gRh">
+                                                <connections>
+                                                    <action selector="addToWatchList:" destination="GCO-vW-Myx" id="e8c-1Q-beH"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -675,11 +682,18 @@
                                                                 <action selector="backButton:" destination="2sC-q4-Vaw" id="WG0-qY-zx5"/>
                                                             </connections>
                                                         </barButtonItem>
-                                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="VNd-8n-96x">
-                                                            <connections>
-                                                                <action selector="searchButton:" destination="2sC-q4-Vaw" id="tOD-BE-NSm"/>
-                                                            </connections>
-                                                        </barButtonItem>
+                                                        <rightBarButtonItems>
+                                                            <barButtonItem systemItem="search" id="VNd-8n-96x">
+                                                                <connections>
+                                                                    <action selector="searchButton:" destination="2sC-q4-Vaw" id="tOD-BE-NSm"/>
+                                                                </connections>
+                                                            </barButtonItem>
+                                                            <barButtonItem systemItem="add" id="Ie1-FE-syV">
+                                                                <connections>
+                                                                    <action selector="addToWatchList:" destination="2sC-q4-Vaw" id="9B9-Zg-dfg"/>
+                                                                </connections>
+                                                            </barButtonItem>
+                                                        </rightBarButtonItems>
                                                     </navigationItem>
                                                 </items>
                                             </navigationBar>
@@ -1092,6 +1106,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="3Nb-Xn-FGo"/>
+        <segue reference="dx5-in-UYa"/>
     </inferredMetricsTieBreakers>
 </document>

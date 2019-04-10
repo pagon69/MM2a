@@ -77,7 +77,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let myFinancialData: [String] = []
+       // let myFinancialData: [String] = []
         
         /*
         for 0..<(data?.financialData.count ?? 1){
@@ -126,12 +126,50 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     var changeIconUp = "🔺"
     var changeIconDown = "🔻"
     let financialNames = ["report Date","Gross Profit","Cost of revenue","Operating Revenue","Total Revenue","Operating Income","Net Income","Research and Development","Operating Expense","Current Assets","Total Assets","Total Liabilities","Current Cash","Current Debt","Total Cash","Total debt","ShareHolder Equity","Cash Change", "Cash Flow","Operating Gains and Losses"]
-    
+    var watchListItems = [String]()
+    let myDefaults = UserDefaults.standard
     
     //charts outlet
     @IBOutlet weak var combinedChartsOutlet: BarChartView!
     @IBOutlet weak var pieChartOutlet: PieChartView!
     @IBOutlet weak var collectionViewOutlet: UICollectionView!
+    
+    
+    //watchlist addition button
+    @IBAction func addToWatchList(_ sender: UIBarButtonItem) {
+      print("in add to watchlist on tableview detail")
+        //if the system can find a userwatchlist pull it and assign to userArray
+        if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
+            let myUserValue = (data?.symbol ?? "Null")
+            if(userArray.contains(myUserValue)){
+                //do nothing or maybe display an alret
+            }else{
+                watchListItems.append(contentsOf: userArray)
+                watchListItems.append(myUserValue)
+            }
+            
+        }else{ //did not find the userwatchlist,
+            let myUserValue = (data?.symbol ?? "Null")
+            watchListItems.sort()
+            if(watchListItems.contains(myUserValue)){
+                // do nothing value is already in watch list
+                
+                //display an alert and dismiss it
+            }else{
+                //add to list
+                watchListItems.append(myUserValue)
+            }
+            
+        }
+        
+        myDefaults.set(watchListItems, forKey: "userWatchList")
+        
+        print(watchListItems)
+        //can i do some animation ? or just an alert?
+    }
+    
+    
+    
     
     
     //outlets
@@ -219,7 +257,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     //future functions
     func viewSetup(){
         
-        var change = ""
+        let change = ""
         
         //graph setup
         setupPieChart()

@@ -15,6 +15,10 @@ class MakersTableViewController: UIViewController{
     //globals
     var data: Markets?
     
+    //user defaults
+    let myDefaults = UserDefaults.standard
+    var watchListItems = [String]()
+    
     //outlets
     @IBOutlet weak var googleAdOutlet: GADBannerView!
     @IBOutlet weak var makerTextFieldOutlet: UITextView!
@@ -27,6 +31,41 @@ class MakersTableViewController: UIViewController{
     @IBAction func backButton(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
+    
+    //add to watch list
+    @IBAction func addToWatchList(_ sender: UIBarButtonItem) {
+        
+        //if the system can find a userwatchlist pull it and assign to userArray
+        if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
+            let myUserValue = (data?.mic ?? "Null")
+            if(userArray.contains(myUserValue)){
+                //do nothing or maybe display an alret
+            }else{
+                watchListItems.append(contentsOf: userArray)
+                watchListItems.append(myUserValue)
+            }
+            
+        }else{ //did not find the userwatchlist,
+            let myUserValue = (data?.mic ?? "Null")
+            watchListItems.sort()
+            if(watchListItems.contains(myUserValue)){
+                // do nothing value is already in watch list
+                
+                //display an alert and dismiss it
+            }else{
+                //add to list
+                watchListItems.append(myUserValue)
+            }
+        
+        }
+        
+        myDefaults.set(watchListItems, forKey: "userWatchList")
+        
+        //can i do some animation ? or just an alert?
+        
+        print(watchListItems)
+    }
+    
     
     
     func adsSetup() {
