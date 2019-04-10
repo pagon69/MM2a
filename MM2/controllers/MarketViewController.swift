@@ -241,7 +241,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         //network request for Major indexices
         //need to figure out this part and where to get the indices, update the number of stocks
-        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,fb,goog&types=quote,financials,earnings,logo,news,chart&range=1m&last=10").responseJSON { (response) in
+        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,fb,goog&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 self.processData2(json: myJson)
@@ -274,9 +274,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //processes data for the second table
     func processData2(json: JSON){
         
-       // let myStocks = Stock()
-        
-        
       //process the results
         for stocks in json{
 
@@ -284,9 +281,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             
             for each in stocks.1{
                 //print("should have a devide: \(each)")
-            
             if(each.0 == "news"){
-                
                 let myNews = News()
                 
                 for item in each.1{

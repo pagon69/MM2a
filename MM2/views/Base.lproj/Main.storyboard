@@ -178,7 +178,7 @@
         <!--WatchList-->
         <scene sceneID="csJ-Em-c2d">
             <objects>
-                <viewController id="6Dq-qf-wFM" customClass="MarketViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="6Dq-qf-wFM" customClass="WatchListViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="357-ab-sPV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -198,11 +198,18 @@
                                                 <items>
                                                     <navigationItem title="My WatchList" id="Sx9-a9-nh9" userLabel="MarketMakers">
                                                         <barButtonItem key="leftBarButtonItem" title="Item" id="OHp-cW-8ye"/>
-                                                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="0tI-M4-FVY">
-                                                            <connections>
-                                                                <action selector="searchButtonOutlet:" destination="x1y-bG-d1Z" id="A5P-Zz-f9p"/>
-                                                            </connections>
-                                                        </barButtonItem>
+                                                        <rightBarButtonItems>
+                                                            <barButtonItem systemItem="search" id="0tI-M4-FVY">
+                                                                <connections>
+                                                                    <action selector="quickSearch:" destination="6Dq-qf-wFM" id="7yN-Qw-H6v"/>
+                                                                </connections>
+                                                            </barButtonItem>
+                                                            <barButtonItem systemItem="trash" id="M18-qA-Szi">
+                                                                <connections>
+                                                                    <action selector="deleteWatchList:" destination="6Dq-qf-wFM" id="zDe-sI-gDP"/>
+                                                                </connections>
+                                                            </barButtonItem>
+                                                        </rightBarButtonItems>
                                                     </navigationItem>
                                                 </items>
                                             </navigationBar>
@@ -214,7 +221,7 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="T21-D1-CpP"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s6f-P0-W8W">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s6f-P0-W8W" userLabel="google ads" customClass="GADBannerView">
                                                 <rect key="frame" x="0.0" y="1000" width="375" height="50"/>
                                                 <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -222,18 +229,64 @@
                                                     <constraint firstAttribute="height" constant="50" id="dTa-L7-wXV"/>
                                                 </constraints>
                                             </view>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kKp-Fn-Nh1">
+                                                <rect key="frame" x="0.0" y="184" width="375" height="493"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <prototypes>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="watchListCell" textLabel="DZl-Ir-xJe" detailTextLabel="1Ax-ki-mpy" style="IBUITableViewCellStyleValue1" id="0lw-Gr-uEE">
+                                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask"/>
+                                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0lw-Gr-uEE" id="u2E-7J-ZqD">
+                                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <subviews>
+                                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DZl-Ir-xJe">
+                                                                    <rect key="frame" x="15" y="12" width="33.5" height="20.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1Ax-ki-mpy">
+                                                                    <rect key="frame" x="296" y="12" width="44" height="20.5"/>
+                                                                    <autoresizingMask key="autoresizingMask"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <nil key="textColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </tableViewCellContentView>
+                                                    </tableViewCell>
+                                                </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="6Dq-qf-wFM" id="W0r-zr-Hxd"/>
+                                                    <outlet property="delegate" destination="6Dq-qf-wFM" id="R40-Ot-Dc9"/>
+                                                </connections>
+                                            </tableView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sKs-YQ-esE">
+                                                <rect key="frame" x="0.0" y="677" width="375" height="318"/>
+                                                <color key="backgroundColor" red="0.54134778689999996" green="0.70725388600000005" blue="0.6824436613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="zFO-Uk-uQm" firstAttribute="leading" secondItem="Pka-Er-bXg" secondAttribute="leading" id="4eg-SK-3z3"/>
                                             <constraint firstItem="zio-Um-lUD" firstAttribute="top" secondItem="Pka-Er-bXg" secondAttribute="top" constant="84" id="9Uk-Zo-aKq"/>
+                                            <constraint firstItem="sKs-YQ-esE" firstAttribute="top" secondItem="kKp-Fn-Nh1" secondAttribute="bottom" id="CSh-cd-chl"/>
                                             <constraint firstAttribute="bottom" secondItem="s6f-P0-W8W" secondAttribute="bottom" constant="1" id="KRX-Fu-fdp"/>
+                                            <constraint firstItem="s6f-P0-W8W" firstAttribute="top" secondItem="sKs-YQ-esE" secondAttribute="bottom" constant="5" id="MM8-SQ-LXU"/>
                                             <constraint firstAttribute="trailing" secondItem="zFO-Uk-uQm" secondAttribute="trailing" id="NOK-N6-szb"/>
+                                            <constraint firstItem="sKs-YQ-esE" firstAttribute="top" secondItem="Pka-Er-bXg" secondAttribute="top" constant="677" id="NUh-G1-rN7"/>
+                                            <constraint firstAttribute="trailing" secondItem="sKs-YQ-esE" secondAttribute="trailing" id="OBf-cO-Bc6"/>
+                                            <constraint firstItem="sKs-YQ-esE" firstAttribute="leading" secondItem="Pka-Er-bXg" secondAttribute="leading" id="PuY-xW-IC4"/>
                                             <constraint firstAttribute="trailing" secondItem="zio-Um-lUD" secondAttribute="trailing" id="R08-K8-5tn"/>
                                             <constraint firstItem="zFO-Uk-uQm" firstAttribute="top" secondItem="Pka-Er-bXg" secondAttribute="top" constant="40" id="X8J-CU-DyJ"/>
                                             <constraint firstItem="s6f-P0-W8W" firstAttribute="leading" secondItem="Pka-Er-bXg" secondAttribute="leading" id="cL2-4Z-W7Z"/>
+                                            <constraint firstAttribute="trailing" secondItem="kKp-Fn-Nh1" secondAttribute="trailing" id="ca8-Jl-Q4t"/>
                                             <constraint firstItem="zio-Um-lUD" firstAttribute="leading" secondItem="Pka-Er-bXg" secondAttribute="leading" id="hhh-Yh-8Yo"/>
                                             <constraint firstAttribute="trailing" secondItem="s6f-P0-W8W" secondAttribute="trailing" id="rQE-rH-7th"/>
+                                            <constraint firstItem="kKp-Fn-Nh1" firstAttribute="top" secondItem="zio-Um-lUD" secondAttribute="bottom" id="tON-cz-pUX"/>
+                                            <constraint firstItem="kKp-Fn-Nh1" firstAttribute="leading" secondItem="Pka-Er-bXg" secondAttribute="leading" id="zlG-sM-AmU"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -259,6 +312,10 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="WatchList" id="9nk-hS-Fvb"/>
                     <size key="freeformSize" width="375" height="1100"/>
+                    <connections>
+                        <outlet property="googleAds" destination="s6f-P0-W8W" id="3Qq-FG-ttU"/>
+                        <outlet property="watchListTableView" destination="kKp-Fn-Nh1" id="JhQ-JH-FbY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Uc-lv-xPy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
