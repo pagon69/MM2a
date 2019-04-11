@@ -100,7 +100,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
             if(tableView.tag == 0){
-                print(searchResults?[indexPath.row].Symbol)
+                //print(searchResults?[indexPath.row].Symbol)
                 currentIndexPath = indexPath.row
             }
             
