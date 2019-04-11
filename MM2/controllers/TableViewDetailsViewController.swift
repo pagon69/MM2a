@@ -311,6 +311,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     func buildCharts() {
         combinedChartsOutlet.noDataText = "No Data Available"
+        
         var barDataEntries: [BarChartDataEntry] = []
        // let lineDataEntries: [LineChartData] = []
         let count = data?.chartsData.count ?? 1

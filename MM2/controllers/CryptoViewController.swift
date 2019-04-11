@@ -14,6 +14,7 @@ import GoogleMobileAds
 class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
+    
     //table view setup
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myStocksArray.count
@@ -30,7 +31,33 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    //add the selection of a row code here
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+            currentIndexPath = indexPath.row
+            performSegue(withIdentifier: "cryptoSegue", sender: self)
+    }
+    
+    
+    
+    
+    
+    //segues to data process and view page
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //this will cover the makers details
+        if(segue.identifier == "cryptoSegue"){
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+            destVC.data = myStocksArray[currentIndexPath]
+        }
 
+    }
+    
+    //add segue to cryptoSegue here
+
+
+    
     
     //outlets
     @IBOutlet weak var googleAdsOutlet: GADBannerView!
@@ -39,7 +66,7 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //globals
     var myStocksArray = [Stock]()
-    
+    var currentIndexPath = 0
     
     func networkCall(){
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/crypto").responseJSON { (response) in

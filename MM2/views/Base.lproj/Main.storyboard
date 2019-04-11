@@ -452,6 +452,7 @@
                     <connections>
                         <outlet property="cryptoTableView" destination="zkC-6D-UGG" id="Uuo-hw-NgI"/>
                         <outlet property="googleAdsOutlet" destination="ogC-vM-Iab" id="gma-nP-PWa"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="cryptoSegue" id="ErU-T6-APj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GKm-VC-yUk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1163,6 +1164,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="3Nb-Xn-FGo"/>
+        <segue reference="9jB-Dl-jKl"/>
+        <segue reference="dx5-in-UYa"/>
     </inferredMetricsTieBreakers>
 </document>

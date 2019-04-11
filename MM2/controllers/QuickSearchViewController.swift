@@ -24,6 +24,11 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
             var heading: String = ""
             
+            if(tableView.tag == 0){
+                heading = "Known Stocks/Symbols as 01/28/2019"
+            }
+            
+            /*
             if(tableView.tag == 1){
                 heading = "USA Markets by Percentage"
             }
@@ -32,6 +37,8 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                 //tableView.sectionIndexBackgroundColor = .black
                 //tableView.backgroundColor = .black
             }
+            */
+            
             return heading
         }
         
@@ -39,12 +46,12 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             var count = 0
             
-            //default search view table - i need to redo using search view controller
+            //default search view table
             if(tableView.tag == 0){
                 count = searchResults?.count ?? 1
             }
             
-            //markets table
+            /*markets table
             if(tableView.tag == 1){
                 count = myMarkets.count
             }
@@ -52,14 +59,16 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             if(tableView.tag == 2){
                 count = myArray.count
             }
+            */
             return count
         }
-        
+    
+    
+    
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             
             var cell = UITableViewCell()
-            
-            // default cell work
+   
             //search table view cell
             if(tableView.tag == 0){
                 
@@ -90,7 +99,12 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
-            //looks at markets tableView
+            if(tableView.tag == 0){
+                print(searchResults?[indexPath.row].Symbol)
+                currentIndexPath = indexPath.row
+            }
+            
+            /*looks at markets tableView
             if(tableView.tag == 1){
                 print("the selected row is :\(indexPath.row)")
                 print("the contained data is:\(myMarkets[indexPath.row].venueName)")
@@ -103,11 +117,8 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                 print("the contained data is:\(myArray[indexPath.row])")
                 
             }
-            
+            */
         }
-    
-    
-    
     
         
         //search button segue
@@ -124,14 +135,10 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         
         //outlets
         @IBOutlet weak var googleAdsOutlet: GADBannerView!
-    
-    
         
         //my global variables
-        
         let myArray = ["car","boat","house","mace","gun","door","banana"]
         var searchResults :Results<Symbols>?
-        
         var timing = 0
         var myTimer = Timer()
         
@@ -242,6 +249,9 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             myRealm = try! Realm(configuration: config)
             
             collectMarketData()
+            
+            adsSetup()
+            
 
             // Do any additional setup after loading the view.
         }
