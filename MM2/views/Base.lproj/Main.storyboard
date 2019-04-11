@@ -315,6 +315,8 @@
                     <connections>
                         <outlet property="googleAds" destination="s6f-P0-W8W" id="3Qq-FG-ttU"/>
                         <outlet property="watchListTableView" destination="kKp-Fn-Nh1" id="JhQ-JH-FbY"/>
+                        <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch6" id="Gfi-an-Jcs"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="goToTableView2" id="0hU-9P-gnx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7Uc-lv-xPy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -417,7 +419,7 @@
                                                 <barButtonItem key="leftBarButtonItem" title="Item" id="4H8-NK-SWC"/>
                                                 <barButtonItem key="rightBarButtonItem" systemItem="search" id="Kbl-YO-au3">
                                                     <connections>
-                                                        <action selector="searchButtonOutlet:" destination="x1y-bG-d1Z" id="ZfZ-Ua-g6P"/>
+                                                        <action selector="goToSearch:" destination="a00-xw-ATh" id="49D-Bo-TN5"/>
                                                     </connections>
                                                 </barButtonItem>
                                             </navigationItem>
@@ -453,6 +455,7 @@
                         <outlet property="cryptoTableView" destination="zkC-6D-UGG" id="Uuo-hw-NgI"/>
                         <outlet property="googleAdsOutlet" destination="ogC-vM-Iab" id="gma-nP-PWa"/>
                         <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="cryptoSegue" id="ErU-T6-APj"/>
+                        <segue destination="OBw-Px-o3o" kind="showDetail" identifier="goToSearch8" id="de5-af-tme"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GKm-VC-yUk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1165,6 +1168,6 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="9jB-Dl-jKl"/>
-        <segue reference="dx5-in-UYa"/>
+        <segue reference="3Nb-Xn-FGo"/>
     </inferredMetricsTieBreakers>
 </document>

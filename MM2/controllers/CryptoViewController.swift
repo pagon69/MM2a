@@ -64,6 +64,11 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var cryptoTableView: UITableView!
     
     
+    @IBAction func goToSearch(_ sender: UIBarButtonItem) {
+        
+        performSegue(withIdentifier: "goToSearch8", sender: self)    }
+    
+    
     //globals
     var myStocksArray = [Stock]()
     var currentIndexPath = 0

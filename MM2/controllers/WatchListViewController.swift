@@ -12,9 +12,10 @@ import AlamofireImage
 import SwiftyJSON
 import GoogleMobileAds
 
-class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate {
     
     
+    //table view delegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return watchListStocks.count
     }
@@ -24,8 +25,8 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Null"))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? "Null"))"
-        cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? "Null"))"
+        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Please forgive the mess!! "))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? "Error 101"))"
+        cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? "Thanks"))"
         
         return cell
     }
@@ -34,16 +35,44 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     //what should i add
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
         
-        
+        watchListStocks.removeAll()
+        watchListTableView.reloadData()
+    
+        myDefaults.set(watchListStocks, forKey: "userWatchList")
         
     }
+    
+    /*attempting to say when you get clicked run view setup function
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        viewSetup()
+        print("in tab bar delegate")
+    }
+    */
+
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+            currentIndexPath = indexPath.row
+            performSegue(withIdentifier: "goToTableView2", sender: self)
+    }
+    
     
     @IBAction func quickSearch(_ sender: UIBarButtonItem) {
         
-        
-        
+        performSegue(withIdentifier: "goToSearch6", sender: self)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //this will cover the makers details
+        if(segue.identifier == "goToTableView2"){
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+            destVC.data = watchListStocks[currentIndexPath]
+            
+        }
+        
+    }
     
     //outlets
     @IBOutlet weak var googleAds: GADBannerView!
@@ -55,6 +84,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     var watchListItems = [String]()
     var formatedWatchList: String = ""
     var watchListStocks = [Stock]()
+    var currentIndexPath = 0
     
     //helper functions
     func viewSetup(){
@@ -72,6 +102,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
             
         }
      
+        watchListTableView.reloadData()
     }
     
     
@@ -195,6 +226,8 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
 
         adsSetup()
         networkCall()
+        print("view did load WatchList")
+        
         
         // Do any additional setup after loading the view.
     }
