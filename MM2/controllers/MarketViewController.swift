@@ -225,7 +225,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func collectMarketData(){
         
-        
         //network request for liquid markets
         Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
             if let json = response.result.value {

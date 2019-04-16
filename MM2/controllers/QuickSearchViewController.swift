@@ -120,14 +120,38 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             */
         }
     
+        //selected row
+        func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+            
+            currentIndexPath = indexPath.row
+            performSegue(withIdentifier: "goToDetails3", sender: self)
+            print("this is another test: \(currentIndexPath)")
         
-        //search button segue
+        }
+    
+    
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //this will cover the makers details
+        if(segue.identifier == "goToDetails3"){
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+           
+            // I have to update the following with the object i am sending
+            destVC.data2 = searchResults?[currentIndexPath].Symbol
+            print("this is what i sent to the tableview detail controller: \(String(describing: searchResults?[currentIndexPath].Symbol))")
+            }
+        
+        }
+    
+        
+        /*search button segue
         @IBAction func searchButtonOutlet(_ sender: UIBarButtonItem){
             
             performSegue(withIdentifier: "goToSearch", sender: self)
             
         }
-        
+        */
+    
         //back button
         @IBAction func backButton(_ sender: UIBarButtonItem) {
             self.dismiss(animated: true, completion: nil)

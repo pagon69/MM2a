@@ -13,7 +13,7 @@
         <!--Deep Dive-->
         <scene sceneID="dC5-2y-RIm">
             <objects>
-                <viewController id="YOR-Km-gWC" customClass="MarketViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="YOR-Km-gWC" customClass="DeepDiveViewController" customModule="MM2" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mlr-By-eEL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="1100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -24,7 +24,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lhj-2E-aWO" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1051"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Db8-t1-tdT">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Db8-t1-tdT" userLabel="google ads" customClass="GADBannerView">
                                                 <rect key="frame" x="0.0" y="1000" width="375" height="50"/>
                                                 <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -97,6 +97,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Deep Dive" id="Q5G-Yg-ZhP"/>
                     <size key="freeformSize" width="375" height="1100"/>
+                    <connections>
+                        <outlet property="googleAds" destination="Db8-t1-tdT" id="xNM-Cd-1Wa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Z1-bW-1Ah" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -137,7 +140,7 @@
                             </searchBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="40t-ZI-eLx" customClass="GADBannerView">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="inN-CQ-D6e"/>
                                 </constraints>
@@ -160,6 +163,7 @@
                     <connections>
                         <outlet property="googleAdsOutlet" destination="40t-ZI-eLx" id="Wj1-R8-gC4"/>
                         <outlet property="searchDisplayController" destination="wSy-kX-lFb" id="Igs-US-me9"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="goToDetails3" id="Fwg-IQ-jgN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aqv-pZ-4yH" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1167,7 +1171,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="9jB-Dl-jKl"/>
-        <segue reference="3Nb-Xn-FGo"/>
+        <segue reference="Fwg-IQ-jgN"/>
+        <segue reference="Gfi-an-Jcs"/>
     </inferredMetricsTieBreakers>
 </document>
