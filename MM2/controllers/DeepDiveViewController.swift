@@ -26,8 +26,12 @@ class DeepDiveViewController: UIViewController {
     //outlets
     @IBOutlet weak var googleAds: GADBannerView!
     
+    @IBOutlet weak var ipoTableView: UITableView!
     
     
+    
+    //ipos window
+    //https://api.iextrading.com/1.0/stock/market/upcoming-ipos
     
     func adsSetup() {
         googleAds.adUnitID = "ca-app-pub-7563192023707820/2466331764"

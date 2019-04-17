@@ -240,7 +240,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         //network request for Major indexices
         //need to figure out this part and where to get the indices, update the number of stocks
-        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=aapl,fb,goog&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
+        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=dia,spy,iwm,&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 self.processData2(json: myJson)
