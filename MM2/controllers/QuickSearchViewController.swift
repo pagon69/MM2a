@@ -67,7 +67,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             if(tableView.tag == 0){
                 //print(searchResults?[indexPath.row].Symbol)
                 currentIndexPath = indexPath.row
-                performUserSearch(selectedValue: searchResults?[indexPath.row].Symbol ?? "AAPL")
+                performUserSearch(selectedValue: searchResults?[indexPath.row].Symbol ?? "Null")
                 //svcProgressHUD would be good here
             }
             
@@ -118,7 +118,15 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             searchBar.placeholder = "Enter stock"
             
         }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
+        // take users data and do a search var userdata = searchBar.text"
+        //call the data collection function
+        performUserSearch(selectedValue: searchBar.text ?? "")
+        print("did a search against: \(searchBar.text)")
+    }
+    
         func doSearch( searchV : String ){
             /*example of a array search
              searchR = myArray.filter({ (item) -> Bool in
@@ -127,7 +135,11 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
              */
             let items = myRealm.objects(Symbols.self).filter("Description CONTAINS[cd] %@", searchV).sorted(byKeyPath: "Description", ascending: true)
             
-            searchResults = items
+            //if(items.isEmpty){
+                
+           // }else{
+                searchResults = items
+          //  }
         }
         
         //opens the default realm then i change the path and replace with my bundle
