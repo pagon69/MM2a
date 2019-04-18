@@ -124,7 +124,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         // take users data and do a search var userdata = searchBar.text"
         //call the data collection function
         performUserSearch(selectedValue: searchBar.text ?? "")
-        print("did a search against: \(searchBar.text)")
+       // print("did a search against: \(searchBar.text)")
     }
     
         func doSearch( searchV : String ){
