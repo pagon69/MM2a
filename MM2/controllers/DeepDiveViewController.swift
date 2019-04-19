@@ -20,21 +20,25 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     var winners = [Stock]()
     var losers = [Stock]()
     var IPOs = [IPO]()
+    var currentIndex = 0
     
     //tableview information
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
         //ipos table
         if(tableView.tag == 1){
-            
+           // count = IPOs.count
+            count = 1
         }
         //movers table
         if(tableView.tag == 2){
-            
+            //count = winners.count
+            count = 1
         }
         //losers table
         if(tableView.tag == 3){
-            
+            //count = losers.count
+            count = 1
         }
         
         return count
@@ -48,9 +52,15 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         if(tableView.tag == 1){
             cell = ipoTableView.dequeueReusableCell(withIdentifier: "ipoCell", for: indexPath)
             
-            cell.textLabel?.text = "APPle Inc"
-            cell.detailTextLabel?.text = "price goes here"
+            if(IPOs.count == 0){
+                cell.textLabel?.text = "No IPOs available at this time, Try again after the Market opens"
+            }else
+            {
+                cell.textLabel?.numberOfLines = 0
+                cell.textLabel?.text = "\(String(describing: IPOs[indexPath.row].companyName))\n\(String(describing: IPOs[indexPath.row].symbol))"
             
+                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow)) -   $\(String(describing: IPOs[indexPath.row].priceHigh))"
+            }
         }
         
         //movers
@@ -66,7 +76,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         if(tableView.tag == 3){
             cell = losersTableView.dequeueReusableCell(withIdentifier: "losersCell", for: indexPath)
             
-            cell.textLabel?.text = "APPle Inc"
+            cell.textLabel?.text = "Google Inc"
             cell.detailTextLabel?.text = "price goes here"
             
         }
@@ -77,6 +87,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        currentIndex = indexPath.row
         
     }
     
@@ -145,22 +156,25 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func processIPOData(json : JSON){
-        
-        if(json["viewData"].isEmpty || json["rawData"].isEmpty){
-            // no data was sent, do nothing
-            
-        }else{
-            //data was sent
-            print("I got the data:")
-            
-            
-            
+        //json["viewData"].isEmpty && json["rawData"].isEmpty
+
+        for each in json{
+            for ipos in each.0{
+                
+
+
+
+            }
         }
         
         //end of data processing
     }
     
     func processMoversData(json : JSON){
+        //print(json)
+        
+        
+        
         
     }
     

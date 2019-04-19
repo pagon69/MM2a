@@ -404,18 +404,18 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         googleAdoutlet.rootViewController = self
         googleAdoutlet.load(GADRequest())
         
-       // earningsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-      // earningsAdOutlet.rootViewController = self
-       // earningsAdOutlet.load(GADRequest())
+        earningsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+       earningsAdOutlet.rootViewController = self
+        earningsAdOutlet.load(GADRequest())
         
-       // financailADOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-       // financailADOutlet.rootViewController = self
-       // financailADOutlet.load(GADRequest())
+        financailADOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        financailADOutlet.rootViewController = self
+        financailADOutlet.load(GADRequest())
         
         
-        //newsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-       // newsAdOutlet.rootViewController = self
-       // newsAdOutlet.load(GADRequest())
+        newsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        newsAdOutlet.rootViewController = self
+        newsAdOutlet.load(GADRequest())
         
     }
     override func viewDidLoad() {

@@ -73,10 +73,18 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var myStocksArray = [Stock]()
     var currentIndexPath = 0
     
+    var publicKey = "pk_77b4f9e303f64472a2a520800130d684"
+    
     func networkCall(){
-        Alamofire.request("https://api.iextrading.com/1.0/stock/market/crypto").responseJSON { (response) in
+        
+       // let newMethod = "https://cloud.iexapis.com/stable/stock/aapl/advanced-stats/token=\(publicKey)"
+        let oldMethod = "https://api.iextrading.com/1.0/stock/market/crypto"
+        
+        Alamofire.request(oldMethod).responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
+                print(myJson)
+                
                 self.processData(json: myJson)
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
