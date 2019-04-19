@@ -32,6 +32,7 @@
 		C1D03CD22257C8F5005A0501 /* NewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */; };
 		C1D03CD32257C8F5005A0501 /* NewsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */; };
 		C1E44DF52267A9BE0040D4EE /* DisclaimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E44DF42267A9BE0040D4EE /* DisclaimersViewController.swift */; };
+		C1FCF994226A504B00281B3C /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FCF993226A504B00281B3C /* Ticker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCollectionViewCell.swift; sourceTree = "<group>"; };
 		C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCollectionViewCell.xib; sourceTree = "<group>"; };
 		C1E44DF42267A9BE0040D4EE /* DisclaimersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimersViewController.swift; sourceTree = "<group>"; };
+		C1FCF993226A504B00281B3C /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		E376213F54B6ACC45AAE29BD /* Pods-MM2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.release.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.release.xcconfig"; sourceTree = "<group>"; };
 		F9AE6AB9BCFCD9BFC85809E4 /* Pods-MM2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -164,6 +166,7 @@
 				C16240B622523AA9008F9532 /* Earnings.swift */,
 				C16240B822523AC0008F9532 /* Financials.swift */,
 				C11F0CAE2268FD7200C9638B /* IPO.swift */,
+				C1FCF993226A504B00281B3C /* Ticker.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -330,6 +333,7 @@
 				C14146CC223A898E00AEB632 /* DetailSearchViewController.swift in Sources */,
 				C14146B0223A871900AEB632 /* AppDelegate.swift in Sources */,
 				C1E44DF52267A9BE0040D4EE /* DisclaimersViewController.swift in Sources */,
+				C1FCF994226A504B00281B3C /* Ticker.swift in Sources */,
 				C1282F4E224D17AC0025C15C /* Stock.swift in Sources */,
 				C115E2F2224BF7C50081F6F0 /* MakersTableViewController.swift in Sources */,
 			);
