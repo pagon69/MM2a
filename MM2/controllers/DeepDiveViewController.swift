@@ -78,9 +78,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     
     
     func startAnimating(){
-        
         timing += 1
-        
         t1.center.x = t1.center.x  - 10
         t2.center.x = t2.center.x  - 10
         t3.center.x = t3.center.x  - 10
@@ -182,7 +180,6 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         if(currentTicker == 2){
             
         }
-        
     }
     
     func randomTickerValues(){
@@ -197,26 +194,8 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
                     let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue, price: each.1["quote"]["high"].stringValue, change: each.1["quote"]["changePercent"].stringValue, picture : "🔥")
                     self.myTickers.append(tickerValue)
                     // print("this is whats in ticker now: \(self.myTickers)")
-}
-/* sorting algorythm with some bugs
- self.mySortedTickers = self.myTickers.sorted(by: { (first, second) -> Bool in
- 
- print("compare:\(second.price) to:\(first.price)")
- second.price < first.price
- return true
- })
- // print("myTicker items")
- for each in self.myTickers{
- // print(each.price)
- 
- }
-                 print("my sorted")
-                 for each in self.mySortedTickers{
-                 print(each.price)
-                 
-                 }
-                 */
-                
+                }
+
                 self.startingValue()
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
