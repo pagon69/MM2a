@@ -89,9 +89,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
         
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\n20000.23\n4.5%"
+            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nTotal Volume:\(myMarkets[indexPath.row].volume)\nMarket %\(myMarkets[indexPath.row].marketPercent)"
             
-            cell.detailTextLabel?.text = "\n🔻"
+            
+            
+            cell.detailTextLabel?.text = "🔻"
             //my markets below
         }
         
@@ -221,7 +223,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var myMarkets :[Markets] = [Markets]()
     var marketStocks: [Stock] = [Stock]()
     
-    
+    enum pictures: String {
+        case up = "🔺"
+        case down = "🔻"
+        case stable = "⎯"
+        case onFire = "🔥"
+        case cold = "❄️"
+    }
     
     //below is needed for ticker
     let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good"]
@@ -232,12 +240,12 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //functions needed for Ticker
     func startAnimating(){
         timing += 1
-        t1.center.x = t1.center.x  - 10
-        t2.center.x = t2.center.x  - 10
-        t3.center.x = t3.center.x  - 10
-        t4.center.x = t4.center.x  - 10
-        t5.center.x = t5.center.x  - 10
-        t6.center.x = t6.center.x  - 10
+        t1.center.x = t1.center.x  - 5
+        t2.center.x = t2.center.x  - 5
+        t3.center.x = t3.center.x  - 5
+        t4.center.x = t4.center.x  - 5
+        t5.center.x = t5.center.x  - 5
+        t6.center.x = t6.center.x  - 5
         
         if(t1.center.x + t1.frame.width/2 < 0){
             //replace print statement with api call
@@ -451,6 +459,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func collectMarketData(){
         
+        let keyMarkets = "n225,spy,dia,ndx,iwm"
         //network request for liquid markets
         Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
             if let json = response.result.value {
@@ -466,7 +475,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         //network request for Major indexices
         //need to figure out this part and where to get the indices, update the number of stocks
-        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=dia,spy,iwm,&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
+        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 self.processData2(json: myJson)

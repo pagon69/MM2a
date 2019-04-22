@@ -351,18 +351,25 @@
                                                         </tableViewCellContentView>
                                                     </tableViewCell>
                                                 </prototypes>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="YOR-Km-gWC" id="OoZ-Mn-51F"/>
+                                                    <outlet property="delegate" destination="YOR-Km-gWC" id="nP4-2i-TgZ"/>
+                                                </connections>
                                             </tableView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="znf-Pq-GsP" firstAttribute="top" secondItem="Lhj-2E-aWO" secondAttribute="top" constant="84" id="1Va-C8-Cko"/>
                                             <constraint firstItem="im9-z6-2Et" firstAttribute="leading" secondItem="Lhj-2E-aWO" secondAttribute="leading" id="1t6-oN-JTL"/>
+                                            <constraint firstItem="Db8-t1-tdT" firstAttribute="top" secondItem="im9-z6-2Et" secondAttribute="bottom" id="3Ro-Gf-rY5"/>
                                             <constraint firstItem="QY0-6w-8Yr" firstAttribute="top" secondItem="znf-Pq-GsP" secondAttribute="bottom" id="5uc-f0-U8m"/>
                                             <constraint firstItem="Db8-t1-tdT" firstAttribute="top" secondItem="rzd-eu-9Ar" secondAttribute="bottom" constant="239" id="6uN-mg-ObA"/>
                                             <constraint firstAttribute="bottom" secondItem="Db8-t1-tdT" secondAttribute="bottom" constant="1" id="8Cn-fW-fFM"/>
                                             <constraint firstAttribute="trailing" secondItem="Db8-t1-tdT" secondAttribute="trailing" id="96Y-uV-Aaj"/>
                                             <constraint firstAttribute="trailing" secondItem="znf-Pq-GsP" secondAttribute="trailing" id="9vG-y0-nSd"/>
+                                            <constraint firstAttribute="trailing" secondItem="im9-z6-2Et" secondAttribute="trailing" id="Dkw-qN-SEn"/>
                                             <constraint firstAttribute="trailing" secondItem="znf-Pq-GsP" secondAttribute="trailing" id="E4x-DE-IrM"/>
+                                            <constraint firstItem="QY0-6w-8Yr" firstAttribute="leading" secondItem="Lhj-2E-aWO" secondAttribute="leading" id="Ei9-bP-iO5"/>
                                             <constraint firstItem="im9-z6-2Et" firstAttribute="top" secondItem="rzd-eu-9Ar" secondAttribute="bottom" id="Fec-3x-9E6"/>
                                             <constraint firstItem="QY0-6w-8Yr" firstAttribute="leading" secondItem="Lhj-2E-aWO" secondAttribute="leading" id="GsQ-UK-ZMm"/>
                                             <constraint firstItem="rzd-eu-9Ar" firstAttribute="top" secondItem="QY0-6w-8Yr" secondAttribute="bottom" id="NrA-c3-CtV"/>
@@ -373,8 +380,13 @@
                                             <constraint firstAttribute="trailing" secondItem="im9-z6-2Et" secondAttribute="trailing" id="aAO-4T-dUz"/>
                                             <constraint firstItem="rzd-eu-9Ar" firstAttribute="top" secondItem="QY0-6w-8Yr" secondAttribute="bottom" id="e67-9n-rwN"/>
                                             <constraint firstItem="znf-Pq-GsP" firstAttribute="leading" secondItem="Lhj-2E-aWO" secondAttribute="leading" id="fBE-eg-j4q"/>
+                                            <constraint firstItem="im9-z6-2Et" firstAttribute="leading" secondItem="Lhj-2E-aWO" secondAttribute="leading" id="fqx-or-fOd"/>
+                                            <constraint firstItem="im9-z6-2Et" firstAttribute="top" secondItem="rzd-eu-9Ar" secondAttribute="bottom" id="gUg-mc-eYO"/>
                                             <constraint firstItem="znf-Pq-GsP" firstAttribute="leading" secondItem="Lhj-2E-aWO" secondAttribute="leading" id="hAy-WJ-w1s"/>
+                                            <constraint firstItem="rzd-eu-9Ar" firstAttribute="top" secondItem="QY0-6w-8Yr" secondAttribute="bottom" id="hJq-ve-jny"/>
+                                            <constraint firstAttribute="trailing" secondItem="QY0-6w-8Yr" secondAttribute="trailing" id="kTJ-D6-RnT"/>
                                             <constraint firstItem="Db8-t1-tdT" firstAttribute="top" secondItem="im9-z6-2Et" secondAttribute="bottom" id="qdt-Mv-Ag6"/>
+                                            <constraint firstItem="QY0-6w-8Yr" firstAttribute="top" secondItem="znf-Pq-GsP" secondAttribute="bottom" id="tOa-uP-eio"/>
                                             <constraint firstAttribute="trailing" secondItem="rzd-eu-9Ar" secondAttribute="trailing" id="xvS-yk-e5m"/>
                                         </constraints>
                                     </view>
@@ -469,11 +481,14 @@
                         <outlet property="ticker5" destination="ZB3-H6-J61" id="8nV-iA-CWW"/>
                         <outlet property="ticker6" destination="Ypl-hg-fld" id="D3G-NH-S6l"/>
                         <outlet property="tickerbanner" destination="znf-Pq-GsP" id="3FX-6W-ngQ"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="getLoserDetails" id="uvP-K9-TrS"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="getWinnerDetails" id="Qfw-LM-YLn"/>
+                        <segue destination="2sC-q4-Vaw" kind="showDetail" identifier="getIPODetails" id="Yec-0h-kEd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Z1-bW-1Ah" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="741.60000000000002" y="-888.75562218890559"/>
+            <point key="canvasLocation" x="754" y="-889"/>
         </scene>
         <!--Search window-->
         <scene sceneID="eWy-h8-z5U">
@@ -1631,7 +1646,7 @@
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     </view>
                                                 </subviews>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="100" id="UOp-oA-WeO"/>
                                                 </constraints>
@@ -1680,7 +1695,7 @@
                                                 </constraints>
                                                 <items>
                                                     <navigationItem title="Market Makers" id="u2U-EI-sHQ" userLabel="MarketMakers">
-                                                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="BD1-zZ-JIr"/>
+                                                        <barButtonItem key="leftBarButtonItem" id="BD1-zZ-JIr"/>
                                                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="YBe-vg-ATL">
                                                             <connections>
                                                                 <action selector="searchButtonOutlet:" destination="x1y-bG-d1Z" id="lU3-ml-w46"/>
@@ -1691,7 +1706,6 @@
                                             </navigationBar>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nZy-ad-EfD" customClass="GADBannerView">
                                                 <rect key="frame" x="0.0" y="1000" width="375" height="50"/>
-                                                <color key="backgroundColor" red="0.54134778689999996" green="0.70725388600000005" blue="0.6824436613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="EDZ-zj-RiW"/>
                                                     <constraint firstAttribute="height" constant="50" id="GTW-WH-Wrq"/>
@@ -1703,6 +1717,7 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="397" id="Bwm-zb-8xw"/>
                                                 </constraints>
+                                                <color key="separatorColor" red="1" green="0.71060696334488616" blue="0.4432823311944718" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <prototypes>
                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="makersCell" textLabel="xIU-CG-gBc" detailTextLabel="mNf-Yo-Tc0" style="IBUITableViewCellStyleValue1" id="Jab-UO-4br">
                                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>

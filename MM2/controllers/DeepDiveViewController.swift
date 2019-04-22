@@ -256,13 +256,13 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         }
         //movers table
         if(tableView.tag == 2){
-            //count = winners.count
-            count = 1
+            count = winners.count
+           // count = 1
         }
         //losers table
         if(tableView.tag == 3){
-            //count = losers.count
-            count = 1
+            count = losers.count
+            //count = 1
         }
         
         return count
@@ -277,22 +277,24 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             cell = ipoTableView.dequeueReusableCell(withIdentifier: "ipoCell", for: indexPath)
             
             if(IPOs.count == 0){
-                cell.textLabel?.text = "No IPOs available at this time, Try again after the Market opens"
+                cell.textLabel?.text = "No IPOs available at this time"
             }else
             {
                 cell.textLabel?.numberOfLines = 0
-                cell.textLabel?.text = "\(String(describing: IPOs[indexPath.row].companyName))\n\(String(describing: IPOs[indexPath.row].symbol))"
+                cell.textLabel?.text = "\(String(describing: IPOs[indexPath.row].companyName ?? "Null"))\n\(String(describing: IPOs[indexPath.row].symbol ?? "Null"))"
             
-                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow)) -   $\(String(describing: IPOs[indexPath.row].priceHigh))"
+                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow ?? "Null"))$\(String(describing: IPOs[indexPath.row].priceHigh ?? "Null"))"
             }
         }
         
         //movers
         if(tableView.tag == 2){
             cell = moversAndShakersTableView.dequeueReusableCell(withIdentifier: "moversAndShakerCell", for: indexPath)
+            cell.textLabel?.numberOfLines = 0
+            cell.detailTextLabel?.numberOfLines = 0
             
-            cell.textLabel?.text = "APPle Inc"
-            cell.detailTextLabel?.text = "price goes here"
+            cell.textLabel?.text = "\(String(describing: winners[indexPath.row].companyName ?? "Null"))\n\(String(describing: winners[indexPath.row].symbol ?? "Null"))"
+            cell.detailTextLabel?.text = "$\(String(describing: winners[indexPath.row].latestPrice ?? "Null"))\n%\(String(describing: winners[indexPath.row].changePercent ?? "Null"))"
             
         }
         
@@ -300,18 +302,89 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         if(tableView.tag == 3){
             cell = losersTableView.dequeueReusableCell(withIdentifier: "losersCell", for: indexPath)
             
-            cell.textLabel?.text = "Google Inc"
-            cell.detailTextLabel?.text = "price goes here"
-            
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.numberOfLines = 0
+            cell.textLabel?.text = "\(String(describing: losers[indexPath.row].companyName ?? "Null"))\n\(String(describing: losers[indexPath.row].symbol ?? "Null"))"
+            cell.detailTextLabel?.text = "$\(String(describing: losers[indexPath.row].latestPrice ?? "Null"))\n\(String(describing: losers[indexPath.row].change ?? "Null"))"
         }
         
-        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var heading: String = ""
+        
+        if(tableView.tag == 1){
+            heading = "Upcoming IPOs"
+        }
+        if(tableView.tag == 2){
+            heading = "Winners"
+            //tableView.sectionIndexBackgroundColor = .black
+            //tableView.backgroundColor = .black
+        }
+        if(tableView.tag == 3){
+            heading = "Losers"
+            
+        }
+        return heading
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         currentIndex = indexPath.row
+        
+        if(tableView.tag == 1){
+            currentIndex = indexPath.row
+            
+            //create a specific IPO detail view
+            performSegue(withIdentifier: "getIPODetails", sender: self)
+            
+            
+        }
+        
+        if(tableView.tag == 2){
+            currentIndex = indexPath.row
+            
+            performSegue(withIdentifier: "getWinnerDetails", sender: self)
+            
+            
+        }
+        
+        //looks at makers table View
+        if(tableView.tag == 3){
+            currentIndex = indexPath.row
+            performSegue(withIdentifier: "getLoserDetails", sender: self)
+            
+        }
+        
+    }
+    
+    //prepares the environment for the multiple possible segues
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //create a custom view for IPO processing
+        if(segue.identifier == "getIPODetails"){
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+            destVC.data = winners[currentIndex]
+            
+            //create a IPO view
+        }
+        
+        
+        //create a custom view for winners processing
+        if(segue.identifier == "getWinnersDetails"){
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+             destVC.data = winners[currentIndex]
+            
+        }
+        
+        //this will cover the markets
+        if(segue.identifier == "getLoserDetails"){
+            
+            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
+            destVC.data = losers[currentIndex]
+            
+        }
         
     }
     
@@ -346,7 +419,6 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Got data, this much was sent: \(data)")
             }
         }
-        
         
         //movers and shakers data call
         //https://api.iextrading.com/1.0/stock/market/list/mostactive
@@ -385,25 +457,119 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         for each in json{
             for ipos in each.0{
                 
+                
 
 
 
             }
         }
         
-        //end of data processing
+        ipoTableView.reloadData()
     }
     
     func processMoversData(json : JSON){
-        //print(json)
+
+        for each in json{
+            let myStocks = Stock()
+            
+            myStocks.symbol = each.1["symbol"].stringValue
+            myStocks.companyName = each.1["companyName"].stringValue
+            myStocks.primaryExchange = each.1["primaryExchange"].stringValue
+            myStocks.sector = each.1["sector"].stringValue
+            myStocks.calculationPrice = each.1["calculationPrice"].stringValue
+            myStocks.open = each.1["open"].stringValue
+            myStocks.openTime = each.1["openTime"].stringValue
+            myStocks.close = each.1["close"].stringValue
+            myStocks.closeTime = each.1["closeTime"].stringValue
+            myStocks.high = each.1["high"].stringValue
+            myStocks.low = each.1["low"].stringValue
+            myStocks.latestPrice = each.1["latestPrice"].stringValue
+            myStocks.latestSource = each.1["latestSource"].stringValue
+            myStocks.latestTime = each.1["latestTime"].stringValue
+            myStocks.latestUpdate = each.1["latestUpdate"].stringValue
+            myStocks.latestVolume = each.1["latestVolume"].stringValue
+            myStocks.iexRealTimePrice = each.1["iexRealTimePrice"].stringValue
+            myStocks.ieRealtimeSize = each.1["ieRealtimeSize"].stringValue
+            myStocks.iexLastUpdated = each.1["iexLastUpdated"].stringValue
+            myStocks.delayedPrice = each.1["delayedPrice"].stringValue
+            myStocks.delayedPriceTime = each.1["delayedPriceTime"].stringValue
+            myStocks.extendedPrice = each.1["extendedPrice"].stringValue
+            myStocks.extendedChange = each.1["extendedChange"].stringValue
+            myStocks.extendedChangePercent = each.1["extendedChangePercent"].stringValue
+            myStocks.extendedPriceTime = each.1["extendedPriceTime"].stringValue
+            myStocks.previousClose = each.1["previousClose"].stringValue
+            myStocks.change = each.1["change"].stringValue
+            myStocks.changePercent = each.1["changePercent"].stringValue
+            myStocks.iexMarketPercent = each.1["iexMarketPercent"].stringValue
+            myStocks.iexVolume = each.1["iexVolume"].stringValue
+            myStocks.avgTotalVolume = each.1["avgTotalVolume"].stringValue
+            myStocks.iexBidPrice = each.1["iexBidPrice"].stringValue
+            myStocks.iexBidSize = each.1["iexBidSize"].stringValue
+            myStocks.iexAskPrice = each.1["iexAskPrice"].stringValue
+            myStocks.iexAskSize = each.1["iexAskSize"].stringValue
+            myStocks.marketCap = each.1["marketCap"].stringValue
+            myStocks.peRation = each.1["peRation"].stringValue
+            myStocks.week52High = each.1["week52High"].stringValue
+            myStocks.week52Low = each.1["week52Low"].stringValue
+            myStocks.ytdChange = each.1["ytdChange"].stringValue
+            
+            print(myStocks.companyName)
+            winners.append(myStocks)
+        }
         
-        
-        
-        
+        moversAndShakersTableView.reloadData()
     }
     
     func processLosersData(json : JSON){
         
+        for each in json{
+            let myStocks = Stock()
+            
+            myStocks.symbol = each.1["symbol"].stringValue
+            myStocks.companyName = each.1["companyName"].stringValue
+            myStocks.primaryExchange = each.1["primaryExchange"].stringValue
+            myStocks.sector = each.1["sector"].stringValue
+            myStocks.calculationPrice = each.1["calculationPrice"].stringValue
+            myStocks.open = each.1["open"].stringValue
+            myStocks.openTime = each.1["openTime"].stringValue
+            myStocks.close = each.1["close"].stringValue
+            myStocks.closeTime = each.1["closeTime"].stringValue
+            myStocks.high = each.1["high"].stringValue
+            myStocks.low = each.1["low"].stringValue
+            myStocks.latestPrice = each.1["latestPrice"].stringValue
+            myStocks.latestSource = each.1["latestSource"].stringValue
+            myStocks.latestTime = each.1["latestTime"].stringValue
+            myStocks.latestUpdate = each.1["latestUpdate"].stringValue
+            myStocks.latestVolume = each.1["latestVolume"].stringValue
+            myStocks.iexRealTimePrice = each.1["iexRealTimePrice"].stringValue
+            myStocks.ieRealtimeSize = each.1["ieRealtimeSize"].stringValue
+            myStocks.iexLastUpdated = each.1["iexLastUpdated"].stringValue
+            myStocks.delayedPrice = each.1["delayedPrice"].stringValue
+            myStocks.delayedPriceTime = each.1["delayedPriceTime"].stringValue
+            myStocks.extendedPrice = each.1["extendedPrice"].stringValue
+            myStocks.extendedChange = each.1["extendedChange"].stringValue
+            myStocks.extendedChangePercent = each.1["extendedChangePercent"].stringValue
+            myStocks.extendedPriceTime = each.1["extendedPriceTime"].stringValue
+            myStocks.previousClose = each.1["previousClose"].stringValue
+            myStocks.change = each.1["change"].stringValue
+            myStocks.changePercent = each.1["changePercent"].stringValue
+            myStocks.iexMarketPercent = each.1["iexMarketPercent"].stringValue
+            myStocks.iexVolume = each.1["iexVolume"].stringValue
+            myStocks.avgTotalVolume = each.1["avgTotalVolume"].stringValue
+            myStocks.iexBidPrice = each.1["iexBidPrice"].stringValue
+            myStocks.iexBidSize = each.1["iexBidSize"].stringValue
+            myStocks.iexAskPrice = each.1["iexAskPrice"].stringValue
+            myStocks.iexAskSize = each.1["iexAskSize"].stringValue
+            myStocks.marketCap = each.1["marketCap"].stringValue
+            myStocks.peRation = each.1["peRation"].stringValue
+            myStocks.week52High = each.1["week52High"].stringValue
+            myStocks.week52Low = each.1["week52Low"].stringValue
+            myStocks.ytdChange = each.1["ytdChange"].stringValue
+            
+            losers.append(myStocks)
+        }
+        
+        losersTableView.reloadData()
     }
     
     //outlets
