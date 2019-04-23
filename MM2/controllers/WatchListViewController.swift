@@ -32,6 +32,10 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         return cell
     }
     
+    //delete cell from watchlist
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    
+    }
     
     //what should i add
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
