@@ -11,6 +11,7 @@
 		C115E2EE224BDE670081F6F0 /* TableViewDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */; };
 		C115E2F0224BDEF30081F6F0 /* CryptoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */; };
 		C115E2F2224BF7C50081F6F0 /* MakersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */; };
+		C11F0CAF2268FD7200C9638B /* IPO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11F0CAE2268FD7200C9638B /* IPO.swift */; };
 		C12437FA225E213200E38409 /* WatchListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12437F9225E213200E38409 /* WatchListViewController.swift */; };
 		C1282F4E224D17AC0025C15C /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1282F4D224D17AC0025C15C /* Stock.swift */; };
 		C1282F50224D34C20025C15C /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1282F4F224D34C20025C15C /* Chart.swift */; };
@@ -27,8 +28,11 @@
 		C16240B5225239FC008F9532 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16240B4225239FC008F9532 /* News.swift */; };
 		C16240B722523AA9008F9532 /* Earnings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16240B622523AA9008F9532 /* Earnings.swift */; };
 		C16240B922523AC0008F9532 /* Financials.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16240B822523AC0008F9532 /* Financials.swift */; };
+		C165B62722664D3E001FF965 /* DeepDiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C165B62622664D3E001FF965 /* DeepDiveViewController.swift */; };
 		C1D03CD22257C8F5005A0501 /* NewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */; };
 		C1D03CD32257C8F5005A0501 /* NewsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */; };
+		C1E44DF52267A9BE0040D4EE /* DisclaimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E44DF42267A9BE0040D4EE /* DisclaimersViewController.swift */; };
+		C1FCF994226A504B00281B3C /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FCF993226A504B00281B3C /* Ticker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +40,7 @@
 		C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDetailsViewController.swift; sourceTree = "<group>"; };
 		C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoViewController.swift; sourceTree = "<group>"; };
 		C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MakersTableViewController.swift; sourceTree = "<group>"; };
+		C11F0CAE2268FD7200C9638B /* IPO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPO.swift; sourceTree = "<group>"; };
 		C12437F9225E213200E38409 /* WatchListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchListViewController.swift; sourceTree = "<group>"; };
 		C1282F4D224D17AC0025C15C /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 		C1282F4F224D34C20025C15C /* Chart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
@@ -54,8 +59,11 @@
 		C16240B4225239FC008F9532 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		C16240B622523AA9008F9532 /* Earnings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Earnings.swift; sourceTree = "<group>"; };
 		C16240B822523AC0008F9532 /* Financials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Financials.swift; sourceTree = "<group>"; };
+		C165B62622664D3E001FF965 /* DeepDiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepDiveViewController.swift; sourceTree = "<group>"; };
 		C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsCollectionViewCell.swift; sourceTree = "<group>"; };
 		C1D03CD12257C8F5005A0501 /* NewsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsCollectionViewCell.xib; sourceTree = "<group>"; };
+		C1E44DF42267A9BE0040D4EE /* DisclaimersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimersViewController.swift; sourceTree = "<group>"; };
+		C1FCF993226A504B00281B3C /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		E376213F54B6ACC45AAE29BD /* Pods-MM2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.release.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.release.xcconfig"; sourceTree = "<group>"; };
 		F9AE6AB9BCFCD9BFC85809E4 /* Pods-MM2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,7 +122,9 @@
 		C14146C1223A872B00AEB632 /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C1E44DF42267A9BE0040D4EE /* DisclaimersViewController.swift */,
 				C12437F9225E213200E38409 /* WatchListViewController.swift */,
+				C165B62622664D3E001FF965 /* DeepDiveViewController.swift */,
 				C1D03CD02257C8F5005A0501 /* NewsCollectionViewCell.swift */,
 				C115E2EF224BDEF30081F6F0 /* CryptoViewController.swift */,
 				C115E2ED224BDE670081F6F0 /* TableViewDetailsViewController.swift */,
@@ -155,6 +165,8 @@
 				C16240B4225239FC008F9532 /* News.swift */,
 				C16240B622523AA9008F9532 /* Earnings.swift */,
 				C16240B822523AC0008F9532 /* Financials.swift */,
+				C11F0CAE2268FD7200C9638B /* IPO.swift */,
+				C1FCF993226A504B00281B3C /* Ticker.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -276,6 +288,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -289,6 +302,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -304,6 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C11F0CAF2268FD7200C9638B /* IPO.swift in Sources */,
 				C14146CE223A899D00AEB632 /* QuickSearchViewController.swift in Sources */,
 				C115E2EE224BDE670081F6F0 /* TableViewDetailsViewController.swift in Sources */,
 				C14146D0223AC73000AEB632 /* Markets.swift in Sources */,
@@ -315,9 +330,12 @@
 				C16240B722523AA9008F9532 /* Earnings.swift in Sources */,
 				C16240B5225239FC008F9532 /* News.swift in Sources */,
 				C12437FA225E213200E38409 /* WatchListViewController.swift in Sources */,
+				C165B62722664D3E001FF965 /* DeepDiveViewController.swift in Sources */,
 				C115E2F0224BDEF30081F6F0 /* CryptoViewController.swift in Sources */,
 				C14146CC223A898E00AEB632 /* DetailSearchViewController.swift in Sources */,
 				C14146B0223A871900AEB632 /* AppDelegate.swift in Sources */,
+				C1E44DF52267A9BE0040D4EE /* DisclaimersViewController.swift in Sources */,
+				C1FCF994226A504B00281B3C /* Ticker.swift in Sources */,
 				C1282F4E224D17AC0025C15C /* Stock.swift in Sources */,
 				C115E2F2224BF7C50081F6F0 /* MakersTableViewController.swift in Sources */,
 			);

@@ -119,6 +119,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     //gloabals
     var data: Stock?
+    var data2: String?
     
     //use a dictionary for this part versus two arrays
     var myArray = [String]()
@@ -311,6 +312,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     func buildCharts() {
         combinedChartsOutlet.noDataText = "No Data Available"
+        
         var barDataEntries: [BarChartDataEntry] = []
        // let lineDataEntries: [LineChartData] = []
         let count = data?.chartsData.count ?? 1
@@ -334,6 +336,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     func setupPieChart(){
         pieChartOutlet.noDataText = "No Data Available"
         var pieDataEntries: [PieChartDataEntry] = []
+        //var pieDataEntries: [PieChartDataEntry]?
         
         // let lineDataEntries: [LineChartData] = []
         let count = data?.earningsData.count ?? 1
@@ -402,12 +405,12 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         googleAdoutlet.load(GADRequest())
         
         earningsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-        earningsAdOutlet.rootViewController = self
+       earningsAdOutlet.rootViewController = self
         earningsAdOutlet.load(GADRequest())
         
-       // financailADOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-       // financailADOutlet.rootViewController = self
-       // financailADOutlet.load(GADRequest())
+        financailADOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        financailADOutlet.rootViewController = self
+        financailADOutlet.load(GADRequest())
         
         
         newsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
@@ -419,6 +422,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         super.viewDidLoad()
 
         adsSetup()
+       
         viewSetup()
         buildCharts()
         collectionViewOutlet.reloadData()
