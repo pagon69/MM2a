@@ -72,7 +72,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
         var cell = UITableViewCell()
         
-        //Markets tableView cell
+        //indices tableView cell
         if(tableView.tag == 1){
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
             
@@ -81,19 +81,37 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(String(describing: marketStocks[indexPath.row].companyName ?? "Something went wrong"))\n\(String(describing: marketStocks[indexPath.row].symbol ?? "Something went wrong" ))"
             
-            cell.detailTextLabel?.numberOfLines = 0
-            cell.detailTextLabel?.text = "\(String(describing: marketStocks[indexPath.row].latestPrice ?? "something went wrong"))\n\(String(describing: marketStocks[indexPath.row].change ?? "something went wrong"))"
+            if let change = marketStocks[indexPath.row].change{
+                print(change)
+                
+                if Int(change) ?? 1 >= 0{
+                   // print(pictures.up.rawValue)
+                    cell.detailTextLabel?.numberOfLines = 0
+                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.up.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                }else if Int(change) ?? -1 <= 0{
+                    cell.detailTextLabel?.numberOfLines = 0
+                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                }else{
+                    cell.detailTextLabel?.numberOfLines = 0
+                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.stable.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"                }
+            }
         }
         
+        //markets
         if(tableView.tag == 2){
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
         
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nTotal Volume:\(myMarkets[indexPath.row].volume)\nMarket %\(myMarkets[indexPath.row].marketPercent)"
+            cell.textLabel?.text = "Name: \(myMarkets[indexPath.row].venueName)\nTotal Volume: \(myMarkets[indexPath.row].volume)"
+            
+            if let marketP = myMarkets[indexPath.row].marketPercent {
+                print(marketP * 100)
+                cell.detailTextLabel?.text = "Market %\(marketP)"
+                
+            }
             
             
             
-            cell.detailTextLabel?.text = "🔻"
             //my markets below
         }
         
@@ -497,7 +515,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         for each in json{
             
             //need to create a market object with all of the data
-            let market = Markets(mic: each.1["mic"].stringValue, tapeId: each.1["tapeId"].stringValue, venueName: each.1["venueName"].stringValue, volume: each.1["marketPercent"].stringValue, marketPercent: each.1["volume"].stringValue, charts: [1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5], tapeA: each.1["tapeA"].stringValue, tapeB: each.1["tabeB"].stringValue, tapeC: each.1["tapeC"].stringValue, lastUpdated: each.1["lastUpdated"].stringValue)
+            let market = Markets(mic: each.1["mic"].stringValue, tapeId: each.1["tapeId"].stringValue, venueName: each.1["venueName"].stringValue, volume: each.1["volume"].stringValue, marketPercent: each.1["marketPercent"].stringValue, charts: [1.5,2.5,3.5,4.5,5.5,6.5,7.5,8.5,9.5], tapeA: each.1["tapeA"].stringValue, tapeB: each.1["tabeB"].stringValue, tapeC: each.1["tapeC"].stringValue, lastUpdated: each.1["lastUpdated"].stringValue)
 
             myMarkets.append(market)
         }
