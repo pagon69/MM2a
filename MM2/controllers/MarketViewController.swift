@@ -77,7 +77,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
             
             //how can i remove the force unwraps and the possible crash this could produce
-
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(String(describing: marketStocks[indexPath.row].companyName ?? "Something went wrong"))\n\(String(describing: marketStocks[indexPath.row].symbol ?? "Something went wrong" ))"
             
@@ -105,14 +104,9 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell.textLabel?.text = "Name: \(myMarkets[indexPath.row].venueName)\nTotal Volume: \(myMarkets[indexPath.row].volume)"
             
             if let marketP = myMarkets[indexPath.row].marketPercent {
-                print(marketP * 100)
-                cell.detailTextLabel?.text = "Market %\(marketP)"
-                
+                print(Int(marketP) ?? 1 * 100)
+                cell.detailTextLabel?.text = "Mkt% \(marketP)"
             }
-            
-            
-            
-            //my markets below
         }
         
         return cell

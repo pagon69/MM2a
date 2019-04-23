@@ -26,8 +26,8 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Please forgive the mess!! "))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? "Error 101"))"
-        cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? "Thanks"))"
+        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Search for and Add stocks  to you WatchList!! "))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
+        cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
         
         return cell
     }

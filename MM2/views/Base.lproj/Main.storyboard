@@ -1274,7 +1274,7 @@
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ogC-vM-Iab" userLabel="google Ads" customClass="GADBannerView">
                                                 <rect key="frame" x="0.0" y="1001" width="375" height="50"/>
-                                                <color key="backgroundColor" red="0.54134778689999996" green="0.70725388600000005" blue="0.6824436613" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.99942404029999998" green="0.98555368190000003" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="KNP-dA-bkx"/>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="UVX-l1-7Kz"/>
@@ -1308,6 +1308,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </tableViewCellContentView>
+                                                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </tableViewCell>
                                                 </prototypes>
                                                 <connections>
@@ -1341,7 +1342,7 @@
                                         </constraints>
                                         <items>
                                             <navigationItem title="Market Makers" id="Je0-AA-2jf" userLabel="MarketMakers">
-                                                <barButtonItem key="leftBarButtonItem" title="Item" id="4H8-NK-SWC"/>
+                                                <barButtonItem key="leftBarButtonItem" id="4H8-NK-SWC"/>
                                                 <barButtonItem key="rightBarButtonItem" systemItem="search" id="Kbl-YO-au3">
                                                     <connections>
                                                         <action selector="goToSearch:" destination="a00-xw-ATh" id="49D-Bo-TN5"/>
@@ -2366,7 +2367,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="9jB-Dl-jKl"/>
-        <segue reference="3Nb-Xn-FGo"/>
+        <segue reference="ErU-T6-APj"/>
+        <segue reference="de5-af-tme"/>
     </inferredMetricsTieBreakers>
 </document>

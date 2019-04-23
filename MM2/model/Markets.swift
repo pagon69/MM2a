@@ -14,7 +14,7 @@ class Markets {
     var tapeId: String
     var venueName: String
     var volume: String
-    var marketPercent: String
+    var marketPercent: String?
     var charts: [Double]
     var tapeA: String
     var tapeB: String

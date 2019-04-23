@@ -10,26 +10,64 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 import GoogleMobileAds
+import SVProgressHUD
 
 class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
-    
     //table view setup
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myStocksArray.count
-    }
-    
+    // attempting to edit this
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = cryptoTableView.dequeueReusableCell(withIdentifier: "cryptoCell", for: indexPath)
         
+        /* customize
+        cell.contentView.backgroundColor = UIColor.clear
+        let whiteRoundedView : UIView = UIView(frame: CGRect(x: 10, y: 10, width: 365, height: 44))
+        whiteRoundedView.layer.backgroundColor = CGColor(colorSpace: .init(iccData: CFTypeRef.self as CFTypeRef), components: [1.0,1.0,1.0,0.8])
+        whiteRoundedView.translatesAutoresizingMaskIntoConstraints = false
+        whiteRoundedView.layer.cornerRadius = 2.0
+        whiteRoundedView.layer.shadowOffset = CGSize(width: -1, height: -1)
+        whiteRoundedView.layer.shadowOpacity = 2.0
+        cell.contentView.addSubview(whiteRoundedView)
+        cell.contentView.sendSubviewToBack(whiteRoundedView)
+        */
+        
+        
+        
+        
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\(String(describing: myStocksArray[indexPath.row].companyName ?? "Null"))\n\(String(describing: myStocksArray[indexPath.row].symbol ?? "Null"))"
-        cell.detailTextLabel?.text = myStocksArray[indexPath.row].latestPrice ?? "Null"
+        cell.backgroundColor = UIColor.yellow
+        
+        cell.textLabel?.text = "\(String(describing: myStocksArray[indexPath.section].companyName ?? "Null"))\n\(String(describing: myStocksArray[indexPath.section].symbol ?? "Null"))"
+        cell.detailTextLabel?.text = myStocksArray[indexPath.section].latestPrice ?? "Null"
         
         return cell
     }
+ 
+    //customize code - adds spaces between cells
+   
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return myStocksArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(10.0)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let v = UIView()
+        v.backgroundColor = UIColor.lightGray
+        return v
+        
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        //return myStocksArray.count
+        return 1
+    }
+    
+    //customize code ends
     
     //add the selection of a row code here
     
@@ -101,13 +139,6 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var t6Picture: UILabel!
     @IBOutlet weak var t6Price: UILabel!
     @IBOutlet weak var t6Change: UILabel!
-    
-    
-    
-    
-    
-    
-    
     
     
     @IBAction func goToSearch(_ sender: UIBarButtonItem) {
@@ -236,9 +267,11 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func randomTickerValues(){
         var combined = ""
+        
         for each in keyMarketStock{
             combined = combined + "," + each
         }
+        
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=" + combined + "&types=quote").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
@@ -305,6 +338,7 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func networkCall(){
         
+        SVProgressHUD.show()
        // let newMethod = "https://cloud.iexapis.com/stable/stock/aapl/advanced-stats/token=\(publicKey)"
         let oldMethod = "https://api.iextrading.com/1.0/stock/market/crypto"
         
@@ -372,6 +406,8 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
             
             myStocksArray.append(myStocks)
             }
+        
+            SVProgressHUD.dismiss()
             cryptoTableView.reloadData()
         
         }

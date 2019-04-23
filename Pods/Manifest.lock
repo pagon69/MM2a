@@ -39,6 +39,7 @@ PODS:
   - Realm/Headers (3.13.1)
   - RealmSwift (3.13.1):
     - Realm (= 3.13.1)
+  - SVProgressHUD (2.2.5)
   - SwiftyJSON (4.2.0)
 
 DEPENDENCIES:
@@ -47,6 +48,7 @@ DEPENDENCIES:
   - Charts (~> 3.2)
   - Google-Mobile-Ads-SDK
   - RealmSwift
+  - SVProgressHUD
   - SwiftyJSON
 
 SPEC REPOS:
@@ -60,6 +62,7 @@ SPEC REPOS:
     - nanopb
     - Realm
     - RealmSwift
+    - SVProgressHUD
     - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -72,8 +75,9 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: 79860847325ead755a5acfb8cea2b25511d5b00a
+PODFILE CHECKSUM: bf37a5dae9b327ed66f0e0f77fe0d16223d59cb6
 
 COCOAPODS: 1.5.3
