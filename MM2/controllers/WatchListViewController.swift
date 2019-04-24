@@ -14,12 +14,15 @@ import GoogleMobileAds
 
 class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate {
     
+    //tab bar delegate stuff
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print("In the following tab bar: \(tabBar.tag)")
+    }
     
     //table view delegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return watchListStocks.count
     }
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -34,7 +37,10 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     //delete cell from watchlist
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    
+        if editingStyle == .delete{
+            watchListItems.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
     
     //what should i add
@@ -42,7 +48,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         
         watchListStocks.removeAll()
         watchListTableView.reloadData()
-    
+        updateFocusIfNeeded()
         myDefaults.set(watchListStocks, forKey: "userWatchList")
         
     }
@@ -326,6 +332,8 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         }
      
         watchListTableView.reloadData()
+        updateFocusIfNeeded()
+        
     }
     
     
@@ -447,14 +455,16 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
         adsSetup()
         networkCall()
-        
         startPosition()
         
         myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
             self.startAnimating()
         })
+        
         
         // Do any additional setup after loading the view.
     }
