@@ -12,7 +12,7 @@ import AlamofireImage
 import SwiftyJSON
 import GoogleMobileAds
 
-class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate {
+class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate, UITabBarControllerDelegate {
     
     //tab bar delegate stuff
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
@@ -38,8 +38,13 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     //delete cell from watchlist
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            watchListItems.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            //should i delete the item from  the string also
+           // watchListItems.remove(at: indexPath.row)
+            
+            //deletion from tableview
+            watchListStocks.remove(at: indexPath.row)
+            watchListTableView.deleteRows(at: [indexPath], with: .fade)
+            watchListTableView.reloadData()
         }
     }
     
@@ -48,7 +53,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         
         watchListStocks.removeAll()
         watchListTableView.reloadData()
-        updateFocusIfNeeded()
+       // updateFocusIfNeeded()
         myDefaults.set(watchListStocks, forKey: "userWatchList")
         
     }
@@ -332,7 +337,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         }
      
         watchListTableView.reloadData()
-        updateFocusIfNeeded()
+       // updateFocusIfNeeded()
         
     }
     

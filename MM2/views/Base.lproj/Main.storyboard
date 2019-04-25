@@ -677,7 +677,7 @@
                                                                     <action selector="quickSearch:" destination="6Dq-qf-wFM" id="7yN-Qw-H6v"/>
                                                                 </connections>
                                                             </barButtonItem>
-                                                            <barButtonItem systemItem="trash" id="M18-qA-Szi">
+                                                            <barButtonItem id="M18-qA-Szi">
                                                                 <connections>
                                                                     <action selector="deleteWatchList:" destination="6Dq-qf-wFM" id="zDe-sI-gDP"/>
                                                                 </connections>
@@ -2367,7 +2367,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ErU-T6-APj"/>
-        <segue reference="de5-af-tme"/>
+        <segue reference="0hU-9P-gnx"/>
+        <segue reference="dx5-in-UYa"/>
     </inferredMetricsTieBreakers>
 </document>
