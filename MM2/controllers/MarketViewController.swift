@@ -17,7 +17,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
     
     //UI search controller information, not using so remove?
-        var testing = ["testing","tester","candy","daddy","mama"]
+       // var testing = ["testing","tester","candy","daddy","mama"]
         let searchController = UISearchController(searchResultsController: nil)
     
     //not using this so remove?
@@ -39,7 +39,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         var heading: String = ""
         
         if(tableView.tag == 1){
-            heading = "Major Indexes"
+            heading = "Major ETF/Indexes"
         }
         if(tableView.tag == 2){
             heading = "Exchanges"
@@ -101,7 +101,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
         
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "Name: \(myMarkets[indexPath.row].venueName)\nTotal Volume: \(myMarkets[indexPath.row].volume)"
+            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nTotal Volume: \(myMarkets[indexPath.row].volume)"
             
             if let marketP = myMarkets[indexPath.row].marketPercent {
                 print(Int(marketP) ?? 1 * 100)
@@ -236,7 +236,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var marketStocks: [Stock] = [Stock]()
     
     enum pictures: String {
-        case up = "🔺"
+        case up = "💹"
         case down = "🔻"
         case stable = "⎯"
         case onFire = "🔥"
@@ -244,7 +244,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     //below is needed for ticker
-    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good"]
+    let keyMarketStock = ["dia","spy", "goog", "fb", "aapl", "good"]
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
     
@@ -471,7 +471,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func collectMarketData(){
         
-        let keyMarkets = "n225,spy,dia,ndx,iwm"
+        // ETFs i am aware of, like indices but free to display the data
+       // ["rcmp", "dia","spy", "iwm", "v00", "ivv", "vti","spx","ixndx","rui","rut","oex","ndxe"]
+        
+        let keyMarkets = "djia,NASDAQ,n225,spy,dia,ndx,iwm,rcmp,voo,v00,ivv,vti,spx,ixndx,rui,rut,oex,ndxe"
         //network request for liquid markets
         Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
             if let json = response.result.value {

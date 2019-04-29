@@ -49,7 +49,6 @@ class MakersTableViewController: UIViewController{
             let myUserValue = (data?.mic ?? "Null")
             watchListItems.sort()
             if(watchListItems.contains(myUserValue)){
-                // do nothing value is already in watch list
                 
                 //display an alert and dismiss it
             }else{
@@ -77,7 +76,7 @@ class MakersTableViewController: UIViewController{
     
     func setupSummary(){
         
-        makerTextFieldOutlet.text = "Liquid Markets containing the stocks we love to gamble with:\n\(data?.venueName ?? "No provided value")\nThe Mic: of symbol name is:\(String(describing: data?.mic ?? "null"))\nThe Volume is:\(String(describing: data?.volume ?? "null"))\nMarket share or percentage:\(String(describing: data?.marketPercent ?? "null"))"
+        makerTextFieldOutlet.text = "Liquid Markets containing the stocks we love to gamble with:\nMarket name:\(data?.venueName ?? "No provided value")\nThe Mic: of symbol name is:\(String(describing: data?.mic ?? "null"))\nThe Volume is:\(String(describing: data?.volume ?? "null"))\nMarket share or percentage:\(String(describing: data?.marketPercent ?? "null"))"
     }
     
     
