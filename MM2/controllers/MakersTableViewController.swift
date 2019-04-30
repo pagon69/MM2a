@@ -18,6 +18,8 @@ class MakersTableViewController: UIViewController{
     //user defaults
     let myDefaults = UserDefaults.standard
     var watchListItems = [String]()
+    var timingCount = 0
+    var myTimer = Timer()
     
     //outlets
     @IBOutlet weak var googleAdOutlet: GADBannerView!
@@ -39,12 +41,13 @@ class MakersTableViewController: UIViewController{
         if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
             let myUserValue = (data?.mic ?? "Null")
             if(userArray.contains(myUserValue)){
-                //do nothing or maybe display an alret
+                print("do value already in array")
             }else{
                 watchListItems.append(contentsOf: userArray)
                 watchListItems.append(myUserValue)
+                displayAlert()
+                print("adding to area")
             }
-            
         }else{ //did not find the userwatchlist,
             let myUserValue = (data?.mic ?? "Null")
             watchListItems.sort()
@@ -54,15 +57,37 @@ class MakersTableViewController: UIViewController{
             }else{
                 //add to list
                 watchListItems.append(myUserValue)
+                displayAlert()
             }
-        
         }
         
+     
+        
+        
+        
+        
         myDefaults.set(watchListItems, forKey: "userWatchList")
-        
-        //can i do some animation ? or just an alert?
-        
+             //can i do some animation ? or just an alert?
         print(watchListItems)
+    }
+    
+    
+    func displayAlert(){
+        
+        let myAlert = UIAlertController(title: "Adding \(data?.mic ?? "Null") to WatchList.", message: "✅", preferredStyle: .alert)
+        
+        present(myAlert, animated: true) {
+            //var myTimer = Timer()
+             self.myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
+                self.timingCount = self.timingCount + 1
+                if(self.timingCount >= 2){
+                    self.myTimer.invalidate()
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+            })
+        }
+        
     }
     
     
@@ -75,8 +100,21 @@ class MakersTableViewController: UIViewController{
     
     
     func setupSummary(){
+       
+        /* attempting to format the data precented
+        var test2: NSMutableAttributedString = NSMutableAttributedString(string: "testering string")
+
+        if let venueName =  data?.venueName{
+            
+            let test = NSMutableAttributedString(string: venueName)
+            //add in the code to convert or change font title, size or color.
+           // test.addAttribute(.font, value: 16, range: NSMakeRange(5, 4))
+           // test.addAttribute(.backgroundColor, value: <#T##Any#>, range: <#T##NSRange#>)
+           // test2 = test
+        }
+        */
         
-        makerTextFieldOutlet.text = "Liquid Markets containing the stocks we love to gamble with:\nMarket name:\(data?.venueName ?? "No provided value")\nThe Mic: of symbol name is:\(String(describing: data?.mic ?? "null"))\nThe Volume is:\(String(describing: data?.volume ?? "null"))\nMarket share or percentage:\(String(describing: data?.marketPercent ?? "null"))"
+        makerTextFieldOutlet.text = "\n\nMarket name: \(data?.venueName ?? " --- ")\nThe Mic: \(String(describing: data?.mic ?? "null"))\nThe Volume is: \(String(describing: data?.volume ?? "null"))\nMarket percentage %: \(String(describing: data?.marketPercent ?? "null"))\nTapeA shares: \(String(describing: data?.tapeA ?? "null"))\nTapeB Shares: \(String(describing: data?.tapeB ?? "0"))\nTapeC shares: \(String(describing: data?.tapeC ?? "null"))\nData Updated: \(String(describing: data?.lastUpdated ?? "null"))\n\n\n\n\nDiffinitions:\nLiquidity Markets: A market in which there are large quantities of trades. The advantage of a Liquid Market is that investments can be easily transferred into cash as a good rate in a timely fashion.\n\nMIC = Market Identifier Code, or symbol\n\nTapeID = tape id of the venue\n\nVolume = refers to the total amount of traded shares reported for the day.\n\n Tape A, Tape B, Tape C - refers to the amount of traded shares of type A,B, or C shares."
     }
     
     
@@ -88,16 +126,5 @@ class MakersTableViewController: UIViewController{
         
         // Do any additional setup after loading the view.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
