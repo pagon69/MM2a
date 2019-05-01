@@ -40,9 +40,12 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         if(tableView.tag == 1){
             heading = "Major ETF/Indexes"
+            tableView.sectionIndexBackgroundColor = UIColor.yellow
         }
         if(tableView.tag == 2){
             heading = "Exchanges"
+            tableView.separatorInset = UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0)
+            tableView.sectionIndexColor = UIColor.black
             
         }
         return heading
