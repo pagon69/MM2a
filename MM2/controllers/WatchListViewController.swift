@@ -29,7 +29,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Search for and Add stocks  to you WatchList!! "))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
+        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? displayAlert()))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
         cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
         
         return cell
@@ -44,17 +44,18 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
             //deletion from tableview
             watchListStocks.remove(at: indexPath.row)
             watchListTableView.deleteRows(at: [indexPath], with: .fade)
+            myDefaults.set(watchListItems, forKey: "userWatchList")
             watchListTableView.reloadData()
         }
     }
     
-    //what should i add
+    //removed the option to delete the watchList for now
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
         
         watchListStocks.removeAll()
         watchListTableView.reloadData()
-       // updateFocusIfNeeded()
-        myDefaults.set(watchListStocks, forKey: "userWatchList")
+        watchListItems.removeAll()
+        myDefaults.set(watchListItems, forKey: "userWatchList")
         
     }
     
@@ -137,7 +138,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     var formatedWatchList: String = ""
     var watchListStocks = [Stock]()
     var currentIndexPath = 0
-    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good"]
+    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "msft","ge", "bac","amd", "ibm"]
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
     var myTimer = Timer()
@@ -314,26 +315,18 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         }
     }
     
-            
-            
-            
-            
-    
-    
     //helper functions
     func viewSetup(){
         if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
-     
             watchListItems.append(contentsOf: userArray)
-            
+
             for each in watchListItems{
                 formatedWatchList = formatedWatchList + each + ","
             }
-            
            // print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
         }else {
-            //no watch list items found
-            
+            //no watchlist items found
+           // displayAlert()
         }
      
         watchListTableView.reloadData()
@@ -342,13 +335,24 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     
     
-    // end of code cut
+    func displayAlert()-> String{
+    //make the table view display nothing
+        
+        
+        
+        return "Search for and Add stocks to your WatchList!! "
+    }
     
+    // end of code cut
     func networkCall(){
         
         viewSetup()
         
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10").responseJSON { (response) in
+           
+            //validate that i am requesting all the data
+            print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(self.formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
+            
             if let json = response.result.value {
                 let myJson = JSON(json)
                 self.processData(json: myJson)
@@ -460,8 +464,6 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        
         adsSetup()
         networkCall()
         startPosition()

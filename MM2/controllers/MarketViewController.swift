@@ -43,8 +43,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
         if(tableView.tag == 2){
             heading = "Exchanges"
-            //tableView.sectionIndexBackgroundColor = .black
-            //tableView.backgroundColor = .black
+            
         }
         return heading
     }
@@ -80,19 +79,34 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.text = "\(String(describing: marketStocks[indexPath.row].companyName ?? "Something went wrong"))\n\(String(describing: marketStocks[indexPath.row].symbol ?? "Something went wrong" ))"
             
-            if let change = marketStocks[indexPath.row].change{
-                print(change)
+            if let change = Float(marketStocks[indexPath.row].change ?? ""){
+                //print(change)
                 
-                if Int(change) ?? 1 >= 0{
+                if Float(change) >= 0.0 && Float(change) <= 1.99{
                    // print(pictures.up.rawValue)
                     cell.detailTextLabel?.numberOfLines = 0
-                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.up.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
-                }else if Int(change) ?? -1 <= 0{
+                    
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.up.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
+                    
+                   // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.up.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                }else if Float(change) <= 0.0{
                     cell.detailTextLabel?.numberOfLines = 0
-                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    
+                   // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.down.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
+                }else if Float(change) >= 2{
+                
+                    cell.detailTextLabel?.numberOfLines = 0
+                    
+                    // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.onFire.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
                 }else{
                     cell.detailTextLabel?.numberOfLines = 0
-                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.stable.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"                }
+                    
+                  //  cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.stable.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.stable.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
+                }
             }
         }
         
@@ -101,12 +115,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
         
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nTotal Volume: \(myMarkets[indexPath.row].volume)"
-            
-            if let marketP = myMarkets[indexPath.row].marketPercent {
-                print(Int(marketP) ?? 1 * 100)
-                cell.detailTextLabel?.text = "Mkt% \(marketP)"
-            }
+            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nVolume: \(myMarkets[indexPath.row].volume)"
+           // if let marketP = Float(myMarkets[indexPath.row].marketPercent ?? "")  {
+                cell.detailTextLabel?.text = "Mkt % \(String(format: "%.3f", Float64(myMarkets[indexPath.row].marketPercent ?? "") ?? ""))"
+           // }
         }
         
         return cell
@@ -260,8 +272,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         t6.center.x = t6.center.x  - 5
         
         if(t1.center.x + t1.frame.width/2 < 0){
-            //replace print statement with api call
-            //  print("download new info and setup")
             t1.center.x = t6.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 1)
         }
@@ -383,7 +393,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     func startingValue(){
-        print("in starting value")
+        
         var i = 0
         while i <= myTickers.count {
             if(i == 0){
@@ -529,7 +539,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             let myStocks = Stock()
             
             for each in stocks.1{
-                //print("should have a devide: \(each)")
+                
             if(each.0 == "news"){
                 let myNews = News()
                 
@@ -571,7 +581,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 
             if(each.0 == "logo"){
                 myStocks.logo = each.1["url"].stringValue
-                print(myStocks.logo ?? "No logo available")
+               // print(myStocks.logo ?? "No logo available")
                 }
                 
                 

@@ -36,48 +36,44 @@ class MakersTableViewController: UIViewController{
     
     //add to watch list
     @IBAction func addToWatchList(_ sender: UIBarButtonItem) {
-        
         //if the system can find a userwatchlist pull it and assign to userArray
         if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
             let myUserValue = (data?.mic ?? "Null")
             if(userArray.contains(myUserValue)){
-                print("do value already in array")
+                displayAlert(alertMessage: "\(data?.mic ?? "Null") is already on the WatchList", resultsMessage: "🛑")
             }else{
                 watchListItems.append(contentsOf: userArray)
                 watchListItems.append(myUserValue)
-                displayAlert()
-                print("adding to area")
+                displayAlert(alertMessage: "Adding \(data?.mic ?? "Null") to WatchList.", resultsMessage: "✅")
+                watchListItems.sort()
+                myDefaults.set(watchListItems, forKey: "userWatchList")
+                print("myDefaults found, newly added value not within array so adding it.")
             }
         }else{ //did not find the userwatchlist,
             let myUserValue = (data?.mic ?? "Null")
-            watchListItems.sort()
+            //watchListItems.sort()
             if(watchListItems.contains(myUserValue)){
-                
-                //display an alert and dismiss it
+                displayAlert(alertMessage: "\(data?.mic ?? "Null") is currently in the WatchList", resultsMessage: "🛑")
             }else{
                 //add to list
                 watchListItems.append(myUserValue)
-                displayAlert()
+                displayAlert(alertMessage: "Adding \(data?.mic ?? "Null") to your WatchList.", resultsMessage: "✅")
+                myDefaults.set(watchListItems, forKey: "userWatchList")
+                print("the watchlist didnt exist in my defaults and the stock wasnt in there")
             }
         }
         
-     
-        
-        
-        
-        
-        myDefaults.set(watchListItems, forKey: "userWatchList")
-             //can i do some animation ? or just an alert?
-        print(watchListItems)
+        print("this is what should be saved in the watchlist: \(watchListItems)")
     }
     
     
-    func displayAlert(){
-        
-        let myAlert = UIAlertController(title: "Adding \(data?.mic ?? "Null") to WatchList.", message: "✅", preferredStyle: .alert)
+    func displayAlert(alertMessage: String, resultsMessage: String){
+
+        let myAlert = UIAlertController(title: alertMessage, message: resultsMessage, preferredStyle: .alert)
         
         present(myAlert, animated: true) {
-            //var myTimer = Timer()
+            
+            //displays an alert which disappears after 2 seconds
              self.myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
                 self.timingCount = self.timingCount + 1
                 if(self.timingCount >= 2){

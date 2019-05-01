@@ -31,16 +31,13 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.contentView.addSubview(whiteRoundedView)
         cell.contentView.sendSubviewToBack(whiteRoundedView)
         */
-        
-        
-        
-        
+ 
         cell.textLabel?.numberOfLines = 0
-        cell.backgroundColor = UIColor.yellow
+        cell.backgroundColor = UIColor.white
         
         cell.textLabel?.text = "\(String(describing: myStocksArray[indexPath.section].companyName ?? "Null"))\n\(String(describing: myStocksArray[indexPath.section].symbol ?? "Null"))"
-        cell.detailTextLabel?.text = myStocksArray[indexPath.section].latestPrice ?? "Null"
-        
+        cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(myStocksArray[indexPath.section].latestPrice ?? "") ?? ""))"
+     
         return cell
     }
  
@@ -51,7 +48,7 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(10.0)
+        return CGFloat(5.0)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
