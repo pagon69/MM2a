@@ -11,6 +11,7 @@ import RealmSwift
 import Alamofire
 import SwiftyJSON
 import GoogleMobileAds
+import SVProgressHUD
 
 class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
@@ -40,11 +41,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         if(tableView.tag == 1){
             heading = "Major ETF/Indexes"
-            tableView.sectionIndexBackgroundColor = UIColor.yellow
+            tableView.sectionIndexColor = UIColor.yellow
         }
         if(tableView.tag == 2){
             heading = "Exchanges"
-            tableView.separatorInset = UIEdgeInsets(top: 50.0, left: 50.0, bottom: 50.0, right: 50.0)
             tableView.sectionIndexColor = UIColor.black
             
         }
@@ -235,7 +235,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     //my global variables
     
-    let myArray = ["car","boat","house","mace","gun","door","banana"]
+    //let myArray = ["car","boat","house","mace","gun","door","banana"]
     var searchResults :Results<Symbols>?
     
     var timing = 0
@@ -259,7 +259,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     //below is needed for ticker
-    let keyMarketStock = ["dia","spy", "goog", "fb", "aapl", "good"]
+    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "ibm","msft","amd","GE"]
+    
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
     
@@ -492,6 +493,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
+                SVProgressHUD.show()
                 self.processData(json: myJson)
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
@@ -506,6 +508,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
+                SVProgressHUD.show()
                 self.processData2(json: myJson)
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
@@ -529,6 +532,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
             myMarkets.append(market)
         }
+        SVProgressHUD.dismiss()
         marketOutlet.reloadData()
         makerOutlet.reloadData()
     }
@@ -697,29 +701,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
            // marketStocks.append(myStocks)
                 
             }
-            
+        
             marketStocks.append(myStocks)
             //print("in market stocs: \(marketStocks.count)")
            // print(" in the stock: \(myStocks.chartsData.count)")
         }
         
-      //  marketStocks.append(myStocks)
-        
-       /* testing the values within my Stock object
-        print("pulling high from charts: \/(marketStocks[3].chartsData[0].high)")
-        print("pulling consensusEPS from earnings: \(marketStocks[1].earningsData[1].consensusEPS)")
-        print("pulling consensusEPS from earnings: \(marketStocks[1].earningsData[2].consensusEPS)")
-        
-        print("items in market Stocks: \(marketStocks.count)")
-       
-        for items in marketStocks{
-            
-            print(items.companyName)
-            print(items.latestPrice)
-            
-        }
-        */
- 
+        SVProgressHUD.dismiss()
         marketOutlet.reloadData()
         makerOutlet.reloadData()
     }

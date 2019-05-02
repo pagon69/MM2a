@@ -88,12 +88,8 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
 
     }
-    
     //add segue to cryptoSegue here
 
-
-    
-    
     //outlets
     @IBOutlet weak var googleAdsOutlet: GADBannerView!
     @IBOutlet weak var cryptoTableView: UITableView!
@@ -254,8 +250,13 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let myJson = JSON(json)
                     //print(myJson)
                     self.t1Name.text = myJson["symbol"].stringValue
-                    self.t1Price.text = myJson["high"].stringValue
-                    self.t1Change.text = myJson["changePercent"].stringValue
+                   // self.t1Price.text = myJson["high"].stringValue
+                    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].floatValue)))"
+                    //"$\(String(format: "%.2f", Float64(myStocksArray[indexPath.section].latestPrice ?? "") ?? ""))"
+                    
+                  // self.t1Change.text = myJson["changePercent"].stringValue
+                    
+                    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].floatValue)))"
                     
                     if myJson["changePercent"].floatValue > 1.0{
                         self.t1Picture.text = pictures.up.rawValue
