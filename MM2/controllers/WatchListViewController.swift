@@ -21,6 +21,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     //table view delegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return watchListStocks.count
     }
     
@@ -29,8 +30,18 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? displayAlert()))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
-        cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
+        
+        
+        if watchListStocks.count > 1{
+            cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? displayAlert()))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
+       // cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
+        
+            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(watchListStocks[indexPath.section].latestPrice ?? "") ?? ""))"
+        }else {
+            cell.textLabel?.text = "Please search for and Add stocks to your Watchlist"
+            cell.detailTextLabel?.text = ""
+            
+        }
         
         return cell
     }
@@ -38,8 +49,6 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     //delete cell from watchlist
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            //should i delete the item from  the string also
-           // watchListItems.remove(at: indexPath.row)
             
             //deletion from tableview
             watchListStocks.remove(at: indexPath.row)
@@ -52,21 +61,39 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     //removed the option to delete the watchList for now
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
         
-        watchListStocks.removeAll()
-        watchListTableView.reloadData()
-        watchListItems.removeAll()
-        myDefaults.set(watchListItems, forKey: "userWatchList")
+        //watchListStocks.removeAll()
+        //watchListTableView.reloadData()
+        //watchListItems.removeAll()
+       // myDefaults.set(watchListItems, forKey: "userWatchList")
+        displayAlerts()
+    }
+    
+    
+    func displayAlerts(){
+        
+        let continueAction = UIAlertAction(title: "Delete", style: .default) { (action) in
+            
+            self.watchListStocks.removeAll()
+            self.watchListItems.removeAll()
+            self.myDefaults.set(self.watchListItems, forKey: "userWatchList")
+            self.watchListTableView.reloadData()
+            self.dismiss(animated: true, completion: nil)
+           
+            // self.watchListTableView.ce
+        }
+        
+        let cancelAction = UIAlertAction(title: "Stop/Cancel", style: .cancel) { (action) in
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        let deleteWatchListAlert = UIAlertController(title: "Warning", message: "Continue to delete your watchList!", preferredStyle: .alert)
+        deleteWatchListAlert.addAction(continueAction)
+        deleteWatchListAlert.addAction(cancelAction)
+        
+        self.present(deleteWatchListAlert, animated: true, completion: nil)
         
     }
-    
-    /*attempting to say when you get clicked run view setup function
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        viewSetup()
-        print("in tab bar delegate")
-    }
-    */
-
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
@@ -144,6 +171,9 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     var myTimer = Timer()
     var lastTicker = CGFloat()
     var timing = 0
+    var timingCount = 0
+    var newTimer = Timer()
+    
     
     //ticker functions can i make this better?
     

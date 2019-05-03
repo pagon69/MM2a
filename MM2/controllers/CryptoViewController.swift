@@ -231,8 +231,7 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if let json = response.result.value {
                     let myJson = JSON(json)
-                    
-                   // "$\(String(format: "%.2f", Float64(myStocksArray[indexPath.section].latestPrice ?? "") ?? ""))"
+
                     
                     self.t1Name.text = myJson["symbol"].stringValue
                     self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
@@ -426,22 +425,16 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     }else {
                         self.currentPicture = pictures.stable.rawValue
                     }
-                    
-                //    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
-                //    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
-                    
+               
                     let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue,
-                                             //price: each.1["quote"]["high"].stringValue,
-                        
                         price: "$\(String(format: "%.2f", Float64(each.1["quote"]["high"].stringValue) ?? " "))",
-                        change: "$\(String(format: "%.2f", Float64(each.1["quote"]["changePercent"].stringValue) ?? " "))",                                             //change: each.1["quote"]["changePercent"].stringValue,
+                        change: "$\(String(format: "%.2f", Float64(each.1["quote"]["changePercent"].stringValue) ?? " "))",
                         picture : self.currentPicture)
                     
                     self.myTickers.append(tickerValue)
                 }
                 
                 self.startingValue()
-                
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
             }
@@ -579,8 +572,6 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cryptoTableView.reloadData()
         
         }
-    
-    
     
     func adsSetup() {
         googleAdsOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
