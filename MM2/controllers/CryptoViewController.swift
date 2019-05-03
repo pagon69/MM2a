@@ -66,8 +66,6 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     //customize code ends
     
-    //add the selection of a row code here
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
             currentIndexPath = indexPath.row
@@ -88,7 +86,6 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
 
     }
-    //add segue to cryptoSegue here
 
     //outlets
     @IBOutlet weak var googleAdsOutlet: GADBannerView!
@@ -136,8 +133,9 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     @IBAction func goToSearch(_ sender: UIBarButtonItem) {
         
-        performSegue(withIdentifier: "goToSearch8", sender: self)    }
-    
+        performSegue(withIdentifier: "goToSearch8", sender: self)
+        
+    }
     
     //globals
     var myStocksArray = [Stock]()
@@ -164,54 +162,45 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     //ticker functions
     func startAnimating(){
         timing += 1
-        t1.center.x = t1.center.x  - 5
-        t2.center.x = t2.center.x  - 5
-        t3.center.x = t3.center.x  - 5
-        t4.center.x = t4.center.x  - 5
-        t5.center.x = t5.center.x  - 5
-        t6.center.x = t6.center.x  - 5
+        t1.center.x = t1.center.x  - 3
+        t2.center.x = t2.center.x  - 3
+        t3.center.x = t3.center.x  - 3
+        t4.center.x = t4.center.x  - 3
+        t5.center.x = t5.center.x  - 3
+        t6.center.x = t6.center.x  - 3
         
         if(t1.center.x + t1.frame.width/2 < 0){
-            //replace print statement with api call
-            //  print("download new info and setup")
             t1.center.x = t6.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 1)
         }
         
         if(t2.center.x + t2.frame.width/2 < 0){
-            //print("download a stock for ticker 2 and update ticker settings")
             t2.center.x = t1.center.x + t1.frame.width + 10
-            //view.center.x + view.center.x/2
             refreashTicker(currentTicker: 2)
         }
         
         if(t3.center.x + t3.frame.width/2 < 0){
-            //print("download a stock for ticker 3 and update ticker settings")
             t3.center.x = t2.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 3)
         }
         
         if(t4.center.x + t3.frame.width/2 < 0){
             t4.center.x = t3.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 4 and update ticker settings")
             refreashTicker(currentTicker: 4)
             
         }
         
         if(t5.center.x + t4.frame.width/2 < 0){
             t5.center.x = t4.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 5 and update ticker settings")
             refreashTicker(currentTicker: 5)
             
         }
         
         if(t6.center.x + t5.frame.width/2 < 0){
             t6.center.x = t5.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 6 and update ticker settings")
             refreashTicker(currentTicker: 6)
             
         }
-        
     }
     
     func startPosition(){
@@ -225,21 +214,15 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         t1.center.x = startingPos
         
         t2.center.x = startingPos + tickersize
-        
         t3.center.x = startingPos + 2 * tickersize
-        
         t4.center.x = startingPos + 3 * tickersize
-        
         t5.center.x = startingPos + 4 * tickersize
-        
         t6.center.x = startingPos + 5 * tickersize
-        
         lastTicker = startingPos + 5 * tickersize
     }
     
     
     func refreashTicker(currentTicker: Int){
-        //do for just one right now
         if(currentTicker == 1){
             
             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
@@ -248,20 +231,19 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
                 if let json = response.result.value {
                     let myJson = JSON(json)
-                    //print(myJson)
+                    
+                   // "$\(String(format: "%.2f", Float64(myStocksArray[indexPath.section].latestPrice ?? "") ?? ""))"
+                    
                     self.t1Name.text = myJson["symbol"].stringValue
-                   // self.t1Price.text = myJson["high"].stringValue
-                    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].floatValue)))"
-                    //"$\(String(format: "%.2f", Float64(myStocksArray[indexPath.section].latestPrice ?? "") ?? ""))"
+                    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
-                  // self.t1Change.text = myJson["changePercent"].stringValue
-                    
-                    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].floatValue)))"
-                    
-                    if myJson["changePercent"].floatValue > 1.0{
+                    if myJson["changePercent"].floatValue > 0{
                         self.t1Picture.text = pictures.up.rawValue
-                    }else{
+                    }else if myJson["changePercent"].floatValue < 0{
                         self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
                     }
                     
                 }else {
@@ -283,13 +265,15 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let myJson = JSON(json)
                     //print(myJson)
                     self.t2Name.text = myJson["symbol"].stringValue
-                    self.t2Price.text = myJson["high"].stringValue
-                    self.t2Change.text = myJson["changePercent"].stringValue
+                    self.t2Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t2Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
-                    if myJson["changePercent"].floatValue > 1.0{
-                        self.t2Picture.text = pictures.up.rawValue
-                    }else{
-                        self.t2Picture.text = pictures.down.rawValue
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
                     }
                     
                 }else {
@@ -310,13 +294,15 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let myJson = JSON(json)
                 //print(myJson)
                 self.t3Name.text = myJson["symbol"].stringValue
-                self.t3Price.text = myJson["high"].stringValue
-                self.t3Change.text = myJson["changePercent"].stringValue
+                self.t3Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                self.t3Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                 
-                if myJson["changePercent"].floatValue > 1.0{
-                    self.t3Picture.text = pictures.up.rawValue
-                }else{
-                    self.t3Picture.text = pictures.down.rawValue
+                if myJson["changePercent"].floatValue > 0{
+                    self.t1Picture.text = pictures.up.rawValue
+                }else if myJson["changePercent"].floatValue < 0{
+                    self.t1Picture.text = pictures.down.rawValue
+                }else {
+                    self.t1Picture.text = pictures.stable.rawValue
                 }
                 
             }else {
@@ -339,13 +325,15 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let myJson = JSON(json)
                     //print(myJson)
                     self.t4Name.text = myJson["symbol"].stringValue
-                    self.t4Price.text = myJson["high"].stringValue
-                    self.t4Change.text = myJson["changePercent"].stringValue
+                    self.t4Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t4Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
-                    if myJson["changePercent"].floatValue > 1.0{
-                        self.t4Picture.text = pictures.up.rawValue
-                    }else{
-                        self.t4Picture.text = pictures.down.rawValue
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
                     }
                     
                 }else {
@@ -367,13 +355,15 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let myJson = JSON(json)
                     //print(myJson)
                     self.t5Name.text = myJson["symbol"].stringValue
-                    self.t5Price.text = myJson["high"].stringValue
-                    self.t5Change.text = myJson["changePercent"].stringValue
+                    self.t5Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t5Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
-                    if myJson["changePercent"].floatValue > 1.0{
-                        self.t5Picture.text = pictures.up.rawValue
-                    }else{
-                        self.t5Picture.text = pictures.down.rawValue
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
                     }
                     
                 }else {
@@ -395,13 +385,15 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let myJson = JSON(json)
                     //print(myJson)
                     self.t6Name.text = myJson["symbol"].stringValue
-                    self.t6Price.text = myJson["high"].stringValue
-                    self.t6Change.text = myJson["changePercent"].stringValue
+                    self.t6Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t6Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
-                    if myJson["changePercent"].floatValue > 1.0{
-                        self.t6Picture.text = pictures.up.rawValue
-                    }else{
-                        self.t6Picture.text = pictures.down.rawValue
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
                     }
                     
                 }else {
@@ -427,21 +419,29 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let myJson = JSON(json)
                 for each in myJson{
                     
-                    if each.1["quote"]["change"].floatValue >= 1.0{
-                        print("the change value is plus: \(each.1["quote"].stringValue) = \(each.1["quote"]["change"].floatValue)")
+                    if each.1["quote"]["change"].floatValue > 0{
                         self.currentPicture = pictures.up.rawValue
-                    }else{
+                    }else if each.1["quote"]["change"].floatValue < 0{
                         self.currentPicture = pictures.down.rawValue
-                        print("the change value is negative: \(each.1["quote"].stringValue) = \(each.1["quote"]["change"].floatValue)")
+                    }else {
+                        self.currentPicture = pictures.stable.rawValue
                     }
                     
-                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue, price: each.1["quote"]["high"].stringValue, change: each.1["quote"]["changePercent"].stringValue, picture : self.currentPicture)
+                //    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                //    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue,
+                                             //price: each.1["quote"]["high"].stringValue,
+                        
+                        price: "$\(String(format: "%.2f", Float64(each.1["quote"]["high"].stringValue) ?? " "))",
+                        change: "$\(String(format: "%.2f", Float64(each.1["quote"]["changePercent"].stringValue) ?? " "))",                                             //change: each.1["quote"]["changePercent"].stringValue,
+                        picture : self.currentPicture)
                     
                     self.myTickers.append(tickerValue)
-                    // print("this is whats in ticker now: \(self.myTickers)")
                 }
                 
                 self.startingValue()
+                
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
             }
@@ -450,11 +450,9 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }
         }
         
-        //print("this is whats in ticker now: \(self.myTickers)")
     }
     
     func startingValue(){
-        print("in starting value")
         var i = 0
         while i <= myTickers.count {
             if(i == 0){
@@ -462,30 +460,37 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 t1Price.text = myTickers[i].price
                 t1Change.text = myTickers[i].change
                 t1Picture.text = myTickers[i].picture
+                t1.backgroundColor = UIColor.green
             }
             if(i == 1){
                 t2Name.text = myTickers[i].name
                 t2Price.text = myTickers[i].price
                 t2Change.text = myTickers[i].change
                 t2Picture.text = myTickers[i].picture
+                t2.backgroundColor = UIColor.green
+                
             }
             if(i == 2){
                 t3Name.text = myTickers[i].name
                 t3Change.text = myTickers[i].change
                 t3Price.text = myTickers[i].price
                 t3Picture.text = myTickers[i].picture
+                t3.backgroundColor = UIColor.green
             }
             if(i == 3){
                 t4Name.text = myTickers[i].name
                 t4Change.text = myTickers[i].change
                 t4Price.text = myTickers[i].price
                 t4Picture.text = myTickers[i].picture
+                t4.backgroundColor = UIColor.green
+                
             }
             if(i == 4){
                 t5Name.text = myTickers[i].name
                 t5Change.text = myTickers[i].change
                 t5Price.text = myTickers[i].price
                 t5Picture.text = myTickers[i].picture
+                t5.backgroundColor = UIColor.green
                 
             }
             if(i == 5){
@@ -493,15 +498,12 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 t6Change.text = myTickers[i].change
                 t6Price.text = myTickers[i].price
                 t6Picture.text = myTickers[i].picture
+                t6.backgroundColor = UIColor.green
+                
             }
             i += 1
         }
     }
-    
-    
-    
-    
-    
     
     func networkCall(){
         
@@ -512,8 +514,7 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         Alamofire.request(oldMethod).responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
-                //print(myJson)
-                
+
                 self.processData(json: myJson)
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
@@ -600,16 +601,5 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         // Do any additional setup after loading the view.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
