@@ -95,7 +95,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         @IBOutlet weak var googleAdsOutlet: GADBannerView!
         
         //my global variables
-        let myArray = ["car","boat","house","mace","gun","door","banana"]
+       // let myArray = ["car","boat","house","mace","gun","door","banana"]
         var searchResults :Results<Symbols>?
         var timing = 0
         var myTimer = Timer()

@@ -11,13 +11,14 @@ import RealmSwift
 import Alamofire
 import SwiftyJSON
 import GoogleMobileAds
+import SVProgressHUD
 
 class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
 
     
     //UI search controller information, not using so remove?
-        var testing = ["testing","tester","candy","daddy","mama"]
+       // var testing = ["testing","tester","candy","daddy","mama"]
         let searchController = UISearchController(searchResultsController: nil)
     
     //not using this so remove?
@@ -39,12 +40,15 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         var heading: String = ""
         
         if(tableView.tag == 1){
-            heading = "Major Indexes"
+            heading = "Major ETF/Indexes"
+           // tableView.sectionIndexColor = UIColor.yellow
+            //tableView.sectionIndexBackgroundColor = UIColor.yellow
+           // tableView.tableHeaderView?.backgroundColor = UIColor.green
         }
         if(tableView.tag == 2){
             heading = "Exchanges"
-            //tableView.sectionIndexBackgroundColor = .black
-            //tableView.backgroundColor = .black
+           // tableView.sectionIndexColor = UIColor.black
+            
         }
         return heading
     }
@@ -75,24 +79,36 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         //indices tableView cell
         if(tableView.tag == 1){
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
-            
-            //how can i remove the force unwraps and the possible crash this could produce
+
             cell.textLabel?.numberOfLines = 0
+            
             cell.textLabel?.text = "\(String(describing: marketStocks[indexPath.row].companyName ?? "Something went wrong"))\n\(String(describing: marketStocks[indexPath.row].symbol ?? "Something went wrong" ))"
             
-            if let change = marketStocks[indexPath.row].change{
-                print(change)
+            if let change = Float(marketStocks[indexPath.row].change ?? ""){
                 
-                if Int(change) ?? 1 >= 0{
-                   // print(pictures.up.rawValue)
+                if Float(change) >= 0.0 && Float(change) <= 1.99{
                     cell.detailTextLabel?.numberOfLines = 0
-                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.up.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
-                }else if Int(change) ?? -1 <= 0{
+                    
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.up.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
+                    
+                }else if Float(change) <= 0.0{
                     cell.detailTextLabel?.numberOfLines = 0
-                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    
+                   // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.down.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
+                }else if Float(change) >= 2{
+                
+                    cell.detailTextLabel?.numberOfLines = 0
+                    
+                    // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.onFire.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
                 }else{
                     cell.detailTextLabel?.numberOfLines = 0
-                    cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.stable.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"                }
+                    
+                  //  cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.stable.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+                    
+                    cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.stable.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
+                }
             }
         }
         
@@ -101,12 +117,9 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             cell = makerOutlet.dequeueReusableCell(withIdentifier: "makersCell", for: indexPath)
         
             cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = "Name: \(myMarkets[indexPath.row].venueName)\nTotal Volume: \(myMarkets[indexPath.row].volume)"
-            
-            if let marketP = myMarkets[indexPath.row].marketPercent {
-                print(Int(marketP) ?? 1 * 100)
-                cell.detailTextLabel?.text = "Mkt% \(marketP)"
-            }
+            cell.textLabel?.text = "\(myMarkets[indexPath.row].venueName)\nVolume: \(myMarkets[indexPath.row].volume)"
+
+                cell.detailTextLabel?.text = "\(String(format: "%.3f", Float64(myMarkets[indexPath.row].marketPercent ?? "") ?? ""))%"
         }
         
         return cell
@@ -118,7 +131,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         //looks at markets tableView
         if(tableView.tag == 1){
             currentIndexPath = indexPath.row
-            
             performSegue(withIdentifier: "goToTableViewDetail", sender: self)
             
             
@@ -178,7 +190,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //google banners
     @IBOutlet weak var GoogleAdOutlet: GADBannerView!
     
-    
     //ticker outlets
     @IBOutlet weak var tickerBanner: UIView!
     
@@ -219,8 +230,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     @IBOutlet weak var t6Change: UILabel!
     
     //my global variables
-    
-    let myArray = ["car","boat","house","mace","gun","door","banana"]
+
     var searchResults :Results<Symbols>?
     
     var timing = 0
@@ -234,9 +244,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     var searchR = [String]()
     var myMarkets :[Markets] = [Markets]()
     var marketStocks: [Stock] = [Stock]()
+    var currentPicture = ""
     
     enum pictures: String {
-        case up = "🔺"
+        case up = "💹"
         case down = "🔻"
         case stable = "⎯"
         case onFire = "🔥"
@@ -244,7 +255,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     //below is needed for ticker
-    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good"]
+    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "ibm","msft","amd","GE"]
+    
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
     
@@ -252,50 +264,42 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //functions needed for Ticker
     func startAnimating(){
         timing += 1
-        t1.center.x = t1.center.x  - 5
-        t2.center.x = t2.center.x  - 5
-        t3.center.x = t3.center.x  - 5
-        t4.center.x = t4.center.x  - 5
-        t5.center.x = t5.center.x  - 5
-        t6.center.x = t6.center.x  - 5
+        t1.center.x = t1.center.x  - 3
+        t2.center.x = t2.center.x  - 3
+        t3.center.x = t3.center.x  - 3
+        t4.center.x = t4.center.x  - 3
+        t5.center.x = t5.center.x  - 3
+        t6.center.x = t6.center.x  - 3
         
         if(t1.center.x + t1.frame.width/2 < 0){
-            //replace print statement with api call
-            //  print("download new info and setup")
             t1.center.x = t6.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 1)
         }
         
         if(t2.center.x + t2.frame.width/2 < 0){
-            //print("download a stock for ticker 2 and update ticker settings")
             t2.center.x = t1.center.x + t1.frame.width + 10
-            //view.center.x + view.center.x/2
             refreashTicker(currentTicker: 2)
         }
         
         if(t3.center.x + t3.frame.width/2 < 0){
-            //print("download a stock for ticker 3 and update ticker settings")
             t3.center.x = t2.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 3)
         }
     
         if(t4.center.x + t3.frame.width/2 < 0){
             t4.center.x = t3.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 4 and update ticker settings")
             refreashTicker(currentTicker: 4)
             
         }
         
         if(t5.center.x + t4.frame.width/2 < 0){
             t5.center.x = t4.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 5 and update ticker settings")
             refreashTicker(currentTicker: 5)
             
         }
         
         if(t6.center.x + t5.frame.width/2 < 0){
             t6.center.x = t5.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 6 and update ticker settings")
             refreashTicker(currentTicker: 6)
             
         }
@@ -311,15 +315,10 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         //starting position off screen, should adjust to various screen sizes
         t1.center.x = startingPos
-        
         t2.center.x = startingPos + tickersize
-        
         t3.center.x = startingPos + 2 * tickersize
-        
         t4.center.x = startingPos + 3 * tickersize
-        
         t5.center.x = startingPos + 4 * tickersize
-        
         t6.center.x = startingPos + 5 * tickersize
         
         lastTicker = startingPos + 5 * tickersize
@@ -327,7 +326,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     
     func refreashTicker(currentTicker: Int){
-        //do for just one right now
         if(currentTicker == 1){
             
             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
@@ -336,12 +334,18 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 
                 if let json = response.result.value {
                     let myJson = JSON(json)
-                    //print(myJson)
+                    
                     self.t1Name.text = myJson["symbol"].stringValue
-                    self.t1Price.text = myJson["high"].stringValue
-                    self.t1Change.text = myJson["changePercent"].stringValue
+                    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
-                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
+                    }
                 }else {
                     print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
                 }
@@ -353,7 +357,156 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
         if(currentTicker == 2){
             
+             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t2Name.text = myJson["symbol"].stringValue
+                    self.t2Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t2Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t2Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t2Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t2Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
         }
+        
+        if(currentTicker == 3){
+            
+             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t3Name.text = myJson["symbol"].stringValue
+                    self.t3Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t3Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t3Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t3Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t3Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+        }
+        
+        if(currentTicker == 4){
+            
+             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t4Name.text = myJson["symbol"].stringValue
+                    self.t4Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t4Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t4Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t4Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t4Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+                    
+        }
+        
+        if(currentTicker == 5){
+            
+             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t5Name.text = myJson["symbol"].stringValue
+                    self.t5Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t5Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t5Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t5Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t5Picture.text = pictures.stable.rawValue
+                    }
+            
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+                    
+        }
+        
+        if(currentTicker == 6){
+            
+             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t6Name.text = myJson["symbol"].stringValue
+                    self.t6Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t6Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t6Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t6Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t6Picture.text = pictures.stable.rawValue
+                    }
+    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+        }
+        
     }
     
     func randomTickerValues(){
@@ -361,13 +514,26 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         for each in keyMarketStock{
             combined = combined + "," + each
         }
+        
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=" + combined + "&types=quote").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 for each in myJson{
-                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue, price: each.1["quote"]["high"].stringValue, change: each.1["quote"]["changePercent"].stringValue, picture : "🔥")
+                    
+                    if each.1["quote"]["change"].floatValue > 0{
+                        self.currentPicture = pictures.up.rawValue
+                    }else if each.1["quote"]["change"].floatValue < 0{
+                        self.currentPicture = pictures.down.rawValue
+                    }else {
+                        self.currentPicture = pictures.stable.rawValue
+                    }
+                    
+                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue,
+                                             price: "$\(String(format: "%.2f", Float64(each.1["quote"]["high"].stringValue) ?? " "))",
+                        change: "$\(String(format: "%.2f", Float64(each.1["quote"]["changePercent"].stringValue) ?? " "))",
+                        picture : self.currentPicture)
+                    
                     self.myTickers.append(tickerValue)
-                    // print("this is whats in ticker now: \(self.myTickers)")
                 }
                 
                 self.startingValue()
@@ -379,53 +545,57 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             }
         }
         
-        //print("this is whats in ticker now: \(self.myTickers)")
     }
     
     func startingValue(){
-        print("in starting value")
+        
         var i = 0
         while i <= myTickers.count {
             if(i == 0){
                 t1Name.text = myTickers[i].name
                 t1Price.text = myTickers[i].price
                 t1Change.text = myTickers[i].change
+                t1Picture.text = myTickers[i].picture
+                t1.backgroundColor = UIColor.green
             }
             if(i == 1){
                 t2Name.text = myTickers[i].name
                 t2Price.text = myTickers[i].price
                 t2Change.text = myTickers[i].change
+                t2Picture.text = myTickers[i].picture
+                t2.backgroundColor = UIColor.green
             }
             if(i == 2){
                 t3Name.text = myTickers[i].name
                 t3Change.text = myTickers[i].change
                 t3Price.text = myTickers[i].price
+                t3Picture.text = myTickers[i].picture
+                t3.backgroundColor = UIColor.green
             }
             if(i == 3){
                 t4Name.text = myTickers[i].name
                 t4Change.text = myTickers[i].change
                 t4Price.text = myTickers[i].price
+                t4Picture.text = myTickers[i].picture
+                t4.backgroundColor = UIColor.green
             }
             if(i == 4){
                 t5Name.text = myTickers[i].name
                 t5Change.text = myTickers[i].change
                 t5Price.text = myTickers[i].price
+                t5Picture.text = myTickers[i].picture
+                t5.backgroundColor = UIColor.green
             }
             if(i == 5){
                 t6Name.text = myTickers[i].name
                 t6Change.text = myTickers[i].change
                 t6Price.text = myTickers[i].price
+                t6Picture.text = myTickers[i].picture
+                t6.backgroundColor = UIColor.green
             }
             i += 1
         }
     }
-    
-            
-            
-            
-            
-            
-    
     
     
     //my functions
@@ -471,11 +641,16 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     
     func collectMarketData(){
         
-        let keyMarkets = "n225,spy,dia,ndx,iwm"
+        // ETFs i am aware of, like indices but free to display the data
+       // ["rcmp", "dia","spy", "iwm", "v00", "ivv", "vti","spx","ixndx","rui","rut","oex","ndxe"]
+        
+        let keyMarkets = "djia,NASDAQ,n225,spy,dia,ndx,iwm,rcmp,voo,v00,ivv,vti,spx,ixndx,rui,rut,oex,ndxe"
+        
         //network request for liquid markets
         Alamofire.request("https://api.iextrading.com/1.0/market").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
+                SVProgressHUD.show()
                 self.processData(json: myJson)
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
@@ -486,10 +661,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
         
         //network request for Major indexices
-        //need to figure out this part and where to get the indices, update the number of stocks
+
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
+                SVProgressHUD.show()
                 self.processData2(json: myJson)
             }else {
                 print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
@@ -498,9 +674,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 print("Got data, this much was sent: \(data)")
             }
         }
-        
-        
-        
     }
     
     //processes data for the market page
@@ -513,6 +686,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
 
             myMarkets.append(market)
         }
+        
+        SVProgressHUD.dismiss()
         marketOutlet.reloadData()
         makerOutlet.reloadData()
     }
@@ -526,7 +701,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             let myStocks = Stock()
             
             for each in stocks.1{
-                //print("should have a devide: \(each)")
+                
             if(each.0 == "news"){
                 let myNews = News()
                 
@@ -568,7 +743,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 
             if(each.0 == "logo"){
                 myStocks.logo = each.1["url"].stringValue
-                print(myStocks.logo ?? "No logo available")
+               // print(myStocks.logo ?? "No logo available")
                 }
                 
                 
@@ -678,32 +853,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                 }
             }
                 
-           // marketStocks.append(myStocks)
-                
             }
-            
+        
             marketStocks.append(myStocks)
-            //print("in market stocs: \(marketStocks.count)")
-           // print(" in the stock: \(myStocks.chartsData.count)")
+
         }
         
-      //  marketStocks.append(myStocks)
-        
-       /* testing the values within my Stock object
-        print("pulling high from charts: \/(marketStocks[3].chartsData[0].high)")
-        print("pulling consensusEPS from earnings: \(marketStocks[1].earningsData[1].consensusEPS)")
-        print("pulling consensusEPS from earnings: \(marketStocks[1].earningsData[2].consensusEPS)")
-        
-        print("items in market Stocks: \(marketStocks.count)")
-       
-        for items in marketStocks{
-            
-            print(items.companyName)
-            print(items.latestPrice)
-            
-        }
-        */
- 
+        SVProgressHUD.dismiss()
         marketOutlet.reloadData()
         makerOutlet.reloadData()
     }
@@ -720,14 +876,13 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         super.viewDidLoad()
 
         //calling for google ads
-        
         adsSetup()
+        //sets up ticker and stock
         startPosition()
         
         myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
             self.startAnimating()
         })
-        
         
         openRealm()
         
@@ -748,20 +903,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         collectMarketData()
         
-        
-        
-        // Do any additional setup after loading the view.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

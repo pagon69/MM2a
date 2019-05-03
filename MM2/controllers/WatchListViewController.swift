@@ -12,45 +12,88 @@ import AlamofireImage
 import SwiftyJSON
 import GoogleMobileAds
 
-class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate {
+class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate, UITabBarControllerDelegate {
     
+    //tab bar delegate stuff
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        print("In the following tab bar: \(tabBar.tag)")
+    }
     
     //table view delegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return watchListStocks.count
     }
-
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Search for and Add stocks  to you WatchList!! "))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
-        cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
+        
+        
+        if watchListStocks.count > 1{
+            cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? displayAlert()))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
+       // cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
+        
+            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(watchListStocks[indexPath.section].latestPrice ?? "") ?? ""))"
+        }else {
+            cell.textLabel?.text = "Please search for and Add stocks to your Watchlist"
+            cell.detailTextLabel?.text = ""
+            
+        }
         
         return cell
     }
     
+    //delete cell from watchlist
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete{
+            
+            //deletion from tableview
+            watchListStocks.remove(at: indexPath.row)
+            watchListTableView.deleteRows(at: [indexPath], with: .fade)
+            myDefaults.set(watchListItems, forKey: "userWatchList")
+            watchListTableView.reloadData()
+        }
+    }
     
-    //what should i add
+    //removed the option to delete the watchList for now
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
         
-        watchListStocks.removeAll()
-        watchListTableView.reloadData()
+        //watchListStocks.removeAll()
+        //watchListTableView.reloadData()
+        //watchListItems.removeAll()
+       // myDefaults.set(watchListItems, forKey: "userWatchList")
+        displayAlerts()
+    }
     
-        myDefaults.set(watchListStocks, forKey: "userWatchList")
+    
+    func displayAlerts(){
+        
+        let continueAction = UIAlertAction(title: "Delete", style: .default) { (action) in
+            
+            self.watchListStocks.removeAll()
+            self.watchListItems.removeAll()
+            self.myDefaults.set(self.watchListItems, forKey: "userWatchList")
+            self.watchListTableView.reloadData()
+            self.dismiss(animated: true, completion: nil)
+           
+            // self.watchListTableView.ce
+        }
+        
+        let cancelAction = UIAlertAction(title: "Stop/Cancel", style: .cancel) { (action) in
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        let deleteWatchListAlert = UIAlertController(title: "Warning", message: "Continue to delete your watchList!", preferredStyle: .alert)
+        deleteWatchListAlert.addAction(continueAction)
+        deleteWatchListAlert.addAction(cancelAction)
+        
+        self.present(deleteWatchListAlert, animated: true, completion: nil)
         
     }
-    
-    /*attempting to say when you get clicked run view setup function
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        viewSetup()
-        print("in tab bar delegate")
-    }
-    */
-
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
@@ -122,12 +165,15 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     var formatedWatchList: String = ""
     var watchListStocks = [Stock]()
     var currentIndexPath = 0
-    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good"]
+    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "msft","ge", "bac","amd", "ibm"]
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
     var myTimer = Timer()
     var lastTicker = CGFloat()
     var timing = 0
+    var timingCount = 0
+    var newTimer = Timer()
+    
     
     //ticker functions can i make this better?
     
@@ -299,39 +345,44 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         }
     }
     
-            
-            
-            
-            
-    
-    
     //helper functions
     func viewSetup(){
         if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
-     
             watchListItems.append(contentsOf: userArray)
-            
+
             for each in watchListItems{
                 formatedWatchList = formatedWatchList + each + ","
             }
-            
            // print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
         }else {
-            //no watch list items found
-            
+            //no watchlist items found
+           // displayAlert()
         }
      
         watchListTableView.reloadData()
+       // updateFocusIfNeeded()
+        
     }
     
     
-    // end of code cut
+    func displayAlert()-> String{
+    //make the table view display nothing
+        
+        
+        
+        return "Search for and Add stocks to your WatchList!! "
+    }
     
+    // end of code cut
     func networkCall(){
         
         viewSetup()
         
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10").responseJSON { (response) in
+           
+            //validate that i am requesting all the data
+            print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(self.formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
+            
             if let json = response.result.value {
                 let myJson = JSON(json)
                 self.processData(json: myJson)
@@ -445,12 +496,12 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
 
         adsSetup()
         networkCall()
-        
         startPosition()
         
         myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
             self.startAnimating()
         })
+        
         
         // Do any additional setup after loading the view.
     }

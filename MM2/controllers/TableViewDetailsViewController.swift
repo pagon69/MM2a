@@ -127,8 +127,12 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     var changeIconUp = "🔺"
     var changeIconDown = "🔻"
     let financialNames = ["report Date","Gross Profit","Cost of revenue","Operating Revenue","Total Revenue","Operating Income","Net Income","Research and Development","Operating Expense","Current Assets","Total Assets","Total Liabilities","Current Cash","Current Debt","Total Cash","Total debt","ShareHolder Equity","Cash Change", "Cash Flow","Operating Gains and Losses"]
+    
     var watchListItems = [String]()
     let myDefaults = UserDefaults.standard
+    
+    var timingCount = 0
+    var myTimer = Timer()
     
     //charts outlet
     @IBOutlet weak var combinedChartsOutlet: BarChartView!
@@ -138,39 +142,56 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     //watchlist addition button
     @IBAction func addToWatchList(_ sender: UIBarButtonItem) {
-      print("in add to watchlist on tableview detail")
-        //if the system can find a userwatchlist pull it and assign to userArray
+      
         if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
             let myUserValue = (data?.symbol ?? "Null")
             if(userArray.contains(myUserValue)){
-                //do nothing or maybe display an alret
+                displayAlert(alertMessage: "\(data?.symbol ?? "Null") is already on the WatchList", resultsMessage: "🛑")
             }else{
                 watchListItems.append(contentsOf: userArray)
                 watchListItems.append(myUserValue)
+                displayAlert(alertMessage: "Adding \(data?.symbol ?? "Null") to WatchList.", resultsMessage: "✅")
+                watchListItems.sort()
+                myDefaults.set(watchListItems, forKey: "userWatchList")
+                print("myDefaults found, newly added value not within array so adding it.")
             }
             
         }else{ //did not find the userwatchlist,
             let myUserValue = (data?.symbol ?? "Null")
-            watchListItems.sort()
+            //watchListItems.sort()
             if(watchListItems.contains(myUserValue)){
-                // do nothing value is already in watch list
-                
-                //display an alert and dismiss it
+                displayAlert(alertMessage: "\(data?.symbol ?? "Null") is currently in the WatchList", resultsMessage: "🛑")
             }else{
                 //add to list
                 watchListItems.append(myUserValue)
+                displayAlert(alertMessage: "Adding \(data?.symbol ?? "Null") to your WatchList.", resultsMessage: "✅")
+                myDefaults.set(watchListItems, forKey: "userWatchList")
+                print("the watchlist didnt exist in my defaults and the stock wasnt in there")
             }
-            
         }
         
-        myDefaults.set(watchListItems, forKey: "userWatchList")
-        
-        print(watchListItems)
-        //can i do some animation ? or just an alert?
+        print("this is what should be saved in the watchlist: \(watchListItems)")
     }
     
     
-    
+    func displayAlert(alertMessage: String, resultsMessage: String){
+        
+        let myAlert = UIAlertController(title: alertMessage, message: resultsMessage, preferredStyle: .alert)
+        
+        present(myAlert, animated: true) {
+            
+            //displays an alert which disappears after 2 seconds
+            self.myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
+                self.timingCount = self.timingCount + 1
+                if(self.timingCount >= 2){
+                    self.myTimer.invalidate()
+                    self.dismiss(animated: true, completion: nil)
+                }
+                
+            })
+        }
+        
+    }
     
     
     //outlets
@@ -418,6 +439,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         newsAdOutlet.load(GADRequest())
         
     }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
