@@ -11,6 +11,7 @@ import GoogleMobileAds
 import Alamofire
 import AlamofireImage
 import SwiftyJSON
+import SVProgressHUD
 
 
 
@@ -251,18 +252,15 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         var count = 0
         //ipos table
         if(tableView.tag == 1){
-           // count = IPOs.count
-            count = 1
+            count = IPOs.count
         }
         //movers table
         if(tableView.tag == 2){
             count = winners.count
-           // count = 1
         }
         //losers table
         if(tableView.tag == 3){
             count = losers.count
-            //count = 1
         }
         
         return count
@@ -281,9 +279,10 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             }else
             {
                 cell.textLabel?.numberOfLines = 0
+                cell.detailTextLabel?.numberOfLines = 0
                 cell.textLabel?.text = "\(String(describing: IPOs[indexPath.row].companyName ?? "Null"))\n\(String(describing: IPOs[indexPath.row].symbol ?? "Null"))"
             
-                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow ?? "Null"))$\(String(describing: IPOs[indexPath.row].priceHigh ?? "Null"))"
+                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow ?? "Null")) - $\(String(describing: IPOs[indexPath.row].priceHigh ?? "Null"))\n\(String(describing: IPOs[indexPath.row].expectedDate ?? "Null"))"
             }
         }
         
@@ -390,6 +389,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     
     func collectMarketData(){
         
+        SVProgressHUD.show()
         //ipos window - need to check both upcoming and todays then display which ever has more data
         //https://api.iextrading.com/1.0/stock/market/upcoming-ipos
         //https://api.iextrading.com/1.0/stock/market/today-ipos
@@ -455,15 +455,82 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         //json["viewData"].isEmpty && json["rawData"].isEmpty
 
         for each in json{
-            for ipos in each.0{
+            
+            if each.0 == "rawData"{
+            
+            for item in each.1{
+                var newIPOItem = IPO()
                 
+                newIPOItem.companyName = item.1["companyName"].stringValue
+                newIPOItem.symbol = item.1["symbol"].stringValue
+                newIPOItem.expectedDate = item.1["expectedDate"].stringValue
+                newIPOItem.auditor = item.1["auditor"].stringValue
+                newIPOItem.market = item.1["market"].stringValue
+                newIPOItem.cik = item.1["cik"].stringValue
+                newIPOItem.address = item.1["address"].stringValue
+                newIPOItem.city = item.1["city"].stringValue
+                newIPOItem.state = item.1["state"].stringValue
+                newIPOItem.zip = item.1["zip"].stringValue
+                newIPOItem.phone = item.1["phone"].stringValue
+                newIPOItem.ceo = item.1["ceo"].stringValue
+                newIPOItem.employees = item.1["employees"].stringValue
+                newIPOItem.url = item.1["url"].stringValue
+                newIPOItem.status = item.1["status"].stringValue
+                newIPOItem.sharesOffered = item.1["sharesOffered"].stringValue
+                newIPOItem.priceLow = item.1["priceLow"].stringValue
+                newIPOItem.priceHigh = item.1["priceHigh"].stringValue
+                newIPOItem.offerAmount = item.1["offerAmount"].stringValue
+                newIPOItem.totalExpenses = item.1["totalExpenses"].stringValue
+                newIPOItem.sharesOverAlloted = item.1["sharesOverAlloted"].stringValue
+                newIPOItem.shareholderShares = item.1["shareholderShares"].stringValue
+                newIPOItem.sharesOutstanding = item.1["sharesOutstanding"].stringValue
+                newIPOItem.lockupPeriodExpiration = item.1["lockupPeriodExpiration"].stringValue
+                newIPOItem.quietPeriodExpiration = item.1["quietPeriodExpiration"].stringValue
+                newIPOItem.revenue = item.1["revenue"].stringValue
+                newIPOItem.netIncome = item.1["netIncome"].stringValue
+                newIPOItem.totalAssets = item.1["totalAssets"].stringValue
+                newIPOItem.totalLiabilities = item.1["totalLiabilities"].stringValue
+                newIPOItem.stockholderEquity = item.1["stockholderEquity"].stringValue
+                newIPOItem.companyDescription = item.1["companyDescription"].stringValue
+                newIPOItem.businessDescription = item.1["businessDescription"].stringValue
+                newIPOItem.useOfProceeds = item.1["useOfProceeds"].stringValue
+                newIPOItem.competition = item.1["competition"].stringValue
+                newIPOItem.amount = item.1["amount"].stringValue
+                newIPOItem.percentOffered = item.1["percentOffered"].stringValue
                 
-
-
-
+                for eachItem in item.1["leadUnderwriters"]{
+                    let myUnderWriter = eachItem.1.stringValue
+    
+                    newIPOItem.leadUnderwriters.append(myUnderWriter)
+                }
+                
+                for eachItem in item.1["underwriters"]{
+                    let myUnderWriter = eachItem.1.stringValue
+                    
+                    newIPOItem.underwriters.append(myUnderWriter)
+                }
+                
+                for eachItem in item.1["companyCounsel"]{
+                    let myUnderWriter = eachItem.1.stringValue
+                    
+                    newIPOItem.companyCounsel.append(myUnderWriter)
+                }
+                
+                for eachItem in item.1["underwriterCounsel"]{
+                    let myUnderWriter = eachItem.1.stringValue
+                    
+                    newIPOItem.underwriterCounsel.append(myUnderWriter)
+                }
+                
+                IPOs.append(newIPOItem)
             }
+            
         }
         
+        }
+        print("This is how many items within IPOs: \(IPOs.count)")
+        
+        SVProgressHUD.dismiss()
         ipoTableView.reloadData()
     }
     
@@ -513,7 +580,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             myStocks.week52Low = each.1["week52Low"].stringValue
             myStocks.ytdChange = each.1["ytdChange"].stringValue
             
-            print(myStocks.companyName)
+          //  print(myStocks.companyName)
             winners.append(myStocks)
         }
         

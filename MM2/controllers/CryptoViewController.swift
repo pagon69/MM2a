@@ -68,7 +68,9 @@ class CryptoViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-            currentIndexPath = indexPath.row
+           // currentIndexPath = indexPath.row
+        
+            currentIndexPath = indexPath.section
             performSegue(withIdentifier: "cryptoSegue", sender: self)
     }
     

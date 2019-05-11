@@ -171,6 +171,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         }
         
         print("this is what should be saved in the watchlist: \(watchListItems)")
+        
     }
     
     
@@ -183,7 +184,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             //displays an alert which disappears after 2 seconds
             self.myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
                 self.timingCount = self.timingCount + 1
-                if(self.timingCount >= 2){
+                if(self.timingCount >= 1){
                     self.myTimer.invalidate()
                     self.dismiss(animated: true, completion: nil)
                 }
@@ -446,7 +447,10 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         adsSetup()
        
         viewSetup()
+        
         buildCharts()
+        
+        
         collectionViewOutlet.reloadData()
         
        // print(data?.companyName ?? "Nothing sent")

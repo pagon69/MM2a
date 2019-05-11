@@ -13,9 +13,31 @@ import SwiftyJSON
 import GoogleMobileAds
 import SVProgressHUD
 
-class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UITabBarDelegate, UITabBarControllerDelegate {
+    
+    //tab bar dcontroller stuff
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarItem = tabBarController.selectedIndex
+        
+        print("in tab bar with an index of \(tabBarController.selectedIndex)")
+        
+        
+        if tabBarItem == 2 {
+            print("run the refresh code")
+        }
+        
+    }
     
 
+    
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        
+        print("The tab bar delete happened: \(String(describing: tabBar.selectedItem))")
+    }
+    
+    
+    
+    
     
     //UI search controller information, not using so remove?
        // var testing = ["testing","tester","candy","daddy","mama"]
@@ -875,6 +897,12 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        self.tabBarController?.delegate = self
+        
+       // print("the current item is: \(UITabBarItem)")
+       // UITabBarItem
+        
         //calling for google ads
         adsSetup()
         //sets up ticker and stock

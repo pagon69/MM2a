@@ -11,13 +11,68 @@ import Alamofire
 import AlamofireImage
 import SwiftyJSON
 import GoogleMobileAds
+import SVProgressHUD
 
-class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate, UITabBarControllerDelegate {
+class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate {
     
-    //tab bar delegate stuff
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print("In the following tab bar: \(tabBar.tag)")
+  //tab bar stuff
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+       if tabBarController.selectedIndex == 2 {
+        
+        if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
+           
+            for item in userArray{
+                
+                if watchListItems.contains(item){
+                    //do nothing
+                    print("do nothing")
+                    formatedWatchList = ""
+                }else{
+                    //add item
+                    print("the answer to this is: \(watchListItems.contains(item))")
+                    watchListItems.append(item)
+                    formatedWatchList = ""
+                }
+            }
+            
+            formatedWatchList = ""
+            
+            for each in watchListItems{
+                formatedWatchList = formatedWatchList + each + ","
+            }
+            
+            
+            watchListStocks.removeAll()
+            
+            SVProgressHUD.show()
+
+            Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10").responseJSON { (response) in
+                
+                //validate that i am requesting all the data
+                print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(self.formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    self.processData(json: myJson)
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("Got data, this much data was sent: \(data)")
+                }
+            }
+            
+        }else {
+            //no watchlist items found
+            // displayAlert()
+            watchListStocks[0].symbol = "No stock found, please add stocks to watchlist"
+            watchListStocks[0].latestPrice = ""
+            
+            }
+        }
     }
+    
     
     //table view delegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -25,24 +80,27 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         return watchListStocks.count
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
         
-        
-        if watchListStocks.count > 1{
-            cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? displayAlert()))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
-       // cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
-        
-            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(watchListStocks[indexPath.section].latestPrice ?? "") ?? ""))"
-        }else {
+       
+        if watchListStocks.count == 0 {
+            
             cell.textLabel?.text = "Please search for and Add stocks to your Watchlist"
             cell.detailTextLabel?.text = ""
             
+        }else {
+            
+            cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Please search for and Add stocks to your Watchlist"))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
+            
+            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(watchListStocks[indexPath.row].latestPrice ?? "") ?? ""))"
+            
         }
-        
         return cell
     }
     
@@ -52,6 +110,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
             
             //deletion from tableview
             watchListStocks.remove(at: indexPath.row)
+            watchListItems.remove(at: indexPath.row)
             watchListTableView.deleteRows(at: [indexPath], with: .fade)
             myDefaults.set(watchListItems, forKey: "userWatchList")
             watchListTableView.reloadData()
@@ -61,11 +120,13 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     //removed the option to delete the watchList for now
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
         
-        //watchListStocks.removeAll()
-        //watchListTableView.reloadData()
-        //watchListItems.removeAll()
+       // watchListStocks.removeAll()
+       // watchListTableView.reloadData()
+       // watchListItems.removeAll()
        // myDefaults.set(watchListItems, forKey: "userWatchList")
+        
         displayAlerts()
+       // watchListTableView.reloadData()
     }
     
     
@@ -357,10 +418,12 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         }else {
             //no watchlist items found
            // displayAlert()
+            watchListStocks[0].symbol = "No stock found, please add stocks to watchlist"
+            watchListStocks[0].latestPrice = ""
+            
         }
      
         watchListTableView.reloadData()
-       // updateFocusIfNeeded()
         
     }
     
@@ -397,7 +460,6 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     
     func processData(json: JSON){
-        
             //process the results
         for stocks in json{
             let myStocks = Stock()
@@ -482,6 +544,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     
         watchListTableView.reloadData()
+        SVProgressHUD.dismiss()
     }
                           
     
@@ -501,6 +564,8 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
             self.startAnimating()
         })
+        
+       self.tabBarController?.delegate = self
         
         
         // Do any additional setup after loading the view.
