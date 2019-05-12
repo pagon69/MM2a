@@ -30,6 +30,15 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     var myTimer = Timer()
     var lastTicker = CGFloat()
     var timing = 0
+    var currentPicture = ""
+    
+    enum pictures: String {
+        case up = "💹"
+        case down = "🔻"
+        case stable = "⎯"
+        case onFire = "🔥"
+        case cold = "❄️"
+    }
     
     //Outlets
     @IBOutlet weak var tickerbanner: UIView!
@@ -88,42 +97,34 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         t6.center.x = t6.center.x  - 10
     
         if(t1.center.x + t1.frame.width/2 < 0){
-            //replace print statement with api call
-            //  print("download new info and setup")
             t1.center.x = t6.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 1)
         }
         
         if(t2.center.x + t2.frame.width/2 < 0){
-            //print("download a stock for ticker 2 and update ticker settings")
             t2.center.x = t1.center.x + t1.frame.width + 10
-            //view.center.x + view.center.x/2
             refreashTicker(currentTicker: 2)
         }
         
         if(t3.center.x + t3.frame.width/2 < 0){
-            //print("download a stock for ticker 3 and update ticker settings")
             t3.center.x = t2.center.x + t1.frame.width + 10
             refreashTicker(currentTicker: 3)
         }
         
         if(t4.center.x + t3.frame.width/2 < 0){
             t4.center.x = t3.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 4 and update ticker settings")
             refreashTicker(currentTicker: 4)
             
         }
         
         if(t5.center.x + t4.frame.width/2 < 0){
             t5.center.x = t4.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 5 and update ticker settings")
             refreashTicker(currentTicker: 5)
             
         }
         
         if(t6.center.x + t5.frame.width/2 < 0){
             t6.center.x = t5.center.x + t1.frame.width + 10
-            //print("download a stock for ticker 6 and update ticker settings")
             refreashTicker(currentTicker: 6)
             
         }
@@ -139,23 +140,16 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         
         //starting position off screen, should adjust to various screen sizes
         t1.center.x = startingPos
-        
         t2.center.x = startingPos + tickersize
-        
         t3.center.x = startingPos + 2 * tickersize
-        
         t4.center.x = startingPos + 3 * tickersize
-        
         t5.center.x = startingPos + 4 * tickersize
-        
         t6.center.x = startingPos + 5 * tickersize
-        
         lastTicker = startingPos + 5 * tickersize
     }
     
     
     func refreashTicker(currentTicker: Int){
-        //do for just one right now
         if(currentTicker == 1){
             
             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
@@ -164,11 +158,18 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
                 
                 if let json = response.result.value {
                     let myJson = JSON(json)
-                    //print(myJson)
+  
                     self.t1Name.text = myJson["symbol"].stringValue
-                    self.t1Price.text = myJson["high"].stringValue
-                    self.t1Change.text = myJson["changePercent"].stringValue
+                    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
                     
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
+                    }
                     
                 }else {
                     print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
@@ -178,9 +179,163 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
                 }
             }
         }
+        
         if(currentTicker == 2){
             
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t2Name.text = myJson["symbol"].stringValue
+                    self.t2Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t2Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t2Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t2Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t2Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
         }
+        
+        if(currentTicker == 3){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t3Name.text = myJson["symbol"].stringValue
+                    self.t3Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t3Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t3Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t3Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t3Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        if(currentTicker == 4){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t4Name.text = myJson["symbol"].stringValue
+                    self.t4Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t4Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t4Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t4Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t4Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        if(currentTicker == 5){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t5Name.text = myJson["symbol"].stringValue
+                    self.t5Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t5Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t5Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t5Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t5Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        if(currentTicker == 6){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t6Name.text = myJson["symbol"].stringValue
+                    self.t6Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t6Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t6Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t6Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t6Picture.text = pictures.stable.rawValue
+                    }
+                    
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        
     }
     
     func randomTickerValues(){
@@ -192,9 +347,21 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             if let json = response.result.value {
                 let myJson = JSON(json)
                 for each in myJson{
-                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue, price: each.1["quote"]["high"].stringValue, change: each.1["quote"]["changePercent"].stringValue, picture : "🔥")
+                    
+                    if each.1["quote"]["change"].floatValue > 0{
+                        self.currentPicture = pictures.up.rawValue
+                    }else if each.1["quote"]["change"].floatValue < 0{
+                        self.currentPicture = pictures.down.rawValue
+                    }else {
+                        self.currentPicture = pictures.stable.rawValue
+                    }
+                    
+                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue,
+                                             price: "$\(String(format: "%.2f", Float64(each.1["quote"]["high"].stringValue) ?? " "))",
+                        change: "$\(String(format: "%.2f", Float64(each.1["quote"]["changePercent"].stringValue) ?? " "))",
+                        picture : self.currentPicture)
+                    
                     self.myTickers.append(tickerValue)
-                    // print("this is whats in ticker now: \(self.myTickers)")
                 }
 
                 self.startingValue()
@@ -205,43 +372,53 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
                 print("How much data was sent: \(data)")
             }
         }
-        
-        //print("this is whats in ticker now: \(self.myTickers)")
     }
     
     func startingValue(){
-        print("in starting value")
+
         var i = 0
         while i <= myTickers.count {
             if(i == 0){
                 t1Name.text = myTickers[i].name
                 t1Price.text = myTickers[i].price
                 t1Change.text = myTickers[i].change
+                t1Picture.text = myTickers[i].picture
+                ticker1.backgroundColor = UIColor.green
             }
             if(i == 1){
                 t2Name.text = myTickers[i].name
                 t2Price.text = myTickers[i].price
                 t2Change.text = myTickers[i].change
+                t2Picture.text = myTickers[i].picture
+                ticker2.backgroundColor = UIColor.green
             }
             if(i == 2){
                 t3Name.text = myTickers[i].name
                 t3Change.text = myTickers[i].change
                 t3Price.text = myTickers[i].price
+                t3Picture.text = myTickers[i].picture
+                ticker3.backgroundColor = UIColor.green
             }
             if(i == 3){
                 t4Name.text = myTickers[i].name
                 t4Change.text = myTickers[i].change
                 t4Price.text = myTickers[i].price
+                t4Picture.text = myTickers[i].picture
+                ticker4.backgroundColor = UIColor.green
             }
             if(i == 4){
                 t5Name.text = myTickers[i].name
                 t5Change.text = myTickers[i].change
                 t5Price.text = myTickers[i].price
+                t5Picture.text = myTickers[i].picture
+                ticker5.backgroundColor = UIColor.green
             }
             if(i == 5){
                 t6Name.text = myTickers[i].name
                 t6Change.text = myTickers[i].change
                 t6Price.text = myTickers[i].price
+                t6Picture.text = myTickers[i].picture
+                ticker6.backgroundColor = UIColor.green
             }
             i += 1
         }

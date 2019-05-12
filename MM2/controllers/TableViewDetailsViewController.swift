@@ -319,6 +319,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
         if locationString == "No Logo Available" {
             //put in a placeholder picture here
+            
         }else{
             
             Alamofire.request(locationString).responseImage {response in
