@@ -11,7 +11,7 @@ target 'MM2' do
     pod 'SwiftyJSON'
     pod 'RealmSwift'
     pod 'Google-Mobile-Ads-SDK'
-    pod 'Charts', '~> 3.2'
+    pod 'Charts'
     pod 'SVProgressHUD'
 
 end

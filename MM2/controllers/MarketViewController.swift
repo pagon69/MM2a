@@ -13,22 +13,20 @@ import SwiftyJSON
 import GoogleMobileAds
 import SVProgressHUD
 
-class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UITabBarDelegate, UITabBarControllerDelegate {
     
-
-    
-    //UI search controller information, not using so remove?
-       // var testing = ["testing","tester","candy","daddy","mama"]
-        let searchController = UISearchController(searchResultsController: nil)
-    
-    //not using this so remove?
-        func updateSearchResults(for searchController: UISearchController) {
-            //does search then puts it
-            
-            //var test = ["a", "b","c","d","e"]
-            
+    //tab bar dcontroller stuff
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let tabBarItem = tabBarController.selectedIndex
+        
+        print("in tab bar with an index of \(tabBarController.selectedIndex)")
+ 
+        if tabBarItem == 2 {
+            print("run the refresh code")
+        }
+        
     }
-    
+
     //sections and table customization
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -41,14 +39,9 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         
         if(tableView.tag == 1){
             heading = "Major ETF/Indexes"
-           // tableView.sectionIndexColor = UIColor.yellow
-            //tableView.sectionIndexBackgroundColor = UIColor.yellow
-           // tableView.tableHeaderView?.backgroundColor = UIColor.green
         }
         if(tableView.tag == 2){
             heading = "Exchanges"
-           // tableView.sectionIndexColor = UIColor.black
-            
         }
         return heading
     }
@@ -56,7 +49,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     //Table view stuff
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
-        //default search view table - i need to redo using search view controller
         if(tableView.tag == 0){
             count = searchResults?.count ?? 1
         }
@@ -65,6 +57,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         if(tableView.tag == 1){
             count = marketStocks.count
         }
+        
         //Markets
         if(tableView.tag == 2){
             count = myMarkets.count
@@ -75,13 +68,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell = UITableViewCell()
-        
-        //indices tableView cell
+
         if(tableView.tag == 1){
             cell = marketOutlet.dequeueReusableCell(withIdentifier: "marketsCell", for: indexPath)
 
             cell.textLabel?.numberOfLines = 0
-            
             cell.textLabel?.text = "\(String(describing: marketStocks[indexPath.row].companyName ?? "Something went wrong"))\n\(String(describing: marketStocks[indexPath.row].symbol ?? "Something went wrong" ))"
             
             if let change = Float(marketStocks[indexPath.row].change ?? ""){
@@ -93,19 +84,15 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
                     
                 }else if Float(change) <= 0.0{
                     cell.detailTextLabel?.numberOfLines = 0
-                    
-                   // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+
                     cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.down.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
                 }else if Float(change) >= 2{
                 
                     cell.detailTextLabel?.numberOfLines = 0
-                    
-                    // cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.down.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
+
                     cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.onFire.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
                 }else{
                     cell.detailTextLabel?.numberOfLines = 0
-                    
-                  //  cell.detailTextLabel?.text = "$\(String(describing: marketStocks[indexPath.row].latestPrice ?? "Null"))\n\(pictures.stable.rawValue)\(String(describing: marketStocks[indexPath.row].change ?? "Null") )"
                     
                     cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(marketStocks[indexPath.row].latestPrice ?? "") ?? ""))\n\(pictures.stable.rawValue) \(String(format: "%.2f", Float64(marketStocks[indexPath.row].change ?? "") ?? ""))"
                 }
@@ -661,7 +648,6 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
         
         //network request for Major indexices
-
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
@@ -875,9 +861,9 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //calling for google ads
+        self.tabBarController?.delegate = self
+
         adsSetup()
-        //sets up ticker and stock
         startPosition()
         
         myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in

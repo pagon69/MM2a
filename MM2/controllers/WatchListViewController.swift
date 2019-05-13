@@ -11,13 +11,68 @@ import Alamofire
 import AlamofireImage
 import SwiftyJSON
 import GoogleMobileAds
+import SVProgressHUD
 
-class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UITabBarDelegate, UITabBarControllerDelegate {
+class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate {
     
-    //tab bar delegate stuff
-    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print("In the following tab bar: \(tabBar.tag)")
+  //tab bar stuff
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+       if tabBarController.selectedIndex == 2 {
+        
+        if let userArray = myDefaults.object(forKey: "userWatchList") as? [String]{
+           
+            for item in userArray{
+                
+                if watchListItems.contains(item){
+                    //do nothing
+                    print("do nothing")
+                    formatedWatchList = ""
+                }else{
+                    //add item
+                    print("the answer to this is: \(watchListItems.contains(item))")
+                    watchListItems.append(item)
+                    formatedWatchList = ""
+                }
+            }
+            
+            formatedWatchList = ""
+            
+            for each in watchListItems{
+                formatedWatchList = formatedWatchList + each + ","
+            }
+            
+            
+            watchListStocks.removeAll()
+            
+            SVProgressHUD.show()
+
+            Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10").responseJSON { (response) in
+                
+                //validate that i am requesting all the data
+                print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(self.formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    self.processData(json: myJson)
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("Got data, this much data was sent: \(data)")
+                }
+            }
+            
+        }else {
+            //no watchlist items found
+            // displayAlert()
+            watchListStocks[0].symbol = "No stock found, please add stocks to watchlist"
+            watchListStocks[0].latestPrice = ""
+            
+            }
+        }
     }
+    
     
     //table view delegates
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -25,24 +80,27 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         return watchListStocks.count
     }
     
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = watchListTableView.dequeueReusableCell(withIdentifier: "watchListCell", for: indexPath)
         
         cell.textLabel?.numberOfLines = 0
         
-        
-        if watchListStocks.count > 1{
-            cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? displayAlert()))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
-       // cell.detailTextLabel?.text = "\(String(describing: watchListStocks[indexPath.row].latestPrice ?? ""))"
-        
-            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(watchListStocks[indexPath.section].latestPrice ?? "") ?? ""))"
-        }else {
+       
+        if watchListStocks.count == 0 {
+            
             cell.textLabel?.text = "Please search for and Add stocks to your Watchlist"
             cell.detailTextLabel?.text = ""
             
+        }else {
+            
+            cell.textLabel?.text = "\(String(describing: watchListStocks[indexPath.row].companyName ?? "Please search for and Add stocks to your Watchlist"))\n\(String(describing: watchListStocks[indexPath.row].symbol ?? ""))"
+            
+            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(watchListStocks[indexPath.row].latestPrice ?? "") ?? ""))"
+            
         }
-        
         return cell
     }
     
@@ -52,6 +110,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
             
             //deletion from tableview
             watchListStocks.remove(at: indexPath.row)
+            watchListItems.remove(at: indexPath.row)
             watchListTableView.deleteRows(at: [indexPath], with: .fade)
             myDefaults.set(watchListItems, forKey: "userWatchList")
             watchListTableView.reloadData()
@@ -61,11 +120,13 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     //removed the option to delete the watchList for now
     @IBAction func deleteWatchList(_ sender: UIBarButtonItem) {
         
-        //watchListStocks.removeAll()
-        //watchListTableView.reloadData()
-        //watchListItems.removeAll()
+       // watchListStocks.removeAll()
+       // watchListTableView.reloadData()
+       // watchListItems.removeAll()
        // myDefaults.set(watchListItems, forKey: "userWatchList")
+        
         displayAlerts()
+       // watchListTableView.reloadData()
     }
     
     
@@ -173,7 +234,15 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     var timing = 0
     var timingCount = 0
     var newTimer = Timer()
+    var currentPicture = ""
     
+    enum pictures: String {
+        case up = "💹"
+        case down = "🔻"
+        case stable = "⎯"
+        case onFire = "🔥"
+        case cold = "❄️"
+    }
     
     //ticker functions can i make this better?
     
@@ -187,42 +256,34 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         ticker6.center.x = ticker6.center.x  - 10
         
         if(ticker1.center.x + ticker1.frame.width/2 < 0){
-            //replace print statement with api call
-            //  print("download new info and setup")
             ticker1.center.x = ticker6.center.x + ticker1.frame.width + 10
             refreashTicker(currentTicker: 1)
         }
         
         if(ticker2.center.x + ticker2.frame.width/2 < 0){
-            //print("download a stock for ticker 2 and update ticker settings")
             ticker2.center.x = ticker1.center.x + ticker1.frame.width + 10
-            //view.center.x + view.center.x/2
             refreashTicker(currentTicker: 2)
         }
         
         if(ticker3.center.x + ticker3.frame.width/2 < 0){
-            //print("download a stock for ticker 3 and update ticker settings")
             ticker3.center.x = ticker2.center.x + ticker1.frame.width + 10
             refreashTicker(currentTicker: 3)
         }
     
         if(ticker4.center.x + ticker3.frame.width/2 < 0){
             ticker4.center.x = ticker3.center.x + ticker1.frame.width + 10
-            //print("download a stock for ticker 4 and update ticker settings")
             refreashTicker(currentTicker: 4)
             
         }
         
         if(ticker5.center.x + ticker4.frame.width/2 < 0){
             ticker5.center.x = ticker4.center.x + ticker1.frame.width + 10
-            //print("download a stock for ticker 5 and update ticker settings")
             refreashTicker(currentTicker: 5)
             
         }
         
         if(ticker6.center.x + ticker5.frame.width/2 < 0){
             ticker6.center.x = ticker5.center.x + ticker1.frame.width + 10
-            //print("download a stock for ticker 6 and update ticker settings")
             refreashTicker(currentTicker: 6)
             
         }
@@ -238,22 +299,16 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         
         //starting position off screen, should adjust to various screen sizes
         ticker1.center.x = startingPos
-        
         ticker2.center.x = startingPos + tickersize
-        
         ticker3.center.x = startingPos + 2 * tickersize
-        
         ticker4.center.x = startingPos + 3 * tickersize
-        
         ticker5.center.x = startingPos + 4 * tickersize
-        
         ticker6.center.x = startingPos + 5 * tickersize
         
         lastTicker = startingPos + 5 * tickersize
     }
     
     func refreashTicker(currentTicker: Int){
-        //do for just one right now
         if(currentTicker == 1){
             
             let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
@@ -262,12 +317,18 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
                 
                 if let json = response.result.value {
                     let myJson = JSON(json)
-                    //print(myJson)
+                   
                     self.t1Name.text = myJson["symbol"].stringValue
-                    self.t1Price.text = myJson["high"].stringValue
-                    self.t1Change.text = myJson["changePercent"].stringValue
-                    
-                    
+                    self.t1Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t1Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+              
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t1Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t1Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t1Picture.text = pictures.stable.rawValue
+                    }
                 }else {
                     print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
                 }
@@ -276,9 +337,156 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
                 }
             }
         }
+        
         if(currentTicker == 2){
+           
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t2Name.text = myJson["symbol"].stringValue
+                    self.t2Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t2Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t2Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t2Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t2Picture.text = pictures.stable.rawValue
+                    }
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
             
         }
+        
+        if(currentTicker == 3){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t3Name.text = myJson["symbol"].stringValue
+                    self.t3Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t3Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t3Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t3Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t3Picture.text = pictures.stable.rawValue
+                    }
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        if(currentTicker == 4){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t4Name.text = myJson["symbol"].stringValue
+                    self.t4Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t4Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t4Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t4Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t4Picture.text = pictures.stable.rawValue
+                    }
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        if(currentTicker == 5){
+            
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t5Name.text = myJson["symbol"].stringValue
+                    self.t5Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t5Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t5Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t5Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t5Picture.text = pictures.stable.rawValue
+                    }
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+            
+        }
+        
+        if(currentTicker == 6){
+         
+            let keyMarketStockString = keyMarketStock[Int(arc4random_uniform(UInt32(keyMarketStock.count)))]
+            
+            Alamofire.request("https://api.iextrading.com/1.0/stock/" + keyMarketStockString + "/quote").responseJSON { (response) in
+                
+                if let json = response.result.value {
+                    let myJson = JSON(json)
+                    
+                    self.t6Name.text = myJson["symbol"].stringValue
+                    self.t6Price.text = "$\(String(format: "%.2f", Float64(myJson["high"].stringValue) ?? " "))"
+                    self.t6Change.text = "\(String(format: "%.2f", Float64(myJson["changePercent"].stringValue) ?? " "))"
+                    
+                    if myJson["changePercent"].floatValue > 0{
+                        self.t6Picture.text = pictures.up.rawValue
+                    }else if myJson["changePercent"].floatValue < 0{
+                        self.t6Picture.text = pictures.down.rawValue
+                    }else {
+                        self.t6Picture.text = pictures.stable.rawValue
+                    }
+                }else {
+                    print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                }
+                if let data = response.data{
+                    print("How much data was sent: \(data)")
+                }
+            }
+        }
+        
     }
     
     func randomTickerValues(){
@@ -286,13 +494,26 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         for each in keyMarketStock{
             combined = combined + "," + each
         }
+        
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=" + combined + "&types=quote").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 for each in myJson{
-                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue, price: each.1["quote"]["high"].stringValue, change: each.1["quote"]["changePercent"].stringValue, picture : "🔥")
+                    
+                    if each.1["quote"]["change"].floatValue > 0{
+                        self.currentPicture = pictures.up.rawValue
+                    }else if each.1["quote"]["change"].floatValue < 0{
+                        self.currentPicture = pictures.down.rawValue
+                    }else {
+                        self.currentPicture = pictures.stable.rawValue
+                    }
+                    
+                    let tickerValue = Ticker(name: each.1["quote"]["symbol"].stringValue,
+                                             price: "$\(String(format: "%.2f", Float64(each.1["quote"]["high"].stringValue) ?? " "))",
+                        change: "$\(String(format: "%.2f", Float64(each.1["quote"]["changePercent"].stringValue) ?? " "))",
+                        picture : self.currentPicture)
+                    
                     self.myTickers.append(tickerValue)
-                    // print("this is whats in ticker now: \(self.myTickers)")
                 }
                 
                 self.startingValue()
@@ -303,43 +524,53 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
                 print("How much data was sent: \(data)")
             }
         }
-        
-        //print("this is whats in ticker now: \(self.myTickers)")
     }
     
     func startingValue(){
-        print("in starting value")
+        
         var i = 0
         while i <= myTickers.count {
             if(i == 0){
                 t1Name.text = myTickers[i].name
                 t1Price.text = myTickers[i].price
                 t1Change.text = myTickers[i].change
+                t1Picture.text = myTickers[i].picture
+                ticker1.backgroundColor = UIColor.green
             }
             if(i == 1){
                 t2Name.text = myTickers[i].name
                 t2Price.text = myTickers[i].price
                 t2Change.text = myTickers[i].change
+                t2Picture.text = myTickers[i].picture
+                ticker2.backgroundColor = UIColor.green
             }
             if(i == 2){
                 t3Name.text = myTickers[i].name
                 t3Change.text = myTickers[i].change
                 t3Price.text = myTickers[i].price
+                t3Picture.text = myTickers[i].picture
+                ticker3.backgroundColor = UIColor.green
             }
             if(i == 3){
                 t4Name.text = myTickers[i].name
                 t4Change.text = myTickers[i].change
                 t4Price.text = myTickers[i].price
+                t4Picture.text = myTickers[i].picture
+                ticker4.backgroundColor = UIColor.green
             }
             if(i == 4){
                 t5Name.text = myTickers[i].name
                 t5Change.text = myTickers[i].change
                 t5Price.text = myTickers[i].price
+                t5Picture.text = myTickers[i].picture
+                ticker5.backgroundColor = UIColor.green
             }
             if(i == 5){
                 t6Name.text = myTickers[i].name
                 t6Change.text = myTickers[i].change
                 t6Price.text = myTickers[i].price
+                t6Picture.text = myTickers[i].picture
+                ticker6.backgroundColor = UIColor.green
             }
             i += 1
         }
@@ -354,13 +585,17 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
                 formatedWatchList = formatedWatchList + each + ","
             }
            // print("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(formatedWatchList)&types=quote,financials,earnings,logo,news,chart&range=1m&last=10")
-        }else {
+        }
+        /*
+        else {
             //no watchlist items found
            // displayAlert()
+            watchListStocks[0].symbol = "No stock found, please add stocks to watchlist"
+            watchListStocks[0].latestPrice = ""
+            
         }
-     
+     */
         watchListTableView.reloadData()
-       // updateFocusIfNeeded()
         
     }
     
@@ -397,7 +632,6 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     
     func processData(json: JSON){
-        
             //process the results
         for stocks in json{
             let myStocks = Stock()
@@ -482,6 +716,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     
     
         watchListTableView.reloadData()
+        SVProgressHUD.dismiss()
     }
                           
     
@@ -501,6 +736,8 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
         myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
             self.startAnimating()
         })
+        
+       self.tabBarController?.delegate = self
         
         
         // Do any additional setup after loading the view.

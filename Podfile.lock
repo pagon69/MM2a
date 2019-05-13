@@ -45,7 +45,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire
   - AlamofireImage (~> 3.5)
-  - Charts (~> 3.2)
+  - Charts
   - Google-Mobile-Ads-SDK
   - RealmSwift
   - SVProgressHUD
@@ -78,6 +78,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
 
-PODFILE CHECKSUM: bf37a5dae9b327ed66f0e0f77fe0d16223d59cb6
+PODFILE CHECKSUM: e2ae01578a66def1e5eeee7f151d9f411aede063
 
 COCOAPODS: 1.5.3

@@ -48,5 +48,7 @@ class IPO{
     var businessDescription : String?
     var useOfProceeds : String?
     var competition : String?
+    var amount :  String?
+    var percentOffered : String?
     
 }
