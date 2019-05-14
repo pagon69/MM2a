@@ -16,9 +16,9 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
 
     
     //remove after this works
-   let my2Array = ["Apple","Corn","fox","box","tennis"]
+  // let my2Array = ["Apple","Corn","fox","box","tennis"]
     
-    let myTextArray = "This is random text which will go within the text view editor as a way to test if this code is working correctly"
+ //   let myTextArray = "This is random text which will go within the text view editor as a way to test if this code is working correctly"
     
     /*
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -31,8 +31,8 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
        // return myArray.count
         //print("how many items in this data:\(data?.newsData.count ?? 1)")
-        return my2Array.count
-        //return data?.newsData.count ?? 1
+       // return my2Array.count
+        return data?.newsData.count ?? 1
     }
  
     
@@ -41,23 +41,20 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         let cell = collectionViewOutlet.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! NewsCell
         
         cell.backgroundColor = UIColor.lightGray
-        /*
+        
         cell.titleOutlet.text = data?.newsData[indexPath.section].headline
         cell.referencesOutlet.text = "Date:\(String(describing: data?.newsData[indexPath.row].datetime ?? "Nope")), Source:\(String(describing: data?.newsData[indexPath.row].source ?? "Nothing")), Related:\(String(describing: data?.newsData[indexPath.row].related ?? "what now"))"
         
         cell.summaryOutlet.text = data?.newsData[indexPath.section].summary
-       */
-        cell.titleOutlet.text = my2Array[indexPath.row]
-        cell.summaryOutlet.text = myTextArray
-        cell.referencesOutlet.text = my2Array[indexPath.row]
-        
+   
         //can i add this someplace?
        // cell.cellURL.text = data?.newsData[indexPath.row].url
         
         //need to call a image download when this happens
     
-        cell.newsImageOutlet.image = downloadNewsPictures(locationString: data?.newsData[indexPath.row].image ?? " No Logo Available")
-        
+        if data?.newsData.count ?? 0 > 0 {
+            cell.newsImageOutlet.image = downloadNewsPictures(locationString: data?.newsData[indexPath.row].image ?? " No Logo Available")
+        }
         return cell
     }
  
@@ -66,15 +63,21 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = 0
         
+        //details view
         if(tableView.tag == 0){
-           count = myNamesArray.count        }
+           count = myNamesArray.count
+            
+        }
         
+        //earnings
         if(tableView.tag == 1){
             
-            count = myNamesArray.count        }
+            count = earningsArray.count
+        }
         
+        //financial
         if(tableView.tag == 2){
-            count = myNamesArray.count
+            count = financialsArray.count
             
         }
         
@@ -82,14 +85,6 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-       // let myFinancialData: [String] = []
-        
-        /*
-        for 0..<(data?.financialData.count ?? 1){
-                myFinancialData.append(data?.financialData)
-        }
-        */
         
         var cell = UITableViewCell()
         
@@ -100,19 +95,27 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         cell.textLabel?.text = myNamesArray[indexPath.row]
         cell.detailTextLabel?.text = myDetailsArray[indexPath.row]
         }
+        
         //earnings tableview
         if(tableView.tag == 1){
             cell = earningsTableviewOutlet.dequeueReusableCell(withIdentifier: "earningsCell", for: indexPath)
             
-            cell.textLabel?.text = myNamesArray[indexPath.row]
-            cell.detailTextLabel?.text = myDetailsArray[indexPath.row]
+            if earningsArray.count > 0 {
+                cell.textLabel?.text = earningsnames[indexPath.row] 
+                cell.detailTextLabel?.text = earningsArray[indexPath.row]
+            }else {
+                cell.textLabel?.text = "No provided Data"
+                cell.detailTextLabel?.text = ""
+            }
+            
         }
+        
         //financial tableview
         if(tableView.tag == 2){
             cell = financialTableviewOutlet.dequeueReusableCell(withIdentifier: "financialCell", for: indexPath)
             
-            cell.textLabel?.text = myNamesArray[indexPath.row]
-            cell.detailTextLabel?.text = myDetailsArray[indexPath.row]
+            cell.textLabel?.text = financialNames[indexPath.row]
+            cell.detailTextLabel?.text = financialsArray[indexPath.row]
             
         }
         
@@ -131,11 +134,18 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     var myArray = [String]()
     
     var myDetailsArray = [String]()
+    var earningsArray = [String]()
+    var financialsArray = [String]()
     
-    let myNamesArray = ["Symbol","Company Name","Sector","Primary Exchange","Calculation price","Open","Close","High","52 Week High","Low","52 Week Low","Previous Close","Lastest price","Latest Source","Latest Volume","IEX RealTimePrice","IEX RealTimeSize","Delayed Price","extended Price","extended Change","extended change percent","change", "change percent","IEX Market Percent", "IEX Volume", "Avg Total Volume", "IEX Bid Price","IEX Ask Price","IEX Ask Size","Market cap","Pe Ratio","YTD Change"  ]
+    let myNamesArray = ["Symbol","Company Name","Sector","Primary Exchange","Calculation price","Open","Close","High","52 Week High","Low","52 Week Low","Previous Close","Lastest price","Latest Source","Latest Volume","IEX RealTimePrice","IEX RealTimeSize","Delayed Price","extended Price","extended Change","extended change percent","change", "change percent","IEX Market Percent", "IEX Volume", "Avg Total Volume", "IEX Bid Price","IEX Ask Price","IEX Ask Size","Market cap","Pe Ratio","YTD Change" ]
+    
+    let earningsnames = [ "actualEPS", "consensusEPS", "estimatedEPS","announceTime","numberOfEstimates","EPSSurpriseDollar","EPSReportDate","fiscalPeriod","FiscalEndDate","yearAgo","yearAgoChangePercent","estimatedChangePercent","symbolId"]
+    
+    let financialNames = ["report Date","Gross Profit","Cost of revenue","Operating Revenue","Total Revenue","Operating Income","Net Income","Research and Development","Operating Expense","Current Assets","Total Assets","Total Liabilities","Current Cash","Current Debt","Total debt","ShareHolder Equity","Cash Change", "Cash Flow","Operating Gains and Losses"]
+    
+    
     var changeIconUp = "🔺"
     var changeIconDown = "🔻"
-    let financialNames = ["report Date","Gross Profit","Cost of revenue","Operating Revenue","Total Revenue","Operating Income","Net Income","Research and Development","Operating Expense","Current Assets","Total Assets","Total Liabilities","Current Cash","Current Debt","Total Cash","Total debt","ShareHolder Equity","Cash Change", "Cash Flow","Operating Gains and Losses"]
     
     var watchListItems = [String]()
     let myDefaults = UserDefaults.standard
@@ -210,7 +220,6 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     //tableoutlets
     @IBOutlet weak var detailsTableViewOutlet: UITableView!
     @IBOutlet weak var earningsTableviewOutlet: UITableView!
-    
     @IBOutlet weak var financialTableviewOutlet: UITableView!
     
     @IBOutlet weak var earningOutlet: UIView!
@@ -294,22 +303,16 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         //graph setup
         setupPieChart()
         
-        
         //sets up the various views along with the segment controls
         self.newsOutlet.isHidden = true
         self.financialOutlet.isHidden = true
         self.detailsOutlet.isHidden = false
         self.earningOutlet.isHidden = true
         
-        //setup the tableview
-        //myArray.append(data?.high ?? "No Current Value")
-        //myArray.append(data?.week52High ?? "No Current Value")
-       // myArray.append(data?.low ?? "No Current Value")
-        //myArray.append(data?.week52Low ?? "No Current Value")
-        //myArray.append(data?.change ?? "No Current Value")
-        
-        //sets up detials view
+        //sets up details
         setupDetailsView()
+        setupFinancial()
+        setupEarnings()
         
         /*updating the TitleView and data
         if(Int(data?.change ?? "1")! > 0){
@@ -323,21 +326,73 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         titlePriceAndChangeOutlet.text = "\(String(describing: data?.latestPrice ?? "No data Available"))  \(change)  \(String(describing: data?.change ?? "No data Available"))"
         
         downloadPictures(locationString: data?.logo ?? "No Logo Available")
+        
         detailsTableViewOutlet.reloadData()
+        earningsTableviewOutlet.reloadData()
+        financialTableviewOutlet.reloadData()
         
        // collectionViewOutlet.reloadData()
     }
     
-    func setupDetailsView(){
+    func setupEarnings(){
         
-        //setup the tableview
-        /*ol","Company Name","Sector","Primary Exchange","Calculation price","Open","Close","High","52 Week High","Low","52 Week Low","Change","Lastest price","Latest Source","Latest Volume","IEX RealTimePrice","IEX RealTimeSize","Delayed Price","extended Price","extended Change","extended change percent","change", "change percent","IEX Market Percent", "IEX Volume", "Avg Total Volume", "IEX Bid Price","IEX Ask Price","IEX Ask Size","Market cap","Pe Ratio","YTD Change"  ]
-        */
+        if let myEarningsData = data?.earningsData{
+            
+            for each in myEarningsData{
+                earningsArray.append(String(each.actualEPS ?? 1.0 ))
+                earningsArray.append(each.consensusEPS ?? "No data available" )
+                earningsArray.append(each.estimatedEPS ?? "No data available")
+                earningsArray.append(each.announceTime ?? "No data available")
+                earningsArray.append(each.numberOfEstimates ?? "No data available")
+                earningsArray.append(each.EPSSurpriseDollar ?? "No data available")
+                earningsArray.append(each.EPSReportDate ?? "No data available")
+                earningsArray.append(each.fiscalPeriod ?? "No data available")
+                earningsArray.append(each.FiscalEndDate ?? "No data available")
+                earningsArray.append(each.yearAgo ?? "No data available")
+                earningsArray.append(each.yearAgoChangePercent ?? "No data available")
+                earningsArray.append(each.estimatedChangePercent ?? "No data available")
+                earningsArray.append(each.symbolId ?? "No data available")
+            }
+        }
+        
+    }
+    
+    func setupFinancial(){
+        
+        if let myFinancialData = data?.financialData{
+            
+            for each in myFinancialData{
+                financialsArray.append(each.reportDate ?? "No data avialable")
+                financialsArray.append(each.grossProfit ?? "No data avialable")
+                financialsArray.append(each.costOfRevenue ?? "No data avialable")
+                financialsArray.append(each.operatingRevenue ?? "No data avialable")
+                financialsArray.append(each.totalRevenue ?? "No data avialable")
+                financialsArray.append(each.operatingIncome ?? "No data avialable")
+                financialsArray.append(each.netIncome ?? "No data avialable")
+                financialsArray.append(each.researchAndDevlopment ?? "No data avialable")
+                financialsArray.append(each.operatingexpense ?? "No data avialable")
+                financialsArray.append(each.currentAssets ?? "No data avialable")
+                financialsArray.append(each.totalAssets ?? "No data avialable")
+                financialsArray.append(each.totalLiabilities ?? "No data avialable")
+                financialsArray.append(each.currentCash ?? "No data avialable")
+                financialsArray.append(each.currentDebt ?? "No data avialable")
+                financialsArray.append(each.totalDebt ?? "No data avialable")
+                financialsArray.append(each.shareholderEquity ?? "No data avialable")
+                financialsArray.append(each.cashChange ?? "No data avialable")
+                financialsArray.append(each.cashFlow ?? "No data avialable")
+                financialsArray.append(each.operatingGainsLosses ?? "No data avialable")
+            }
+        }
+
+    }
+    
+    func setupDetailsView(){
         
         myDetailsArray.append(data?.symbol ?? "No Current Value")
         myDetailsArray.append(data?.companyName ?? "No Current Value")
         myDetailsArray.append(data?.sector ?? "No Current Value")
         myDetailsArray.append(data?.primaryExchange ?? "No Current Value")
+        myDetailsArray.append(data?.calculationPrice ?? "No Current Value")
         myDetailsArray.append(data?.open ?? "No Current Value")
         myDetailsArray.append(data?.close ?? "No Current Value")
         myDetailsArray.append(data?.high ?? "No Current Value")
@@ -521,9 +576,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         super.viewDidLoad()
 
         adsSetup()
-       
         viewSetup()
-        
         buildCharts()
         
         collectionViewOutlet.reloadData()

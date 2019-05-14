@@ -289,25 +289,25 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                                 let myFinancial = Financials()
                                 
                                 myFinancial.cashChange = deeper.1["cashChange"].stringValue
-                                myFinancial.cashFlow = deeper.1["cashChange"].stringValue
-                                myFinancial.costOfRevenue = deeper.1["cashChange"].stringValue
-                                myFinancial.currentAssets = deeper.1["cashChange"].stringValue
-                                myFinancial.currentCash = deeper.1["cashChange"].stringValue
-                                myFinancial.currentDebt = deeper.1["cashChange"].stringValue
-                                myFinancial.grossProfit = deeper.1["cashChange"].stringValue
-                                myFinancial.netIncome = deeper.1["cashChange"].stringValue
-                                myFinancial.operatingexpense = deeper.1["cashChange"].stringValue
-                                myFinancial.operatingGainsLosses = deeper.1["cashChange"].stringValue
-                                myFinancial.operatingIncome = deeper.1["cashChange"].stringValue
-                                myFinancial.operatingRevenue = deeper.1["cashChange"].stringValue
-                                myFinancial.reportDate = deeper.1["cashChange"].stringValue
-                                myFinancial.researchAndDevlopment = deeper.1["cashChange"].stringValue
-                                myFinancial.shareholderEquity = deeper.1["cashChange"].stringValue
-                                myFinancial.totalAssets = deeper.1["cashChange"].stringValue
-                                myFinancial.totalDebt = deeper.1["cashChange"].stringValue
-                                myFinancial.totalLiabilities = deeper.1["cashChange"].stringValue
-                                myFinancial.totalRevenue = deeper.1["cashChange"].stringValue
-                                myFinancial.cashChange = deeper.1["cashChange"].stringValue
+                                myFinancial.cashFlow = deeper.1["cashFlow"].stringValue
+                                myFinancial.costOfRevenue = deeper.1["costOfRevenue"].stringValue
+                                myFinancial.currentAssets = deeper.1["currentAssets"].stringValue
+                                myFinancial.currentCash = deeper.1["currentCash"].stringValue
+                                myFinancial.currentDebt = deeper.1["currentDebt"].stringValue
+                                myFinancial.grossProfit = deeper.1["grossProfit"].stringValue
+                                myFinancial.netIncome = deeper.1["netIncome"].stringValue
+                                myFinancial.operatingexpense = deeper.1["operatingexpense"].stringValue
+                                myFinancial.operatingGainsLosses = deeper.1["operatingGainsLosses"].stringValue
+                                myFinancial.operatingIncome = deeper.1["operatingIncome"].stringValue
+                                myFinancial.operatingRevenue = deeper.1["operatingRevenue"].stringValue
+                                myFinancial.reportDate = deeper.1["reportDate"].stringValue
+                                myFinancial.researchAndDevlopment = deeper.1["researchAndDevlopment"].stringValue
+                                myFinancial.shareholderEquity = deeper.1["shareholderEquity"].stringValue
+                                myFinancial.totalAssets = deeper.1["totalAssets"].stringValue
+                                myFinancial.totalDebt = deeper.1["totalDebt"].stringValue
+                                myFinancial.totalLiabilities = deeper.1["totalLiabilities"].stringValue
+                                myFinancial.totalRevenue = deeper.1["totalRevenue"].stringValue
+                                
                                 
                                 myStocks.financialData.append(myFinancial)
                             }
