@@ -143,6 +143,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     let financialNames = ["report Date","Gross Profit","Cost of revenue","Operating Revenue","Total Revenue","Operating Income","Net Income","Research and Development","Operating Expense","Current Assets","Total Assets","Total Liabilities","Current Cash","Current Debt","Total debt","ShareHolder Equity","Cash Change", "Cash Flow","Operating Gains and Losses"]
     
+    var myRandomData = [10.0,20.0,30.0,25.0,100.0,345.0,5.0]
     
     var changeIconUp = "🔺"
     var changeIconDown = "🔻"

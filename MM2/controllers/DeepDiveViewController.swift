@@ -467,7 +467,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
                 cell.detailTextLabel?.numberOfLines = 0
                 cell.textLabel?.text = "\(String(describing: IPOs[indexPath.row].companyName ?? "Null"))\n\(String(describing: IPOs[indexPath.row].symbol ?? "Null"))"
             
-                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow ?? "Null")) - $\(String(describing: IPOs[indexPath.row].priceHigh ?? "Null"))\n\(String(describing: IPOs[indexPath.row].expectedDate ?? "Null"))"
+                cell.detailTextLabel?.text = "$\(String(describing: IPOs[indexPath.row].priceLow ?? "Null"))-\(String(describing: IPOs[indexPath.row].priceHigh ?? "Null"))\n\(String(describing: IPOs[indexPath.row].expectedDate ?? "Null"))"
             }
         }
         
@@ -478,8 +478,9 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             cell.detailTextLabel?.numberOfLines = 0
             
             cell.textLabel?.text = "\(String(describing: winners[indexPath.row].companyName ?? "Null"))\n\(String(describing: winners[indexPath.row].symbol ?? "Null"))"
-            cell.detailTextLabel?.text = "$\(String(describing: winners[indexPath.row].latestPrice ?? "Null"))\n%\(String(describing: winners[indexPath.row].changePercent ?? "Null"))"
+            //cell.detailTextLabel?.text = "$\(String(describing: winners[indexPath.row].latestPrice ?? "Null"))\n%\(String(describing: winners[indexPath.row].changePercent ?? "Null"))"
             
+            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(winners[indexPath.row].latestPrice ?? "") ?? ""))\n%\(String(format: "%.2f", Float64(winners[indexPath.row].changePercent ?? "") ?? ""))"
         }
         
         //losers
@@ -521,7 +522,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             currentIndex = indexPath.row
             
             //create a specific IPO detail view
-            performSegue(withIdentifier: "getIPODetails", sender: self)
+            performSegue(withIdentifier: "ipoDetails", sender: self)
             
             
         }
@@ -547,9 +548,9 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         //create a custom view for IPO processing
-        if(segue.identifier == "getIPODetails"){
-            let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
-            destVC.data = winners[currentIndex]
+        if(segue.identifier == "ipoDetails"){
+            let destVC: IPODetailsViewController = segue.destination as! IPODetailsViewController
+            destVC.data = IPOs[currentIndex]
             
             //create a IPO view
         }
