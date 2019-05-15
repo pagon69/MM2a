@@ -20,9 +20,7 @@ class IPODetailsViewController: UIViewController, UITableViewDelegate, UITableVi
         let cell = ipotableview.dequeueReusableCell(withIdentifier: "ipoCell", for: indexPath)
         
         cell.textLabel?.text = ipoNames[indexPath.row]
-        cell.detailTextLabel?.text = "$50.32"
-        
-
+        cell.detailTextLabel?.text = ipoFiltereddata[indexPath.row]
         
         return cell
     }
@@ -33,8 +31,9 @@ class IPODetailsViewController: UIViewController, UITableViewDelegate, UITableVi
     var myIPO = [IPO]()
     
     
-    var ipoNames = ["Symbol","Company name","Expected Date","Auditor","Market","CIK","Address","State","City","Zip","Phone","CEO","Employees","URL","Status","Shares Offered","Low Price", "High Price","Offer Amount","Total Expenses","Share OverAlloted","Share Holder Shares","Shares Outstanding","Lockup Period Expiration","Quiet Period Expiration","Revenue","Net Income","Total Assets","Total Liabilities","Stock Holder Equity","company Description","Business Description","Use of proceeds","Competition","Amount","Percent Offered"]
+    var ipoNames = ["Company name","Symbol","Expected Date","Auditor","Market","Employees","URL","Status","Shares Offered","Low Price", "High Price","Offer Amount","Total Expenses","Share Over Alloted","Share Holder Shares","Shares Outstanding","Lockup Period Expiration","Quiet Period Expiration","Revenue","Net Income","Total Assets","Total Liabilities","Stock Holder Equity","Competition","Amount","Percent Offered"]
     
+    var ipoFiltereddata = [String]()
     
     @IBOutlet weak var ipotableview: UITableView!
     @IBOutlet weak var textViewOutlet: UITextView!
@@ -55,9 +54,9 @@ class IPODetailsViewController: UIViewController, UITableViewDelegate, UITableVi
     func setupView(){
         //I have to create strings and put it all together
         
-        textViewOutlet.text = "\n\nCompany Description:\n\(String(describing: data?.companyDescription ?? ""))\n\nBusiness Description:\n\(String(describing: data?.businessDescription ?? ""))\n\nUse of proceeds:\n\(String(describing: data?.useOfProceeds ?? ""))"
+        textViewOutlet.text = "\(String(describing: data?.companyName ?? ""))\n\(String(describing: data?.ceo ?? ""))\n\(String(describing: data?.address ?? ""))\n\(String(describing: data?.city ?? "")), \(String(describing: data?.state ?? "")), \(String(describing: data?.zip ??  ""))\nPhone # \(String(describing: data?.phone ?? ""))"
         
-        textViewOutlet.text.append("\nCompany Consul:\n")
+        textViewOutlet.text.append("\n\nCompany Consul:\n")
         
         for each in data?.companyCounsel ?? ["No Company consul found"]{
             textViewOutlet.text.append("\(each)\n")
@@ -75,6 +74,37 @@ class IPODetailsViewController: UIViewController, UITableViewDelegate, UITableVi
             textViewOutlet.text.append("\(each)\n")
         }
         
+        textViewOutlet.text.append("\n\nCompany Description:\n\(String(describing: data?.companyDescription ?? ""))\n\nBusiness Description:\n\(String(describing: data?.businessDescription ?? ""))\n\nUse of proceeds:\n\(String(describing: data?.useOfProceeds ?? ""))")
+        
+ 
+        ipoFiltereddata.append(data?.companyName ?? "")
+        ipoFiltereddata.append(data?.symbol ?? "")
+        ipoFiltereddata.append(data?.expectedDate ?? "")
+        ipoFiltereddata.append(data?.auditor ?? "")
+        ipoFiltereddata.append(data?.market ?? "")
+        ipoFiltereddata.append(data?.employees ?? "")
+        ipoFiltereddata.append(data?.url ?? "")
+        ipoFiltereddata.append(data?.status ?? "")
+        ipoFiltereddata.append(data?.sharesOffered ?? "")
+        ipoFiltereddata.append(data?.priceLow ?? "")
+        ipoFiltereddata.append(data?.priceHigh ?? "")
+        ipoFiltereddata.append(data?.offerAmount ?? "")
+        ipoFiltereddata.append(data?.totalExpenses ?? "")
+        ipoFiltereddata.append(data?.sharesOverAlloted ?? "")
+        ipoFiltereddata.append(data?.shareholderShares ?? "")
+        ipoFiltereddata.append(data?.sharesOutstanding ?? "")
+        ipoFiltereddata.append(data?.lockupPeriodExpiration ?? "")
+        ipoFiltereddata.append(data?.quietPeriodExpiration ?? "")
+        ipoFiltereddata.append(data?.revenue ?? "")
+        ipoFiltereddata.append(data?.netIncome ?? "")
+        ipoFiltereddata.append(data?.totalAssets ?? "")
+        ipoFiltereddata.append(data?.totalLiabilities ?? "")
+        ipoFiltereddata.append(data?.stockholderEquity ?? "")
+        ipoFiltereddata.append(data?.competition ?? "")
+        ipoFiltereddata.append(data?.amount ?? "")
+        ipoFiltereddata.append(data?.percentOffered ?? "")
+        
+        ipotableview.reloadData()
     }
     
     
