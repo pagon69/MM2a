@@ -32,6 +32,7 @@
 		C165B62722664D3E001FF965 /* DeepDiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C165B62622664D3E001FF965 /* DeepDiveViewController.swift */; };
 		C1E44DF52267A9BE0040D4EE /* DisclaimersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1E44DF42267A9BE0040D4EE /* DisclaimersViewController.swift */; };
 		C1FCF994226A504B00281B3C /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FCF993226A504B00281B3C /* Ticker.swift */; };
+		FC5615D7228B86EE000FB866 /* IPODetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5615D6228B86EE000FB866 /* IPODetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		C1FCF993226A504B00281B3C /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		E376213F54B6ACC45AAE29BD /* Pods-MM2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.release.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.release.xcconfig"; sourceTree = "<group>"; };
 		F9AE6AB9BCFCD9BFC85809E4 /* Pods-MM2.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MM2.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MM2/Pods-MM2.debug.xcconfig"; sourceTree = "<group>"; };
+		FC5615D6228B86EE000FB866 /* IPODetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPODetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 				C14146CD223A899D00AEB632 /* QuickSearchViewController.swift */,
 				C115E2F1224BF7C50081F6F0 /* MakersTableViewController.swift */,
 				C14144992289CEEF00C6200A /* NewsCell.swift */,
+				FC5615D6228B86EE000FB866 /* IPODetailsViewController.swift */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -323,6 +326,7 @@
 				C16240B922523AC0008F9532 /* Financials.swift in Sources */,
 				C14146CA223A896C00AEB632 /* MarketViewController.swift in Sources */,
 				C16240B722523AA9008F9532 /* Earnings.swift in Sources */,
+				FC5615D7228B86EE000FB866 /* IPODetailsViewController.swift in Sources */,
 				C141449A2289CEEF00C6200A /* NewsCell.swift in Sources */,
 				C16240B5225239FC008F9532 /* News.swift in Sources */,
 				C12437FA225E213200E38409 /* WatchListViewController.swift in Sources */,

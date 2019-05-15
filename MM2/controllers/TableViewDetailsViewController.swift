@@ -101,7 +101,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             cell = earningsTableviewOutlet.dequeueReusableCell(withIdentifier: "earningsCell", for: indexPath)
             
             if earningsArray.count > 0 {
-                cell.textLabel?.text = earningsnames[indexPath.row] 
+                cell.textLabel?.text = earningsnames[indexPath.row]
                 cell.detailTextLabel?.text = earningsArray[indexPath.row]
             }else {
                 cell.textLabel?.text = "No provided Data"
@@ -467,8 +467,9 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         combinedChartsOutlet.noDataText = "No Data Available"
         
         var barDataEntries: [BarChartDataEntry] = []
-       // let lineDataEntries: [LineChartData] = []
+
         let count = data?.chartsData.count ?? 1
+        
         var myDataArray: [Double] = []
         // removes optionals from my data
         for i in 0..<count{
@@ -489,9 +490,9 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     func setupPieChart(){
         pieChartOutlet.noDataText = "No Data Available"
         var pieDataEntries: [PieChartDataEntry] = []
-        //var pieDataEntries: [PieChartDataEntry]?
         
         // let lineDataEntries: [LineChartData] = []
+        
         let count = data?.earningsData.count ?? 1
         var myDataArray: [Double] = []
         

@@ -86,6 +86,14 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var t6Change: UILabel!
     
     
+    @IBAction func quickSearchButton(_ sender: UIBarButtonItem) {
+        
+         performSegue(withIdentifier: "deepToQuickSearch", sender: self)
+        
+    }
+    
+    
+    
     
     func startAnimating(){
         timing += 1
