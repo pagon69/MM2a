@@ -647,8 +647,9 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             }
         }
         
+       //&types=quote,news,financials,logo,earnings,chart&range=1m&last=5
         //network request for Major indexices
-        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,logo,chart&range=1m&last=10").responseJSON { (response) in
+        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,news,financials,logo,earnings,chart&range=1m&last=10").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
                 SVProgressHUD.show()
