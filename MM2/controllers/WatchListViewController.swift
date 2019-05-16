@@ -647,7 +647,7 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
                         myChart.wvap = item.1["wvap"].stringValue
                         myChart.high = item.1["high"].stringValue
                         myChart.low = item.1["low"].doubleValue
-                        myChart.open = item.1["open"].stringValue
+                        myChart.open = item.1["open"].doubleValue
                         myChart.date = item.1["date"].stringValue
                         myChart.changePercent = item.1["changepercent"].stringValue
                         myChart.unadjustedVolume = item.1["unadjustedVolume"].stringValue

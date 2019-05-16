@@ -25,6 +25,19 @@ class IPODetailsViewController: UIViewController, UITableViewDelegate, UITableVi
         return cell
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var heading: String = ""
+        
+        if(tableView.tag == 0){
+            heading = "\(String(describing: data?.companyName))'s IPO Details:"
+        }
+        
+        return heading
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
     
     //globals
     var data : IPO?

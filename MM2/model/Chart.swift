@@ -16,7 +16,7 @@ class Chart {
     var wvap: String?
     var high: String?
     var low: Double?
-    var open: String?
+    var open: Double?
     var date: String?
     var changePercent: String?
     var unadjustedVolume: String?

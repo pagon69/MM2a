@@ -11,6 +11,7 @@ import Alamofire
 import AlamofireImage
 import GoogleMobileAds
 import Charts
+import SVProgressHUD
 
 class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate {
 
@@ -42,18 +43,19 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
         cell.backgroundColor = UIColor.lightGray
         
-        cell.titleOutlet.text = data?.newsData[indexPath.section].headline
+        cell.titleOutlet.text = data?.newsData[indexPath.row].headline
         cell.referencesOutlet.text = "Date:\(String(describing: data?.newsData[indexPath.row].datetime ?? "Nope")), Source:\(String(describing: data?.newsData[indexPath.row].source ?? "Nothing")), Related:\(String(describing: data?.newsData[indexPath.row].related ?? "what now"))"
         
-        cell.summaryOutlet.text = data?.newsData[indexPath.section].summary
+        cell.summaryOutlet.text = data?.newsData[indexPath.row].summary
    
         //can i add this someplace?
        // cell.cellURL.text = data?.newsData[indexPath.row].url
         
         //need to call a image download when this happens
     
-        if data?.newsData.count ?? 0 > 0 {
+        if data?.newsData.isEmpty ?? true{
             cell.newsImageOutlet.image = downloadNewsPictures(locationString: data?.newsData[indexPath.row].image ?? " No Logo Available")
+            cell.titleOutlet.text = "No news avialable for \(String(describing: data?.companyName))"
         }
         return cell
     }
@@ -97,15 +99,15 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         }
         
         //earnings tableview
-        if(tableView.tag == 1){
+        if(tableView.tag == 6){
             cell = earningsTableviewOutlet.dequeueReusableCell(withIdentifier: "earningsCell", for: indexPath)
             
-            if earningsArray.count > 0 {
-                cell.textLabel?.text = earningsnames[indexPath.row]
-                cell.detailTextLabel?.text = earningsArray[indexPath.row]
-            }else {
+            if earningsArray.isEmpty {
                 cell.textLabel?.text = "No provided Data"
                 cell.detailTextLabel?.text = ""
+            }else {
+                cell.textLabel?.text = earningsnames[indexPath.row]
+                cell.detailTextLabel?.text = earningsArray[indexPath.row]
             }
             
         }
@@ -115,7 +117,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             cell = financialTableviewOutlet.dequeueReusableCell(withIdentifier: "financialCell", for: indexPath)
             
             cell.textLabel?.text = financialNames[indexPath.row]
-            cell.detailTextLabel?.text = financialsArray[indexPath.row]
+            cell.detailTextLabel?.text = currentQuarterData[indexPath.row]
             
         }
         
@@ -135,8 +137,18 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     var myDetailsArray = [String]()
     var earningsArray = [String]()
-    var financialsArray = [String]()
     
+    
+    //used to allow for quarterly data
+    var financialsArray = [String]()
+    var financialsArray2 = [String]()
+    var financialsArray3 = [String]()
+    var financialsArray4 = [String]()
+    
+    var currentQuarterData = [String]()
+
+    var myFinancialsArray = [[String]]()
+   
     let myNamesArray = ["Symbol","Company Name","Sector","Primary Exchange","Calculation price","Open","Close","High","52 Week High","Low","52 Week Low","Previous Close","Lastest price","Latest Source","Latest Volume","IEX RealTimePrice","IEX RealTimeSize","Delayed Price","extended Price","extended Change","extended change percent","change", "change percent","IEX Market Percent", "IEX Volume", "Avg Total Volume", "IEX Bid Price","IEX Ask Price","IEX Ask Size","Market cap","Pe Ratio","YTD Change" ]
     
     let earningsnames = [ "actualEPS", "consensusEPS", "estimatedEPS","announceTime","numberOfEstimates","EPSSurpriseDollar","EPSReportDate","fiscalPeriod","FiscalEndDate","yearAgo","yearAgoChangePercent","estimatedChangePercent","symbolId"]
@@ -208,10 +220,8 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
                     self.myTimer.invalidate()
                     self.dismiss(animated: true, completion: nil)
                 }
-                
             })
         }
-        
     }
     
     
@@ -356,35 +366,124 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             }
         }
         
+        earningsTableviewOutlet.reloadData()
+        
     }
     
+    
+    //need to all for multiple views, we have multiple quaters of data4 to be exact, maybe do a swithc to switch between
     func setupFinancial(){
+        
+    
         
         if let myFinancialData = data?.financialData{
             
-            for each in myFinancialData{
-                financialsArray.append(each.reportDate ?? "No data avialable")
-                financialsArray.append(each.grossProfit ?? "No data avialable")
-                financialsArray.append(each.costOfRevenue ?? "No data avialable")
-                financialsArray.append(each.operatingRevenue ?? "No data avialable")
-                financialsArray.append(each.totalRevenue ?? "No data avialable")
-                financialsArray.append(each.operatingIncome ?? "No data avialable")
-                financialsArray.append(each.netIncome ?? "No data avialable")
-                financialsArray.append(each.researchAndDevlopment ?? "No data avialable")
-                financialsArray.append(each.operatingexpense ?? "No data avialable")
-                financialsArray.append(each.currentAssets ?? "No data avialable")
-                financialsArray.append(each.totalAssets ?? "No data avialable")
-                financialsArray.append(each.totalLiabilities ?? "No data avialable")
-                financialsArray.append(each.currentCash ?? "No data avialable")
-                financialsArray.append(each.currentDebt ?? "No data avialable")
-                financialsArray.append(each.totalDebt ?? "No data avialable")
-                financialsArray.append(each.shareholderEquity ?? "No data avialable")
-                financialsArray.append(each.cashChange ?? "No data avialable")
-                financialsArray.append(each.cashFlow ?? "No data avialable")
-                financialsArray.append(each.operatingGainsLosses ?? "No data avialable")
+            if myFinancialData.isEmpty{
+                
+            }else {
+            let q1Finance = myFinancialData[0]
+            let q2Finance = myFinancialData[1]
+            let q3Finance = myFinancialData[2]
+            let q4Finance = myFinancialData[3]
+            
+            /* I need to sort the list of data by report date
+            myFinancialData.sort { (reportDate, Financials) -> Bool in
+                myFinancialData[0].reportDate?.sorted()
+            }
+            
+            var sortedList = myFinancialData
+            sortedList.sort { (reportDate, data) -> Bool in
+            
+                sortedList[i].reportDate?.sorted()
+            }
+            */
+            
+            financialsArray.append(q1Finance.reportDate ?? "No data avialable")
+            financialsArray.append(q1Finance.grossProfit ?? "No data avialable")
+            financialsArray.append(q1Finance.costOfRevenue ?? "No data avialable")
+            financialsArray.append(q1Finance.operatingRevenue ?? "No data avialable")
+            financialsArray.append(q1Finance.totalRevenue ?? "No data avialable")
+            financialsArray.append(q1Finance.operatingIncome ?? "No data avialable")
+            financialsArray.append(q1Finance.netIncome ?? "No data avialable")
+            financialsArray.append(q1Finance.researchAndDevlopment ?? "No data avialable")
+            financialsArray.append(q1Finance.operatingexpense ?? "No data avialable")
+            financialsArray.append(q1Finance.currentAssets ?? "No data avialable")
+            financialsArray.append(q1Finance.totalAssets ?? "No data avialable")
+            financialsArray.append(q1Finance.totalLiabilities ?? "No data avialable")
+            financialsArray.append(q1Finance.currentCash ?? "No data avialable")
+            financialsArray.append(q1Finance.currentDebt ?? "No data avialable")
+            financialsArray.append(q1Finance.totalDebt ?? "No data avialable")
+            financialsArray.append(q1Finance.shareholderEquity ?? "No data avialable")
+            financialsArray.append(q1Finance.cashChange ?? "No data avialable")
+            financialsArray.append(q1Finance.cashFlow ?? "No data avialable")
+            financialsArray.append(q1Finance.operatingGainsLosses ?? "No data avialable")
+            
+            financialsArray2.append(q2Finance.reportDate ?? "No data avialable")
+            financialsArray2.append(q2Finance.grossProfit ?? "No data avialable")
+            financialsArray2.append(q2Finance.costOfRevenue ?? "No data avialable")
+            financialsArray2.append(q2Finance.operatingRevenue ?? "No data avialable")
+            financialsArray2.append(q2Finance.totalRevenue ?? "No data avialable")
+            financialsArray2.append(q2Finance.operatingIncome ?? "No data avialable")
+            financialsArray2.append(q2Finance.netIncome ?? "No data avialable")
+            financialsArray2.append(q2Finance.researchAndDevlopment ?? "No data avialable")
+            financialsArray2.append(q2Finance.operatingexpense ?? "No data avialable")
+            financialsArray2.append(q2Finance.currentAssets ?? "No data avialable")
+            financialsArray2.append(q2Finance.totalAssets ?? "No data avialable")
+            financialsArray2.append(q2Finance.totalLiabilities ?? "No data avialable")
+            financialsArray2.append(q2Finance.currentCash ?? "No data avialable")
+            financialsArray2.append(q2Finance.currentDebt ?? "No data avialable")
+            financialsArray2.append(q2Finance.totalDebt ?? "No data avialable")
+            financialsArray2.append(q2Finance.shareholderEquity ?? "No data avialable")
+            financialsArray2.append(q2Finance.cashChange ?? "No data avialable")
+            financialsArray2.append(q2Finance.cashFlow ?? "No data avialable")
+            financialsArray2.append(q2Finance.operatingGainsLosses ?? "No data avialable")
+            
+            financialsArray3.append(q3Finance.reportDate ?? "No data avialable")
+            financialsArray3.append(q3Finance.grossProfit ?? "No data avialable")
+            financialsArray3.append(q3Finance.costOfRevenue ?? "No data avialable")
+            financialsArray3.append(q3Finance.operatingRevenue ?? "No data avialable")
+            financialsArray3.append(q3Finance.totalRevenue ?? "No data avialable")
+            financialsArray3.append(q3Finance.operatingIncome ?? "No data avialable")
+            financialsArray3.append(q3Finance.netIncome ?? "No data avialable")
+            financialsArray3.append(q3Finance.researchAndDevlopment ?? "No data avialable")
+            financialsArray3.append(q3Finance.operatingexpense ?? "No data avialable")
+            financialsArray3.append(q3Finance.currentAssets ?? "No data avialable")
+            financialsArray3.append(q3Finance.totalAssets ?? "No data avialable")
+            financialsArray3.append(q3Finance.totalLiabilities ?? "No data avialable")
+            financialsArray3.append(q3Finance.currentCash ?? "No data avialable")
+            financialsArray3.append(q3Finance.currentDebt ?? "No data avialable")
+            financialsArray3.append(q3Finance.totalDebt ?? "No data avialable")
+            financialsArray3.append(q3Finance.shareholderEquity ?? "No data avialable")
+            financialsArray3.append(q3Finance.cashChange ?? "No data avialable")
+            financialsArray3.append(q3Finance.cashFlow ?? "No data avialable")
+            financialsArray3.append(q3Finance.operatingGainsLosses ?? "No data avialable")
+            
+            financialsArray4.append(q4Finance.reportDate ?? "No data avialable")
+            financialsArray4.append(q4Finance.grossProfit ?? "No data avialable")
+            financialsArray4.append(q4Finance.costOfRevenue ?? "No data avialable")
+            financialsArray4.append(q4Finance.operatingRevenue ?? "No data avialable")
+            financialsArray4.append(q4Finance.totalRevenue ?? "No data avialable")
+            financialsArray4.append(q4Finance.operatingIncome ?? "No data avialable")
+            financialsArray4.append(q4Finance.netIncome ?? "No data avialable")
+            financialsArray4.append(q4Finance.researchAndDevlopment ?? "No data avialable")
+            financialsArray4.append(q4Finance.operatingexpense ?? "No data avialable")
+            financialsArray4.append(q4Finance.currentAssets ?? "No data avialable")
+            financialsArray4.append(q4Finance.totalAssets ?? "No data avialable")
+            financialsArray4.append(q4Finance.totalLiabilities ?? "No data avialable")
+            financialsArray4.append(q4Finance.currentCash ?? "No data avialable")
+            financialsArray4.append(q4Finance.currentDebt ?? "No data avialable")
+            financialsArray4.append(q4Finance.totalDebt ?? "No data avialable")
+            financialsArray4.append(q4Finance.shareholderEquity ?? "No data avialable")
+            financialsArray4.append(q4Finance.cashChange ?? "No data avialable")
+            financialsArray4.append(q4Finance.cashFlow ?? "No data avialable")
+            financialsArray4.append(q4Finance.operatingGainsLosses ?? "No data avialable")
+            
+            currentQuarterData = financialsArray
             }
         }
 
+        financialTableviewOutlet.reloadData()
+        
     }
     
     func setupDetailsView(){
@@ -466,51 +565,57 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     func buildCharts() {
         combinedChartsOutlet.noDataText = "No Data Available"
-        
         var barDataEntries: [BarChartDataEntry] = []
-
         let count = data?.chartsData.count ?? 1
-        
         var myDataArray: [Double] = []
+        
         // removes optionals from my data
         for i in 0..<count{
-            if let myData = data?.chartsData[i].low{
+            if let myData = data?.chartsData[i].close{
                 myDataArray.append(myData)
             }
         }
+ 
+        
+        var mySecondDataArray = [Double]()
+        if let myTestData = data?.chartsData{
+            for each in myTestData{
+                mySecondDataArray.append(each.close ?? 1.0)
+            }
+        }
+        
         for i in 0..<count{
             let barDataEntry = BarChartDataEntry(x: Double(i), y: myDataArray[i])
             barDataEntries.append(barDataEntry)
         }
+        
         let chartDataSet = BarChartDataSet(values: barDataEntries, label: "Close over time")
         let chartData = BarChartData(dataSet: chartDataSet)
         combinedChartsOutlet.data = chartData
         combinedChartsOutlet.notifyDataSetChanged()
+        SVProgressHUD.dismiss()
     }
     
     func setupPieChart(){
+       
+        /*
         pieChartOutlet.noDataText = "No Data Available"
-        var pieDataEntries: [PieChartDataEntry] = []
+        var barDataEntries: [BarChartDataEntry] = []
+        var myCustomData = [Double]()
         
-        // let lineDataEntries: [LineChartData] = []
-        
-        let count = data?.earningsData.count ?? 1
-        var myDataArray: [Double] = []
-        
-        // removes optionals from my data
-        for i in 0..<count{
-            if let myData = data?.earningsData[i].actualEPS{
-                myDataArray.append(myData)
+        if let myChartData = data?.chartsData{
+            for each in myChartData{
+                myCustomData.append(Double(each.open ?? 1.0))
             }
         }
-        for i in 0..<count{
-            let pieDataEntry = PieChartDataEntry(value: myDataArray[i], label: data?.earningsData[i].fiscalPeriod)
-            pieDataEntries.append(pieDataEntry)
-        }
-        let chartDataSet = PieChartDataSet(values: pieDataEntries, label: "ActualEPS by Quarter")
-        let chartData = PieChartData(dataSet: chartDataSet)
-        pieChartOutlet.data = chartData
-        pieChartOutlet.notifyDataSetChanged()
+        let count = myCustomData.count
+        
+        let barChartDataSet = LineChartDataSet(values: <#T##[ChartDataEntry]?#>, label: <#T##String?#>)
+        
+      //  pieChartOutlet.data = chartData
+      //  pieChartOutlet.notifyDataSetChanged()
+ 
+         */
     }
     
     /*Charts and more
@@ -580,7 +685,6 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         adsSetup()
         viewSetup()
         buildCharts()
-        
         collectionViewOutlet.reloadData()
         
     }

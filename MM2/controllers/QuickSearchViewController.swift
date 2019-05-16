@@ -11,10 +11,9 @@ import RealmSwift
 import Alamofire
 import SwiftyJSON
 import GoogleMobileAds
+import SVProgressHUD
 
 class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource{
-
-    //begining of code
 
         //sections and table customization
         func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,10 +64,9 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
             if(tableView.tag == 0){
-                //print(searchResults?[indexPath.row].Symbol)
                 currentIndexPath = indexPath.row
-                performUserSearch(selectedValue: searchResults?[indexPath.row].Symbol ?? "Null")
-                //svcProgressHUD would be good here
+                performUserSearch(selectedValue: searchResults?[indexPath.row].Symbol ?? "No Stock symbol found")
+                SVProgressHUD.show()
             }
             
         }
@@ -78,10 +76,8 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         //this will cover the makers details
         if(segue.identifier == "goToDetails3"){
             let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
-           //print(userSelectedStockTwo.)
-            // I have to update the following with the object i am sending
+        
             destVC.data = userSelectedStockTwo
-            //print("this is what i sent to the tableview detail controller: \(String(describing: searchResults?[currentIndexPath].Symbol))")
             }
         
         }
@@ -93,9 +89,8 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         
         //outlets
         @IBOutlet weak var googleAdsOutlet: GADBannerView!
-        
-        //my global variables
-       // let myArray = ["car","boat","house","mace","gun","door","banana"]
+    
+    //globals
         var searchResults :Results<Symbols>?
         var timing = 0
         var myTimer = Timer()
@@ -110,8 +105,9 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         var data : Markets?
         var userSelectedStock = [Stock]()
         var userSelectedStockTwo: Stock?
-        
-        //my functions
+        var timingCount = 0
+
+        //my helpers functions
         func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
             userInput = searchBar.text?.lowercased() ?? ""
             doSearch(searchV: userInput)
@@ -127,7 +123,15 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
        // print("did a search against: \(searchBar.text)")
     }
     
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
+        //delete the search content
+        //should be empty screen waiting for user to type something
+        
+    }
+    
         func doSearch( searchV : String ){
+            
             /*example of a array search
              searchR = myArray.filter({ (item) -> Bool in
              item.lowercased().contains(searchV)
@@ -171,8 +175,15 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                 
                 if let json = response.result.value {
                     let myJson = JSON(json)
-                    self.processData(json: myJson)
                     
+                    if myJson.isEmpty {
+                        //no stock found, display an alert or something
+                        self.displayAlert(alertMessage: "\(selectedValue) could not be found", resultsMessage: "🛑")
+   
+                    }else{
+                        //found stock continue as normal
+                        self.processData(json: myJson)
+                    }
                 }else {
                     print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
                 }
@@ -182,11 +193,30 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             }
             
         }
+    
+    
+    func displayAlert(alertMessage: String, resultsMessage: String){
         
+        let myAlert = UIAlertController(title: alertMessage, message: resultsMessage, preferredStyle: .alert)
+        
+        present(myAlert, animated: true) {
+            
+            //displays an alert which disappears after 2 seconds
+            self.myTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { (timer) in
+                self.timingCount = self.timingCount + 1
+                if(self.timingCount >= 1){
+                    self.myTimer.invalidate()
+                    self.dismiss(animated: true, completion: nil)
+                }
+            })
+        }
+    }
+    
+    
         //processes data for the market page
         func processData(json: JSON){
             //process the results
-            print(json)
+          //  print(json)
             for stocks in json{
                 let myStocks = Stock()
     
@@ -194,10 +224,10 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
             
             //News processing
                     if(each.0 == "news"){
-                        let myNews = News()
+                        
                         
                         for item in each.1{
-                            
+                            let myNews = News()
                             myNews.datetime = item.1["datetime"].stringValue
                             myNews.headline = item.1["headline"].stringValue
                             myNews.image = item.1["image"].stringValue
@@ -208,19 +238,22 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                             
                             myStocks.newsData.append(myNews)
                         }
+                        
                     }
             //charts processing
                     if(each.0 == "chart"){
                         
-                        let myChart = Chart()
+                        
                         
                         for item in each.1{
+                            let myChart = Chart()
+                            
                             myChart.close = item.1["close"].doubleValue
                             myChart.volume = item.1["volume"].stringValue
                             myChart.wvap = item.1["wvap"].stringValue
                             myChart.high = item.1["high"].stringValue
                             myChart.low = item.1["low"].doubleValue
-                            myChart.open = item.1["open"].stringValue
+                            myChart.open = item.1["open"].doubleValue
                             myChart.date = item.1["date"].stringValue
                             myChart.changePercent = item.1["changepercent"].stringValue
                             myChart.unadjustedVolume = item.1["unadjustedVolume"].stringValue
@@ -230,11 +263,13 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                             myStocks.chartsData.append(myChart)
                         }
                     }
+                    
             //logo processing
                     if(each.0 == "logo"){
                         myStocks.logo = each.1["url"].stringValue
-                        print(myStocks.logo ?? "No logo available")
+                       // print(myStocks.logo ?? "No logo available")
                     }
+                    
             //quote data processing
                     if(each.0 == "quote"){
                         
@@ -279,6 +314,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                         myStocks.week52Low = each.1["week52Low"].stringValue
                         myStocks.ytdChange = each.1["ytdChange"].stringValue
                     }
+                    
                 //Financials processing
                     if(each.0 == "financials"){
                         
@@ -343,11 +379,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                     }
                     
                     userSelectedStockTwo = myStocks
-                    
-                    //print(myStocks.companyName ?? "more testing")
-                  //  print(myStocks.chartsData[0].high ?? "testing")
                     userSelectedStock.append(myStocks)
-                   // marketStocks.append(myStocks)
                 }
             }
                     
@@ -374,7 +406,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                                              migrationBlock:
                 { migration, oldSchemaVersion in
                     if(oldSchemaVersion < 1){
-                        print("do nothing")
+                      //  print("do nothing")
                     }
             })
             

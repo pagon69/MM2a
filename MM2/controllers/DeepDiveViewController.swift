@@ -645,7 +645,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             if each.0 == "rawData"{
             
             for item in each.1{
-                var newIPOItem = IPO()
+                let newIPOItem = IPO()
                 
                 newIPOItem.companyName = item.1["companyName"].stringValue
                 newIPOItem.symbol = item.1["symbol"].stringValue

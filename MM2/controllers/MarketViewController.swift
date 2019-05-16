@@ -689,10 +689,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             for each in stocks.1{
                 
             if(each.0 == "news"){
-                let myNews = News()
+                
                 
                 for item in each.1{
-                 
+                    let myNews = News()
+                    
                     myNews.datetime = item.1["datetime"].stringValue
                     myNews.headline = item.1["headline"].stringValue
                     myNews.image = item.1["image"].stringValue
@@ -706,16 +707,17 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
  
             }
             if(each.0 == "chart"){
-                
-                let myChart = Chart()
-                
+    
                 for item in each.1{
+                    
+                    let myChart = Chart()
+                    
                     myChart.close = item.1["close"].doubleValue
                     myChart.volume = item.1["volume"].stringValue
                     myChart.wvap = item.1["wvap"].stringValue
                     myChart.high = item.1["high"].stringValue
                     myChart.low = item.1["low"].doubleValue
-                    myChart.open = item.1["open"].stringValue
+                    myChart.open = item.1["open"].doubleValue
                     myChart.date = item.1["date"].stringValue
                     myChart.changePercent = item.1["changepercent"].stringValue
                     myChart.unadjustedVolume = item.1["unadjustedVolume"].stringValue

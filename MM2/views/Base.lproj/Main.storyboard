@@ -2026,10 +2026,10 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tNJ-OF-dDi" userLabel="Details Main View">
                                                 <rect key="frame" x="0.0" y="532" width="375" height="468"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-2t-UGe" userLabel="financials">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zIy-2t-UGe" userLabel="financials">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="468"/>
                                                         <subviews>
-                                                            <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fuD-KE-3bd">
+                                                            <tableView clipsSubviews="YES" tag="2" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fuD-KE-3bd">
                                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="418"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <prototypes>
@@ -2063,7 +2063,7 @@
                                                                     <outlet property="delegate" destination="2sC-q4-Vaw" id="rsn-VQ-Yrn"/>
                                                                 </connections>
                                                             </tableView>
-                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l9i-q6-oAF" userLabel="financialGoogleAD" customClass="GADBannerView">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l9i-q6-oAF" userLabel="financialGoogleAD" customClass="GADBannerView">
                                                                 <rect key="frame" x="0.0" y="418" width="375" height="50"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
@@ -2082,14 +2082,14 @@
                                                             <constraint firstAttribute="trailing" secondItem="l9i-q6-oAF" secondAttribute="trailing" id="joo-p0-uT9"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1rm-Oi-Ip6" userLabel="details">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1rm-Oi-Ip6" userLabel="details">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="468"/>
                                                         <subviews>
-                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rjo-Fx-l58" userLabel="google ads" customClass="GADBannerView">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rjo-Fx-l58" userLabel="google ads" customClass="GADBannerView">
                                                                 <rect key="frame" x="0.0" y="418" width="375" height="50"/>
                                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             </view>
-                                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZYj-Xr-4aw" userLabel="Details Table View">
+                                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZYj-Xr-4aw" userLabel="Details Table View">
                                                                 <rect key="frame" x="0.0" y="5" width="375" height="413"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
@@ -2139,7 +2139,7 @@
                                                             <constraint firstAttribute="trailing" secondItem="Rjo-Fx-l58" secondAttribute="trailing" id="z65-j3-Nxl"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i6V-Cb-fYU" userLabel="news">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i6V-Cb-fYU" userLabel="news">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="468"/>
                                                         <subviews>
                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nBK-Nw-8kO">
@@ -2230,7 +2230,7 @@
                                                                     <outlet property="delegate" destination="2sC-q4-Vaw" id="QPf-xG-LnL"/>
                                                                 </connections>
                                                             </collectionView>
-                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3IO-Rm-Fi6" userLabel="newsGoogleAd" customClass="GADBannerView">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3IO-Rm-Fi6" userLabel="newsGoogleAd" customClass="GADBannerView">
                                                                 <rect key="frame" x="0.0" y="418" width="375" height="50"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
@@ -2249,20 +2249,19 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBc-M9-zXn" userLabel="earnings">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="468"/>
                                                         <subviews>
-                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tOQ-Rj-uSB" userLabel="earningsGoogleAds" customClass="GADBannerView">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tOQ-Rj-uSB" userLabel="earningsGoogleAds" customClass="GADBannerView">
                                                                 <rect key="frame" x="0.0" y="418" width="375" height="50"/>
                                                                 <color key="backgroundColor" red="1" green="0.76797198060000005" blue="0.77962283259999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="50" id="82r-OO-OeQ"/>
                                                                 </constraints>
                                                             </view>
-                                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c8U-0X-MKq" userLabel="pieChart" customClass="PieChartView" customModule="Charts">
-                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+                                                            <tableView clipsSubviews="YES" tag="6" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4nr-hQ-gTK">
+                                                                <rect key="frame" x="0.0" y="0.0" width="375" height="418"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            </view>
-                                                            <tableView clipsSubviews="YES" tag="1" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4nr-hQ-gTK">
-                                                                <rect key="frame" x="0.0" y="201" width="375" height="217"/>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="418" id="mSv-wq-Neh"/>
+                                                                </constraints>
                                                                 <prototypes>
                                                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="earningsCell" textLabel="Yba-Pm-547" detailTextLabel="KZk-z4-5Yc" style="IBUITableViewCellStyleValue1" id="wBV-1p-fez">
                                                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -2296,19 +2295,32 @@
                                                             </tableView>
                                                         </subviews>
                                                         <constraints>
+                                                            <constraint firstItem="4nr-hQ-gTK" firstAttribute="leading" secondItem="hBc-M9-zXn" secondAttribute="leading" id="3TX-ix-azx"/>
+                                                            <constraint firstItem="4nr-hQ-gTK" firstAttribute="leading" secondItem="tOQ-Rj-uSB" secondAttribute="leading" id="HYw-74-cay"/>
                                                             <constraint firstAttribute="height" constant="468" id="Ild-ic-5x0"/>
                                                             <constraint firstItem="tOQ-Rj-uSB" firstAttribute="top" secondItem="4nr-hQ-gTK" secondAttribute="bottom" id="O1g-IM-3nW"/>
-                                                            <constraint firstItem="4nr-hQ-gTK" firstAttribute="top" secondItem="c8U-0X-MKq" secondAttribute="bottom" constant="1" id="hmG-hn-BXv"/>
+                                                            <constraint firstItem="4nr-hQ-gTK" firstAttribute="trailing" secondItem="tOQ-Rj-uSB" secondAttribute="trailing" id="XQh-UW-gdt"/>
+                                                            <constraint firstAttribute="trailing" secondItem="4nr-hQ-gTK" secondAttribute="trailing" id="ckA-pF-hu5"/>
+                                                            <constraint firstItem="4nr-hQ-gTK" firstAttribute="top" secondItem="hBc-M9-zXn" secondAttribute="top" id="nQE-qK-Ev4"/>
                                                         </constraints>
                                                     </view>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="hBc-M9-zXn" secondAttribute="trailing" id="9j2-Vv-Ee0"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="top" secondItem="zIy-2t-UGe" secondAttribute="top" id="Aaw-zv-SPi"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="trailing" secondItem="zIy-2t-UGe" secondAttribute="trailing" id="Ary-iw-91U"/>
                                                     <constraint firstItem="hBc-M9-zXn" firstAttribute="top" secondItem="tNJ-OF-dDi" secondAttribute="top" id="Nig-VI-FYj"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="leading" secondItem="1rm-Oi-Ip6" secondAttribute="leading" id="UyP-hZ-z7d"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="trailing" secondItem="1rm-Oi-Ip6" secondAttribute="trailing" id="Yww-uj-CX3"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="leading" secondItem="hBc-M9-zXn" secondAttribute="leading" id="ZpP-4u-hOq"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="top" secondItem="1rm-Oi-Ip6" secondAttribute="top" id="cri-aB-bQW"/>
                                                     <constraint firstItem="hBc-M9-zXn" firstAttribute="leading" secondItem="tNJ-OF-dDi" secondAttribute="leading" id="dLr-sB-YP5"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="leading" secondItem="zIy-2t-UGe" secondAttribute="leading" id="fHG-9f-Foq"/>
                                                     <constraint firstAttribute="bottom" secondItem="hBc-M9-zXn" secondAttribute="bottom" id="gKO-ol-cMZ"/>
                                                     <constraint firstAttribute="height" constant="468" id="kdQ-pq-j3y"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="top" secondItem="hBc-M9-zXn" secondAttribute="top" id="lwz-1C-UjK"/>
+                                                    <constraint firstItem="i6V-Cb-fYU" firstAttribute="trailing" secondItem="hBc-M9-zXn" secondAttribute="trailing" id="qlw-sI-iKj"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -2373,7 +2385,6 @@
                         <outlet property="googleAdoutlet" destination="Rjo-Fx-l58" id="fT9-HM-Whn"/>
                         <outlet property="newsAdOutlet" destination="3IO-Rm-Fi6" id="fxj-En-LBV"/>
                         <outlet property="newsOutlet" destination="i6V-Cb-fYU" id="adW-mA-hcx"/>
-                        <outlet property="pieChartOutlet" destination="c8U-0X-MKq" id="J8Y-p4-H3R"/>
                         <outlet property="searchButton" destination="VNd-8n-96x" id="pHo-j8-mDL"/>
                         <outlet property="titleCompanyNameOutlet" destination="sha-8t-hqK" id="mdc-ne-WSH"/>
                         <outlet property="titleImageViewoutlet" destination="7FI-aQ-WyK" id="T8D-QV-SAI"/>
@@ -2544,7 +2555,7 @@
         <image name="MM Logo 1024" width="512" height="512"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Yec-0h-kEd"/>
-        <segue reference="oQF-sR-rXd"/>
+        <segue reference="9jB-Dl-jKl"/>
+        <segue reference="dx5-in-UYa"/>
     </inferredMetricsTieBreakers>
 </document>
