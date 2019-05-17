@@ -29,10 +29,19 @@ class IPODetailsViewController: UIViewController, UITableViewDelegate, UITableVi
         var heading: String = ""
         
         if(tableView.tag == 0){
-            heading = "\(String(describing: data?.companyName))'s IPO Details:"
+            heading = "\(String(describing: data?.companyName ?? ""))'s IPO Details:"
         }
         
         return heading
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        view.tintColor = UIColor.black
+        //view.tintColor = UIColor.red
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

@@ -12,21 +12,10 @@ import AlamofireImage
 import GoogleMobileAds
 import Charts
 import SVProgressHUD
+import SwiftyJSON
 
 class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate {
 
-    
-    //remove after this works
-  // let my2Array = ["Apple","Corn","fox","box","tennis"]
-    
- //   let myTextArray = "This is random text which will go within the text view editor as a way to test if this code is working correctly"
-    
-    /*
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return data?.newsData.count ?? 1
-    }
-    */
-    
     //collectionView setup
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -41,7 +30,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
         let cell = collectionViewOutlet.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! NewsCell
         
-        cell.backgroundColor = UIColor.lightGray
+        cell.backgroundColor = UIColor.white
         
         cell.titleOutlet.text = data?.newsData[indexPath.row].headline
         cell.referencesOutlet.text = "Date:\(String(describing: data?.newsData[indexPath.row].datetime ?? "Nope")), Source:\(String(describing: data?.newsData[indexPath.row].source ?? "Nothing")), Related:\(String(describing: data?.newsData[indexPath.row].related ?? "what now"))"
@@ -60,6 +49,47 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         return cell
     }
  
+    //sections for my various table views
+    func numberOfSections(in tableView: UITableView) -> Int {
+        //var count = 0
+        
+        //if(tableView.tag == 0){
+            
+        //}
+        
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var heading: String = ""
+        
+        if(tableView.tag == 0){
+            heading = "General Details for: \(String(describing: data?.companyName ?? ""))"
+        }
+        
+        if(tableView.tag == 2){
+            heading = "Financial Details for: \(String(describing: data?.companyName ?? ""))"
+        }
+        
+        if(tableView.tag == 6){
+            heading = "Earning data for: \(String(describing: data?.companyName ?? ""))"
+        }
+        
+        if(tableView.tag == 1){
+            heading = "Related News:"
+        }
+        
+        return heading
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        view.tintColor = UIColor.black
+        //view.tintColor = UIColor.red
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        
+    }
     
     //table view cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -162,6 +192,9 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     var watchListItems = [String]()
     let myDefaults = UserDefaults.standard
+    
+    var userSelectedStock = [Stock]()
+    var userSelectedStockTwo: Stock?
     
     var timingCount = 0
     var myTimer = Timer()
@@ -321,17 +354,12 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         self.earningOutlet.isHidden = true
         
         //sets up details
+        
         setupDetailsView()
         setupFinancial()
         setupEarnings()
-        
-        /*updating the TitleView and data
-        if(Int(data?.change ?? "1")! > 0){
-            change = changeIconUp
-        }else{
-            change = changeIconDown
-        }
-        */
+
+        buildCharts()
         
         titleCompanyNameOutlet.text = data?.companyName
         titlePriceAndChangeOutlet.text = "\(String(describing: data?.latestPrice ?? "No data Available"))  \(change)  \(String(describing: data?.change ?? "No data Available"))"
@@ -345,25 +373,45 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
        // collectionViewOutlet.reloadData()
     }
     
+    func addMissingData(){
+        
+        setupFinancial()
+        setupEarnings()
+        
+    }
+    
+    
+    
     func setupEarnings(){
         
         if let myEarningsData = data?.earningsData{
             
-            for each in myEarningsData{
-                earningsArray.append(String(each.actualEPS ?? 1.0 ))
-                earningsArray.append(each.consensusEPS ?? "No data available" )
-                earningsArray.append(each.estimatedEPS ?? "No data available")
-                earningsArray.append(each.announceTime ?? "No data available")
-                earningsArray.append(each.numberOfEstimates ?? "No data available")
-                earningsArray.append(each.EPSSurpriseDollar ?? "No data available")
-                earningsArray.append(each.EPSReportDate ?? "No data available")
-                earningsArray.append(each.fiscalPeriod ?? "No data available")
-                earningsArray.append(each.FiscalEndDate ?? "No data available")
-                earningsArray.append(each.yearAgo ?? "No data available")
-                earningsArray.append(each.yearAgoChangePercent ?? "No data available")
-                earningsArray.append(each.estimatedChangePercent ?? "No data available")
-                earningsArray.append(each.symbolId ?? "No data available")
+            if myEarningsData.isEmpty{
+                
+                if let stock = data?.symbol{
+                    collectMissingData(stock: stock)
+                }
+                
+ 
+            }else{
+            
+                for each in myEarningsData{
+                    earningsArray.append(String(each.actualEPS ?? 1.0 ))
+                    earningsArray.append(each.consensusEPS ?? "No data available" )
+                    earningsArray.append(each.estimatedEPS ?? "No data available")
+                    earningsArray.append(each.announceTime ?? "No data available")
+                    earningsArray.append(each.numberOfEstimates ?? "No data available")
+                    earningsArray.append(each.EPSSurpriseDollar ?? "No data available")
+                    earningsArray.append(each.EPSReportDate ?? "No data available")
+                    earningsArray.append(each.fiscalPeriod ?? "No data available")
+                    earningsArray.append(each.FiscalEndDate ?? "No data available")
+                    earningsArray.append(each.yearAgo ?? "No data available")
+                    earningsArray.append(each.yearAgoChangePercent ?? "No data available")
+                    earningsArray.append(each.estimatedChangePercent ?? "No data available")
+                    earningsArray.append(each.symbolId ?? "No data available")
+                }
             }
+            
         }
         
         earningsTableviewOutlet.reloadData()
@@ -374,29 +422,20 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     //need to all for multiple views, we have multiple quaters of data4 to be exact, maybe do a swithc to switch between
     func setupFinancial(){
         
-    
-        
         if let myFinancialData = data?.financialData{
             
             if myFinancialData.isEmpty{
                 
+                if let stock = data?.symbol{
+                    collectMissingData(stock: stock)
+                    
+                  
+                }
             }else {
             let q1Finance = myFinancialData[0]
             let q2Finance = myFinancialData[1]
             let q3Finance = myFinancialData[2]
             let q4Finance = myFinancialData[3]
-            
-            /* I need to sort the list of data by report date
-            myFinancialData.sort { (reportDate, Financials) -> Bool in
-                myFinancialData[0].reportDate?.sorted()
-            }
-            
-            var sortedList = myFinancialData
-            sortedList.sort { (reportDate, data) -> Bool in
-            
-                sortedList[i].reportDate?.sorted()
-            }
-            */
             
             financialsArray.append(q1Finance.reportDate ?? "No data avialable")
             financialsArray.append(q1Finance.grossProfit ?? "No data avialable")
@@ -521,6 +560,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         myDetailsArray.append(data?.peRation ?? "No Current Value")
         myDetailsArray.append(data?.ytdChange ?? "No Current Value")
         
+        detailsTableViewOutlet.reloadData()
     }
     
     
@@ -566,21 +606,15 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     func buildCharts() {
         combinedChartsOutlet.noDataText = "No Data Available"
         var barDataEntries: [BarChartDataEntry] = []
-        let count = data?.chartsData.count ?? 1
+       
+        
+        if let count = data?.chartsData.count {
         var myDataArray: [Double] = []
         
         // removes optionals from my data
         for i in 0..<count{
             if let myData = data?.chartsData[i].close{
                 myDataArray.append(myData)
-            }
-        }
- 
-        
-        var mySecondDataArray = [Double]()
-        if let myTestData = data?.chartsData{
-            for each in myTestData{
-                mySecondDataArray.append(each.close ?? 1.0)
             }
         }
         
@@ -593,9 +627,232 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         let chartData = BarChartData(dataSet: chartDataSet)
         combinedChartsOutlet.data = chartData
         combinedChartsOutlet.notifyDataSetChanged()
+            
         SVProgressHUD.dismiss()
+        
+        }else {
+            
+            if let stock = data?.symbol{
+                collectMissingData(stock: stock)
+
+            }
+        }
+        
+        
+        
     }
     
+    //collect the needed chart, financial, etc data and more if it is not provided
+    func collectMissingData(stock: String){
+    
+        if(data?.newsData.isEmpty ?? true && data?.financialData.isEmpty ?? true && data?.earningsData.isEmpty ?? true){
+        
+        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=" + stock + "&types=quote,news,financials,logo,earnings,chart&range=1m&last=10").responseJSON { (response) in
+            if let json = response.result.value {
+                let myJson = JSON(json)
+                SVProgressHUD.show()
+                self.processData(json: myJson)
+            }else {
+                print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+            }
+            if let data = response.data{
+                print("Got data, this much was sent: \(data)")
+            }
+        }
+        
+        }
+        
+    }
+    
+    
+    
+    //processes data for the market page
+    func processData(json: JSON){
+        //process the results
+        //  print(json)
+        for stocks in json{
+            let myStocks = Stock()
+            
+            for each in stocks.1{
+                
+                //News processing
+                if(each.0 == "news"){
+                    
+                    for item in each.1{
+                        let myNews = News()
+                        myNews.datetime = item.1["datetime"].stringValue
+                        myNews.headline = item.1["headline"].stringValue
+                        myNews.image = item.1["image"].stringValue
+                        myNews.related = item.1["related"].stringValue
+                        myNews.source = item.1["source"].stringValue
+                        myNews.summary = item.1["summary"].stringValue
+                        myNews.url = item.1["url"].stringValue
+                        
+                        myStocks.newsData.append(myNews)
+                    }
+                    
+                }
+                //charts processing
+                if(each.0 == "chart"){
+  
+                    for item in each.1{
+                        let myChart = Chart()
+                        
+                        myChart.close = item.1["close"].doubleValue
+                        myChart.volume = item.1["volume"].stringValue
+                        myChart.wvap = item.1["wvap"].stringValue
+                        myChart.high = item.1["high"].stringValue
+                        myChart.low = item.1["low"].doubleValue
+                        myChart.open = item.1["open"].doubleValue
+                        myChart.date = item.1["date"].stringValue
+                        myChart.changePercent = item.1["changepercent"].stringValue
+                        myChart.unadjustedVolume = item.1["unadjustedVolume"].stringValue
+                        myChart.changeOverTime = item.1["changeOverTime"].stringValue
+                        myChart.label = item.1["label"].stringValue
+                        
+                        myStocks.chartsData.append(myChart)
+                    }
+                }
+                
+                //logo processing
+                if(each.0 == "logo"){
+                    myStocks.logo = each.1["url"].stringValue
+                    // print(myStocks.logo ?? "No logo available")
+                }
+                
+                //quote data processing
+                if(each.0 == "quote"){
+                    
+                    myStocks.symbol = each.1["symbol"].stringValue
+                    myStocks.companyName = each.1["companyName"].stringValue
+                    myStocks.primaryExchange = each.1["primaryExchange"].stringValue
+                    myStocks.sector = each.1["sector"].stringValue
+                    myStocks.calculationPrice = each.1["calculationPrice"].stringValue
+                    myStocks.open = each.1["open"].stringValue
+                    myStocks.openTime = each.1["openTime"].stringValue
+                    myStocks.close = each.1["close"].stringValue
+                    myStocks.closeTime = each.1["closeTime"].stringValue
+                    myStocks.high = each.1["high"].stringValue
+                    myStocks.low = each.1["low"].stringValue
+                    myStocks.latestPrice = each.1["latestPrice"].stringValue
+                    myStocks.latestSource = each.1["latestSource"].stringValue
+                    myStocks.latestTime = each.1["latestTime"].stringValue
+                    myStocks.latestUpdate = each.1["latestUpdate"].stringValue
+                    myStocks.latestVolume = each.1["latestVolume"].stringValue
+                    myStocks.iexRealTimePrice = each.1["iexRealTimePrice"].stringValue
+                    myStocks.ieRealtimeSize = each.1["ieRealtimeSize"].stringValue
+                    myStocks.iexLastUpdated = each.1["iexLastUpdated"].stringValue
+                    myStocks.delayedPrice = each.1["delayedPrice"].stringValue
+                    myStocks.delayedPriceTime = each.1["delayedPriceTime"].stringValue
+                    myStocks.extendedPrice = each.1["extendedPrice"].stringValue
+                    myStocks.extendedChange = each.1["extendedChange"].stringValue
+                    myStocks.extendedChangePercent = each.1["extendedChangePercent"].stringValue
+                    myStocks.extendedPriceTime = each.1["extendedPriceTime"].stringValue
+                    myStocks.previousClose = each.1["previousClose"].stringValue
+                    myStocks.change = each.1["change"].stringValue
+                    myStocks.changePercent = each.1["changePercent"].stringValue
+                    myStocks.iexMarketPercent = each.1["iexMarketPercent"].stringValue
+                    myStocks.iexVolume = each.1["iexVolume"].stringValue
+                    myStocks.avgTotalVolume = each.1["avgTotalVolume"].stringValue
+                    myStocks.iexBidPrice = each.1["iexBidPrice"].stringValue
+                    myStocks.iexBidSize = each.1["iexBidSize"].stringValue
+                    myStocks.iexAskPrice = each.1["iexAskPrice"].stringValue
+                    myStocks.iexAskSize = each.1["iexAskSize"].stringValue
+                    myStocks.marketCap = each.1["marketCap"].stringValue
+                    myStocks.peRation = each.1["peRation"].stringValue
+                    myStocks.week52High = each.1["week52High"].stringValue
+                    myStocks.week52Low = each.1["week52Low"].stringValue
+                    myStocks.ytdChange = each.1["ytdChange"].stringValue
+                }
+                    
+                //Financials processing
+                if(each.0 == "financials"){
+                    for item in each.1{
+                        for deeper in item.1{
+                            let myFinancial = Financials()
+                            
+                            myFinancial.cashChange = deeper.1["cashChange"].stringValue
+                            myFinancial.cashFlow = deeper.1["cashFlow"].stringValue
+                            myFinancial.costOfRevenue = deeper.1["costOfRevenue"].stringValue
+                            myFinancial.currentAssets = deeper.1["currentAssets"].stringValue
+                            myFinancial.currentCash = deeper.1["currentCash"].stringValue
+                            myFinancial.currentDebt = deeper.1["currentDebt"].stringValue
+                            myFinancial.grossProfit = deeper.1["grossProfit"].stringValue
+                            myFinancial.netIncome = deeper.1["netIncome"].stringValue
+                            myFinancial.operatingexpense = deeper.1["operatingexpense"].stringValue
+                            myFinancial.operatingGainsLosses = deeper.1["operatingGainsLosses"].stringValue
+                            myFinancial.operatingIncome = deeper.1["operatingIncome"].stringValue
+                            myFinancial.operatingRevenue = deeper.1["operatingRevenue"].stringValue
+                            myFinancial.reportDate = deeper.1["reportDate"].stringValue
+                            myFinancial.researchAndDevlopment = deeper.1["researchAndDevlopment"].stringValue
+                            myFinancial.shareholderEquity = deeper.1["shareholderEquity"].stringValue
+                            myFinancial.totalAssets = deeper.1["totalAssets"].stringValue
+                            myFinancial.totalDebt = deeper.1["totalDebt"].stringValue
+                            myFinancial.totalLiabilities = deeper.1["totalLiabilities"].stringValue
+                            myFinancial.totalRevenue = deeper.1["totalRevenue"].stringValue
+                            
+                            myStocks.financialData.append(myFinancial)
+                        }
+                    }
+                }
+                
+                //earnings processing
+                if(each.0 == "earnings"){
+                    
+                    for item in each.1{
+                        
+                        for deeper in item.1 {
+                            
+                            let myEarnings = Earnings()
+                            
+                            myEarnings.actualEPS = deeper.1["actualEPS"].doubleValue
+                            myEarnings.announceTime = deeper.1["announceTime"].stringValue
+                            myEarnings.consensusEPS = deeper.1["consensusEPS"].stringValue
+                            myEarnings.EPSReportDate = deeper.1["EPSReportDate"].stringValue
+                            myEarnings.EPSSurpriseDollar = deeper.1["EPSSurpriseDollar"].stringValue
+                            myEarnings.estimatedChangePercent = deeper.1["estimatedChangePercent"].stringValue
+                            myEarnings.estimatedEPS = deeper.1["estimatedEPS"].stringValue
+                            myEarnings.FiscalEndDate = deeper.1["FiscalEndDate"].stringValue
+                            myEarnings.fiscalPeriod = deeper.1["fiscalPeriod"].stringValue
+                            myEarnings.numberOfEstimates = deeper.1["numberOfEstimates"].stringValue
+                            myEarnings.symbolId = deeper.1["symbolId"].stringValue
+                            myEarnings.yearAgo = deeper.1["yearAgo"].stringValue
+                            myEarnings.yearAgoChangePercent = deeper.1["yearAgoChangePercent"].stringValue
+                            
+                            myStocks.earningsData.append(myEarnings)
+                        }
+                    }
+                }
+                
+                userSelectedStockTwo = myStocks
+                userSelectedStock.append(myStocks)
+                SVProgressHUD.dismiss()
+            }
+        }
+        
+        
+        titleCompanyNameOutlet.text = data?.companyName
+        titlePriceAndChangeOutlet.text = "\(String(describing: data?.latestPrice ?? "No data Available"))  \(data?.change ?? "")  \(String(describing: data?.change ?? "No data Available"))"
+        
+     //   downloadPictures(locationString: data?.logo ?? "No Logo Available")
+        
+        data = userSelectedStockTwo
+        
+        //setupEarnings()
+       // setupFinancial()
+        buildCharts()
+        
+        addMissingData()
+        
+        SVProgressHUD.dismiss()
+        
+        earningsTableviewOutlet.reloadData()
+        financialTableviewOutlet.reloadData()
+        detailsTableViewOutlet.reloadData()
+    
+    }
+    
+                //setup pie charts
     func setupPieChart(){
        
         /*

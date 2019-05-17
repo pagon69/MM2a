@@ -24,7 +24,9 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     var currentIndex = 0
     
     //below is needed for ticker
-    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good"]
+    
+    var keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "ibm","msft","amd","GE","NLNK", "WVE", "IPLDP", "IGBH", "HURC", "ZIXI", "NMY", "FTK", "PAR", "RDI", "BRPA", "MBG", "APOPW", "GREK", "AMH-G", "COE", "MOM", "UIVM", "AUTO", "CLGX", "BFR", "IVR-C", "FWRD", "ANF", "ROK", "QQXT", "YGRN", "GMAN", "SPLP-A", "GLTR", "KLAC", "VTIP", "AFI", "IBN", "DF", "RENN", "GOGL", "GULF", "PFSI", "RVT", "UL", "MTB-C", "FLAG", "XPH", "SWP", "ZNH", "OPOF", "XLSR", "ESBK", "BPFH", "ECCX", "WTRU", "CWCO", "NGL-C", "IPFF", "ALB", "PSCH", "EBAY", "RAIL", "PYPE", "IBMH", "HYGV", "ZAGG", "MLPZ", "ISIG", "AFC", "JAGX", "TAIL", "ARKR", "WFC-X", "RYE", "GOEX", "DON", "PFH", "LOGM", "ATHM", "RCA", "GTN.A", "MVIS", "MELR", "FWONK", "SLAB", "EGOV", "NUDM", "CGA", "COOP", "AGI", "BYFC", "RMR", "GLADN", "HWC", "FRBA", "ITIC", "LBRDK", "OCIO", "FV", "NSIT", "KBWP", "SLP", "PCG-D", "NCB", "TDS", "PPR", "EET", "FNDC", "FTI", "AVB", "MMAC", "NUMG", "BANR", "KIQ", "MANH", "SLGG", "PSA-G", "DYNF", "SLNO", "POWL", "STL-A", "DYNC", "VBR", "JO", "OIL", "ZDEU", "MNCLU", "LEMB", "GHG", "PRAA", "UYG", "PFBI", "AGT", "RYN", "ASUR", "TFLO", "FIS", "PULS", "TGI", "YMAB", "PNW", "ESGU", "SNV", "DHXM", "RBC", "UNB", "BRPAU", "LEGR", "NLY-F", "SPFI", "STBA", "ENIC", "WTS", "INBKL", "CVI", "VNRX", "CEV", "BOTZ", "NEE-N", "SYNA", "DS-B", "HGV", "PRNT", "RTN", "TD", "PAGS", "FLIN", "FCAU", "BCEI", "MGEN", "SOGO", "BYLD", "BUYN", "IHT", "ARCH", "CTZ", "CHSCP", "GD", "CLLS", "PEI", "RF-C", "CSL", "NUE", "AAU", "CANF", "ISEE", "FRGI", "KREF", "SOVB", "DKL", "ALE", "GS-C", "MYN", "GPS", "FLQD", "JBR", "LSXMA", "SCWX", "BSCE", "BTX", "AMBR", "NBR-A", "HCCHR", "HAIR"]
+    
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
     var myTimer = Timer()
@@ -86,14 +88,40 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var t6Change: UILabel!
     
     
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //used to get the position
+        if let touch = touches.first {
+            let position = touch.location(in: view)
+            print("This is the current position: \(position)")
+            
+            // can i detect which view?
+            touch.location(in: t1)
+            
+        }
+        
+        
+        
+        
+        
+        
+    }
+    
+    
     @IBAction func quickSearchButton(_ sender: UIBarButtonItem) {
         
          performSegue(withIdentifier: "deepToQuickSearch", sender: self)
         
     }
     
-    
-    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        view.tintColor = UIColor.black
+        //view.tintColor = UIColor.red
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        
+    }
     
     func startAnimating(){
         timing += 1
@@ -477,9 +505,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             cell.textLabel?.numberOfLines = 0
             cell.detailTextLabel?.numberOfLines = 0
             
-            cell.textLabel?.text = "\(String(describing: winners[indexPath.row].companyName ?? "Null"))\n\(String(describing: winners[indexPath.row].symbol ?? "Null"))"
-            //cell.detailTextLabel?.text = "$\(String(describing: winners[indexPath.row].latestPrice ?? "Null"))\n%\(String(describing: winners[indexPath.row].changePercent ?? "Null"))"
-            
+            cell.textLabel?.text = "\(String(describing: winners[indexPath.row].companyName ?? "No values provided"))\n\(String(describing: winners[indexPath.row].symbol ?? "Null"))"
             cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(winners[indexPath.row].latestPrice ?? "") ?? ""))\n%\(String(format: "%.2f", Float64(winners[indexPath.row].changePercent ?? "") ?? ""))"
         }
         
@@ -489,8 +515,11 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             
             cell.textLabel?.numberOfLines = 0
             cell.textLabel?.numberOfLines = 0
+            
             cell.textLabel?.text = "\(String(describing: losers[indexPath.row].companyName ?? "Null"))\n\(String(describing: losers[indexPath.row].symbol ?? "Null"))"
-            cell.detailTextLabel?.text = "$\(String(describing: losers[indexPath.row].latestPrice ?? "Null"))\n\(String(describing: losers[indexPath.row].change ?? "Null"))"
+            
+            cell.detailTextLabel?.text = "$\(String(format: "%.2f", Float64(losers[indexPath.row].latestPrice ?? "") ?? ""))\n%\(String(format: "%.2f", Float64(losers[indexPath.row].changePercent ?? "") ?? ""))"
+           // cell.detailTextLabel?.text = "$\(String(describing: losers[indexPath.row].latestPrice ?? "Null"))\n\(String(describing: losers[indexPath.row].change ?? "Null"))"
         }
         
         return cell
@@ -552,18 +581,17 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             let destVC: IPODetailsViewController = segue.destination as! IPODetailsViewController
             destVC.data = IPOs[currentIndex]
             
-            //create a IPO view
         }
         
         
         //create a custom view for winners processing
-        if(segue.identifier == "getWinnersDetails"){
+        if(segue.identifier == "getWinnerDetails"){
             let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
              destVC.data = winners[currentIndex]
             
         }
         
-        //this will cover the markets
+        //this will cover the losers
         if(segue.identifier == "getLoserDetails"){
             
             let destVC: TableViewDetailsViewController = segue.destination as! TableViewDetailsViewController
@@ -593,7 +621,7 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        //todays
+        //todays IPOs
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/today-ipos").responseJSON { (response) in
             if let json = response.result.value {
                 let myJson = JSON(json)
@@ -861,15 +889,5 @@ class DeepDiveViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

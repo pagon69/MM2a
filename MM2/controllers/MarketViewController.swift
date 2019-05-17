@@ -15,6 +15,36 @@ import SVProgressHUD
 
 class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UITabBarDelegate, UITabBarControllerDelegate {
     
+    //detect touches and do something
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        //used to get the position
+        if let touch = touches.first {
+            let position = touch.location(in: t1)
+            print("This is the current position, within toches ends: \(position)")
+            
+            // can i detect which view?
+            touch.location(in: t1)
+            
+        }
+        
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let touch = touches.first {
+            let position = touch.location(in: t1)
+            print("This is the current position, within touches began: \(position)")
+            
+            // can i detect which view?
+            touch.location(in: t1)
+            
+        }
+        
+        
+    }
+    
     //tab bar dcontroller stuff
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         let tabBarItem = tabBarController.selectedIndex
@@ -45,6 +75,18 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         }
         return heading
     }
+    
+    //used to set the header and footers view and color
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+        view.tintColor = UIColor.black
+        //view.tintColor = UIColor.red
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.textColor = UIColor.white
+        
+    }
+    
+    
     
     //Table view stuff
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -242,7 +284,7 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
     }
     
     //below is needed for ticker
-    let keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "ibm","msft","amd","GE"]
+    var keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "ibm","msft","amd","GE","NLNK", "WVE", "IPLDP", "IGBH", "HURC", "ZIXI", "NMY", "FTK", "PAR", "RDI", "BRPA", "MBG", "APOPW", "GREK", "AMH-G", "COE", "MOM", "UIVM", "AUTO", "CLGX", "BFR", "IVR-C", "FWRD", "ANF", "ROK", "QQXT", "YGRN", "GMAN", "SPLP-A", "GLTR", "KLAC", "VTIP", "AFI", "IBN", "DF", "RENN", "GOGL", "GULF", "PFSI", "RVT", "UL", "MTB-C", "FLAG", "XPH", "SWP", "ZNH", "OPOF", "XLSR", "ESBK", "BPFH", "ECCX", "WTRU", "CWCO", "NGL-C", "IPFF", "ALB", "PSCH", "EBAY", "RAIL", "PYPE", "IBMH", "HYGV", "ZAGG", "MLPZ", "ISIG", "AFC", "JAGX", "TAIL", "ARKR", "WFC-X", "RYE", "GOEX", "DON", "PFH", "LOGM", "ATHM", "RCA", "GTN.A", "MVIS", "MELR", "FWONK", "SLAB", "EGOV", "NUDM", "CGA", "COOP", "AGI", "BYFC", "RMR", "GLADN", "HWC", "FRBA", "ITIC", "LBRDK", "OCIO", "FV", "NSIT", "KBWP", "SLP", "PCG-D", "NCB", "TDS", "PPR", "EET", "FNDC", "FTI", "AVB", "MMAC", "NUMG", "BANR", "KIQ", "MANH", "SLGG", "PSA-G", "DYNF", "SLNO", "POWL", "STL-A", "DYNC", "VBR", "JO", "OIL", "ZDEU", "MNCLU", "LEMB", "GHG", "PRAA", "UYG", "PFBI", "AGT", "RYN", "ASUR", "TFLO", "FIS", "PULS", "TGI", "YMAB", "PNW", "ESGU", "SNV", "DHXM", "RBC", "UNB", "BRPAU", "LEGR", "NLY-F", "SPFI", "STBA", "ENIC", "WTS", "INBKL", "CVI", "VNRX", "CEV", "BOTZ", "NEE-N", "SYNA", "DS-B", "HGV", "PRNT", "RTN", "TD", "PAGS", "FLIN", "FCAU", "BCEI", "MGEN", "SOGO", "BYLD", "BUYN", "IHT", "ARCH", "CTZ", "CHSCP", "GD", "CLLS", "PEI", "RF-C", "CSL", "NUE", "AAU", "CANF", "ISEE", "FRGI", "KREF", "SOVB", "DKL", "ALE", "GS-C", "MYN", "GPS", "FLQD", "JBR", "LSXMA", "SCWX", "BSCE", "BTX", "AMBR", "NBR-A", "HCCHR", "HAIR"]
     
     var myTickers = [Ticker]()
     var mySortedTickers = [Ticker]()
@@ -647,6 +689,8 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
             }
         }
         
+        //https://api.iextrading.com/1.0/stock/market/list/mostactive/batch?symbols=\(keyMarkets)&types=quote,news,financials,logo,earnings,chart&range=1m&last=10
+        
        //&types=quote,news,financials,logo,earnings,chart&range=1m&last=5
         //network request for Major indexices
         Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=\(keyMarkets)&types=quote,news,financials,logo,earnings,chart&range=1m&last=10").responseJSON { (response) in
@@ -859,6 +903,37 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         GoogleAdOutlet.load(GADRequest())
     }
     
+    func createKey() {
+        
+        var myStringArray = [String]()
+        
+        Alamofire.request("https://api.iextrading.com/1.0/tops").responseJSON { (response) in
+            if let json = response.result.value {
+                let myJson = JSON(json)
+                //SVProgressHUD.show()
+               //self.processData2(json: myJson)
+                for each in myJson{
+                    if(myStringArray.count > 200){
+                        print(myStringArray)
+                        self.keyMarketStock = myStringArray
+                        break
+                    }else {
+                        myStringArray.append(each.1["symbol"].stringValue)
+                    }
+                }
+                
+                
+            }else {
+                print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+            }
+            if let data = response.data{
+                print("Got data, this much was sent: \(data)")
+            }
+        }
+        
+    }
+    
+    
     
     // start of all runtime stuff
     override func viewDidLoad() {
@@ -891,6 +966,11 @@ class MarketViewController: UIViewController, UISearchBarDelegate, UITableViewDe
         myRealm = try! Realm(configuration: config)
         
         collectMarketData()
+        
+        //remove this code after i create a list.
+       // createKey()
+        
+        
         
     }
 

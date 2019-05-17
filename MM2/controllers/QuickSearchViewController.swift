@@ -16,6 +16,15 @@ import SVProgressHUD
 class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource{
 
         //sections and table customization
+        func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        
+            view.tintColor = UIColor.black
+            //view.tintColor = UIColor.red
+            let header = view as! UITableViewHeaderFooterView
+            header.textLabel?.textColor = UIColor.white
+        
+        }
+    
         func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
@@ -103,6 +112,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
         var searchR = [String]()
         var myMarkets :[Markets] = [Markets]()
         var data : Markets?
+    
         var userSelectedStock = [Stock]()
         var userSelectedStockTwo: Stock?
         var timingCount = 0
@@ -240,6 +250,7 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                         }
                         
                     }
+                    
             //charts processing
                     if(each.0 == "chart"){
                         
@@ -317,11 +328,8 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                     
                 //Financials processing
                     if(each.0 == "financials"){
-                        
                         for item in each.1{
-                            
                             for deeper in item.1{
-                                
                                 let myFinancial = Financials()
                                 
                                 myFinancial.cashChange = deeper.1["cashChange"].stringValue
@@ -343,7 +351,6 @@ class QuickSearchViewController: UIViewController, UISearchBarDelegate, UITableV
                                 myFinancial.totalDebt = deeper.1["totalDebt"].stringValue
                                 myFinancial.totalLiabilities = deeper.1["totalLiabilities"].stringValue
                                 myFinancial.totalRevenue = deeper.1["totalRevenue"].stringValue
-                                
                                 
                                 myStocks.financialData.append(myFinancial)
                             }
