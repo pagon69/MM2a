@@ -18,29 +18,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MM Logo 1024" translatesAutoresizingMaskIntoConstraints="NO" id="1Fl-sb-Uc6">
-                                <rect key="frame" x="0.0" y="182" width="375" height="303"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beach-blue-coast-1056497" translatesAutoresizingMaskIntoConstraints="NO" id="feO-Qj-56o">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <accessibility key="accessibilityConfiguration" hint="people on beach" identifier="pob" label="people on beach">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJ2-Tb-X3X">
-                                <rect key="frame" x="0.0" y="493" width="375" height="47"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="47" id="Uhf-me-fKl"/>
-                                </constraints>
+                                <rect key="frame" x="120.5" y="315.5" width="134.5" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MM Logo 1024" translatesAutoresizingMaskIntoConstraints="NO" id="1Fl-sb-Uc6">
+                                <rect key="frame" x="211" y="504" width="164" height="163"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="163" id="00k-G5-7pQ"/>
+                                    <constraint firstAttribute="width" constant="164" id="axs-X1-Gep"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="162" id="40z-vf-Zzi"/>
-                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="6n0-Lq-reN"/>
-                            <constraint firstItem="MJ2-Tb-X3X" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="K2h-4a-EtO"/>
-                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="QGx-pU-l34"/>
-                            <constraint firstItem="MJ2-Tb-X3X" firstAttribute="top" secondItem="1Fl-sb-Uc6" secondAttribute="bottom" constant="8" id="XDW-Ru-T9i"/>
-                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="dww-nc-hju"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="MJ2-Tb-X3X" secondAttribute="bottom" constant="127" id="pvG-hl-FQu"/>
-                            <constraint firstItem="MJ2-Tb-X3X" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="yZJ-RS-2xd"/>
+                            <constraint firstItem="feO-Qj-56o" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="3qm-lM-k0N"/>
+                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="5nC-WX-icI"/>
+                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="top" secondItem="MJ2-Tb-X3X" secondAttribute="bottom" constant="152.5" id="5q5-g9-lAk"/>
+                            <constraint firstItem="MJ2-Tb-X3X" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="CXw-JO-w9v"/>
+                            <constraint firstAttribute="trailing" secondItem="feO-Qj-56o" secondAttribute="trailing" id="F30-YU-wqi"/>
+                            <constraint firstItem="feO-Qj-56o" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="UY3-yT-OPs"/>
+                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Uyf-tO-r9j"/>
+                            <constraint firstItem="1Fl-sb-Uc6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="211" id="a5n-hN-ekW"/>
+                            <constraint firstItem="MJ2-Tb-X3X" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="c1u-Sx-1K7"/>
+                            <constraint firstAttribute="bottom" secondItem="feO-Qj-56o" secondAttribute="bottom" id="zcs-kp-qTg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -51,6 +60,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="MM Logo 1024" width="1024" height="1024"/>
+        <image name="MM Logo 1024" width="512" height="512"/>
+        <image name="beach-blue-coast-1056497" width="3970" height="5955"/>
     </resources>
 </document>

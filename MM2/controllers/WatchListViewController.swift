@@ -12,6 +12,7 @@ import AlamofireImage
 import SwiftyJSON
 import GoogleMobileAds
 import SVProgressHUD
+import Charts
 
 class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewDataSource, UITabBarControllerDelegate {
     
@@ -220,12 +221,20 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     @IBOutlet weak var t6Price: UILabel!
     @IBOutlet weak var t6Change: UILabel!
     
+    
+    @IBOutlet weak var pieChartOutlet: PieChartView!
+    
     //globals
     let myDefaults = UserDefaults.standard
     var watchListItems = [String]()
     var formatedWatchList: String = ""
     var watchListStocks = [Stock]()
     var currentIndexPath = 0
+    
+    //setup for purchased stock
+    var cashOnHand = 1000.00
+    var quantityOfStockOwned = 1.0
+    
     
     var keyMarketStock = ["dia","spy", "fb", "aapl", "goog", "good", "ibm","msft","amd","GE","NLNK", "WVE", "IPLDP", "IGBH", "HURC", "ZIXI", "NMY", "FTK", "PAR", "RDI", "BRPA", "MBG", "APOPW", "GREK", "AMH-G", "COE", "MOM", "UIVM", "AUTO", "CLGX", "BFR", "IVR-C", "FWRD", "ANF", "ROK", "QQXT", "YGRN", "GMAN", "SPLP-A", "GLTR", "KLAC", "VTIP", "AFI", "IBN", "DF", "RENN", "GOGL", "GULF", "PFSI", "RVT", "UL", "MTB-C", "FLAG", "XPH", "SWP", "ZNH", "OPOF", "XLSR", "ESBK", "BPFH", "ECCX", "WTRU", "CWCO", "NGL-C", "IPFF", "ALB", "PSCH", "EBAY", "RAIL", "PYPE", "IBMH", "HYGV", "ZAGG", "MLPZ", "ISIG", "AFC", "JAGX", "TAIL", "ARKR", "WFC-X", "RYE", "GOEX", "DON", "PFH", "LOGM", "ATHM", "RCA", "GTN.A", "MVIS", "MELR", "FWONK", "SLAB", "EGOV", "NUDM", "CGA", "COOP", "AGI", "BYFC", "RMR", "GLADN", "HWC", "FRBA", "ITIC", "LBRDK", "OCIO", "FV", "NSIT", "KBWP", "SLP", "PCG-D", "NCB", "TDS", "PPR", "EET", "FNDC", "FTI", "AVB", "MMAC", "NUMG", "BANR", "KIQ", "MANH", "SLGG", "PSA-G", "DYNF", "SLNO", "POWL", "STL-A", "DYNC", "VBR", "JO", "OIL", "ZDEU", "MNCLU", "LEMB", "GHG", "PRAA", "UYG", "PFBI", "AGT", "RYN", "ASUR", "TFLO", "FIS", "PULS", "TGI", "YMAB", "PNW", "ESGU", "SNV", "DHXM", "RBC", "UNB", "BRPAU", "LEGR", "NLY-F", "SPFI", "STBA", "ENIC", "WTS", "INBKL", "CVI", "VNRX", "CEV", "BOTZ", "NEE-N", "SYNA", "DS-B", "HGV", "PRNT", "RTN", "TD", "PAGS", "FLIN", "FCAU", "BCEI", "MGEN", "SOGO", "BYLD", "BUYN", "IHT", "ARCH", "CTZ", "CHSCP", "GD", "CLLS", "PEI", "RF-C", "CSL", "NUE", "AAU", "CANF", "ISEE", "FRGI", "KREF", "SOVB", "DKL", "ALE", "GS-C", "MYN", "GPS", "FLQD", "JBR", "LSXMA", "SCWX", "BSCE", "BTX", "AMBR", "NBR-A", "HCCHR", "HAIR"]
     var myTickers = [Ticker]()
@@ -721,11 +730,95 @@ class WatchListViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
                           
     
+    
+    func getStockValue() -> Double{
+        
+        var currentValue = 0.0
+        
+        
+            for each in watchListStocks{
+                
+                if let price = Double(each.latestPrice ?? "1.0"){
+                
+                    currentValue = currentValue + ( price * quantityOfStockOwned )
+                }
+            }
+       
+        return currentValue
+    }
+    
+    
+    func buildPieCharts() {
+        pieChartOutlet.noDataText = "No Data Available"
+        var pieDataEntries: [PieChartDataEntry] = []
+        
+        var stockValue = getStockValue()
+
+        //cash on hand plus value of stock equals whole amount
+        
+        pieDataEntries.append(PieChartDataEntry(value: 100.00, label: "random value"))
+        pieDataEntries.append(PieChartDataEntry(value: 50.00, label: "test value"))
+        pieDataEntries.append(PieChartDataEntry(value: 10.00, label: "fun value"))
+        
+        let myPieChartDataSet = PieChartDataSet(values: pieDataEntries, label: "more test")
+        let myPieChartData = PieChartData(dataSet: myPieChartDataSet)
+        pieChartOutlet.data = myPieChartData
+        pieChartOutlet.notifyDataSetChanged()
+        
+        
+        /*
+        
+        if let count = data?.chartsData.count {
+            var myDataArray: [Double] = []
+            
+            // removes optionals from my data
+            for i in 0..<count{
+                if let myData = data?.chartsData[i].close{
+                    myDataArray.append(myData)
+                }
+            }
+            
+            for i in 0..<count{
+                let barDataEntry = BarChartDataEntry(x: Double(i), y: myDataArray[i])
+                barDataEntries.append(barDataEntry)
+            }
+ 
+   
+        
+            let chartDataSet = BarChartDataSet(values: barDataEntries, label: "Close over time")
+            let chartData = BarChartData(dataSet: chartDataSet)
+            combinedChartsOutlet.data = chartData
+            combinedChartsOutlet.notifyDataSetChanged()
+            
+            SVProgressHUD.dismiss()
+            
+        }else {
+            
+            if let stock = data?.symbol{
+                collectMissingData(stock: stock)
+                
+            }
+        }
+        
+        */
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     func adsSetup() {
         googleAds.adUnitID = "ca-app-pub-7563192023707820/2466331764"
         googleAds.rootViewController = self
         googleAds.load(GADRequest())
     }
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

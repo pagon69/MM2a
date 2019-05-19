@@ -279,11 +279,8 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     @IBOutlet weak var titlePriceAndChangeOutlet: UILabel!
     
     //google ads
-    @IBOutlet weak var googleAdoutlet: GADBannerView!
-    @IBOutlet weak var earningsAdOutlet: GADBannerView!
-    @IBOutlet weak var financailADOutlet: GADBannerView!
-    @IBOutlet weak var newsAdOutlet: GADBannerView!
     
+    @IBOutlet weak var lastGoogleAd: GADBannerView!
     
     
     
@@ -359,7 +356,19 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         setupFinancial()
         setupEarnings()
 
-        buildCharts()
+        
+        
+        if let testForBitCion = data?.sector {
+            if testForBitCion == "cryptocurrency"{
+                
+            }else{
+                buildCharts()
+            }
+            
+        }
+        
+        
+        //buildCharts()
         
         titleCompanyNameOutlet.text = data?.companyName
         titlePriceAndChangeOutlet.text = "\(String(describing: data?.latestPrice ?? "No data Available"))  \(change)  \(String(describing: data?.change ?? "No data Available"))"
@@ -432,6 +441,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
                   
                 }
             }else {
+                
             let q1Finance = myFinancialData[0]
             let q2Finance = myFinancialData[1]
             let q3Finance = myFinancialData[2]
@@ -518,10 +528,11 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             financialsArray4.append(q4Finance.operatingGainsLosses ?? "No data avialable")
             
             currentQuarterData = financialsArray
+            financialTableviewOutlet.reloadData()
             }
         }
 
-        financialTableviewOutlet.reloadData()
+       // financialTableviewOutlet.reloadData()
         
     }
     
@@ -603,12 +614,15 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     }
     
     
-    func buildCharts() {
+    func buildCharts2() {
         combinedChartsOutlet.noDataText = "No Data Available"
         var barDataEntries: [BarChartDataEntry] = []
        
+        //var court = 0
         
-        if let count = data?.chartsData.count {
+        if data?.chartsData.isEmpty ?? true{
+            
+        let count = data?.chartsData.count ?? 0
         var myDataArray: [Double] = []
         
         // removes optionals from my data
@@ -632,33 +646,119 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
         }else {
             
-            if let stock = data?.symbol{
-                collectMissingData(stock: stock)
-
-            }
+            if let mySector = data?.sector{
+            
+                if mySector == "cryptocurrency"{
+                    
+                    print("do nothing this is a cryptocurrency")
+                    
+                }else{
+                    
+                    if let stock = data?.symbol{
+                        collectMissingData(stock: stock)
+                    
+                }
+            
+                }
         }
         
         
         
     }
+    }
+    
+    
+    
+    
+    
+    func buildCharts() {
+        combinedChartsOutlet.noDataText = "No Data Available"
+        var barDataEntries: [BarChartDataEntry] = []
+        
+        //var court = 0
+        
+        if data?.chartsData.isEmpty ?? true{
+            
+            if let mySector = data?.sector{
+                
+                if mySector == "cryptocurrency"{
+                    
+                    print("do nothing this is a cryptocurrency")
+                    
+                }else{
+                    
+                    if let stock = data?.symbol{
+                        collectMissingData(stock: stock)
+                        
+                    }
+                    
+                }
+            }
+            
+            
+            
+        }else {
+            
+            let count = data?.chartsData.count ?? 0
+            var myDataArray: [Double] = []
+            
+            // removes optionals from my data
+            for i in 0..<count{
+                if let myData = data?.chartsData[i].close{
+                    myDataArray.append(myData)
+                }
+            }
+            
+            for i in 0..<count{
+                let barDataEntry = BarChartDataEntry(x: Double(i), y: myDataArray[i])
+                barDataEntries.append(barDataEntry)
+            }
+            
+            let chartDataSet = BarChartDataSet(values: barDataEntries, label: "Close over time")
+            let chartData = BarChartData(dataSet: chartDataSet)
+            combinedChartsOutlet.data = chartData
+            combinedChartsOutlet.notifyDataSetChanged()
+            
+            SVProgressHUD.dismiss()
+            
+            
+            
+        }
+    }
+    
+    
+    
+    
     
     //collect the needed chart, financial, etc data and more if it is not provided
     func collectMissingData(stock: String){
     
-        if(data?.newsData.isEmpty ?? true && data?.financialData.isEmpty ?? true && data?.earningsData.isEmpty ?? true){
+        if(data?.newsData.isEmpty ?? true && data?.financialData.isEmpty ?? true && data?.earningsData.isEmpty ?? true ){
+       
+            if(data?.sector == "cryptocurrency"){
+            
+            //if data?.sector == "cryptocurrency"
+        print("do nothing")
         
-        Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=" + stock + "&types=quote,news,financials,logo,earnings,chart&range=1m&last=10").responseJSON { (response) in
-            if let json = response.result.value {
-                let myJson = JSON(json)
-                SVProgressHUD.show()
-                self.processData(json: myJson)
-            }else {
-                print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+        
+            }else{
+                
+                Alamofire.request("https://api.iextrading.com/1.0/stock/market/batch?symbols=" + stock + "&types=quote,news,financials,logo,earnings,chart&range=1m&last=10").responseJSON { (response) in
+                    if let json = response.result.value {
+                        let myJson = JSON(json)
+                        SVProgressHUD.show()
+                        self.processData(json: myJson)
+                    }else {
+                        print("Somethign went wrong, check out the exact error msg: \(String(describing: response.error))")
+                    }
+                    if let data = response.data{
+                        print("Got data, this much was sent: \(data)")
+                    }
+                }
+                
+                
             }
-            if let data = response.data{
-                print("Got data, this much was sent: \(data)")
-            }
-        }
+            
         
         }
         
@@ -917,22 +1017,11 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     */
     
     func adsSetup() {
-        googleAdoutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-        googleAdoutlet.rootViewController = self
-        googleAdoutlet.load(GADRequest())
+        lastGoogleAd.adUnitID = "ca-app-pub-7563192023707820/2466331764"
+        lastGoogleAd.rootViewController = self
+        lastGoogleAd.load(GADRequest())
         
-        earningsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-       earningsAdOutlet.rootViewController = self
-        earningsAdOutlet.load(GADRequest())
-        
-        financailADOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-        financailADOutlet.rootViewController = self
-        financailADOutlet.load(GADRequest())
-        
-        
-        newsAdOutlet.adUnitID = "ca-app-pub-7563192023707820/2466331764"
-        newsAdOutlet.rootViewController = self
-        newsAdOutlet.load(GADRequest())
+
         
     }
         
@@ -941,7 +1030,18 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
 
         adsSetup()
         viewSetup()
-        buildCharts()
+        
+        if let testForBitCion = data?.sector {
+            if testForBitCion == "cryptocurrency"{
+                
+            }else{
+                buildCharts()
+            } 
+            
+        }
+        
+        
+        
         collectionViewOutlet.reloadData()
         
     }
