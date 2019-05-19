@@ -109,7 +109,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
         
         //financial
         if(tableView.tag == 2){
-            count = financialsArray.count
+            count = currentQuarterData.count
             
         }
         
@@ -170,7 +170,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     
     //used to allow for quarterly data
-    var financialsArray = [String]()
+    //var financialsArray = [String]()
     var financialsArray2 = [String]()
     var financialsArray3 = [String]()
     var financialsArray4 = [String]()
@@ -446,6 +446,8 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             let q2Finance = myFinancialData[1]
             let q3Finance = myFinancialData[2]
             let q4Finance = myFinancialData[3]
+                
+            var financialsArray = [String]()
             
             financialsArray.append(q1Finance.reportDate ?? "No data avialable")
             financialsArray.append(q1Finance.grossProfit ?? "No data avialable")
@@ -532,6 +534,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
             }
         }
 
+       // currentQuarterData = financialsArray
        // financialTableviewOutlet.reloadData()
         
     }
@@ -615,6 +618,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     
     func buildCharts2() {
+       
         combinedChartsOutlet.noDataText = "No Data Available"
         var barDataEntries: [BarChartDataEntry] = []
        
@@ -672,6 +676,7 @@ class TableViewDetailsViewController: UIViewController,UITableViewDataSource,UIT
     
     
     func buildCharts() {
+     
         combinedChartsOutlet.noDataText = "No Data Available"
         var barDataEntries: [BarChartDataEntry] = []
         

@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beach-blue-coast-1056497" translatesAutoresizingMaskIntoConstraints="NO" id="feO-Qj-56o">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beach2" translatesAutoresizingMaskIntoConstraints="NO" id="feO-Qj-56o">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <accessibility key="accessibilityConfiguration" hint="people on beach" identifier="pob" label="people on beach">
                                     <bool key="isElement" value="YES"/>
@@ -61,6 +61,6 @@
     </scenes>
     <resources>
         <image name="MM Logo 1024" width="512" height="512"/>
-        <image name="beach-blue-coast-1056497" width="3970" height="5955"/>
+        <image name="beach2" width="3970" height="5955"/>
     </resources>
 </document>
